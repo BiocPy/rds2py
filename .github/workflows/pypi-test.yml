@@ -28,7 +28,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install flake8 pytest tox
+        pip install flake8 pytest tox cython numpy
         cd extern/rds2cpp
         cmake .
         cd ../..
