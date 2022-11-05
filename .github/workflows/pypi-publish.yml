@@ -14,8 +14,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        submodules: true
+    - name: Git Sumbodule Update
       run: |
-      git submodule update
+        git pull --recurse-submodules
+        git submodule update --remote --recursive
     - name: Set up Python 3.9
       uses: actions/setup-python@v2
       with:
@@ -25,7 +29,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest tox
         cd extern/rds2cpp
-        ls -la
         cmake -S .
         cd ../..
     # - name: Lint with flake8
