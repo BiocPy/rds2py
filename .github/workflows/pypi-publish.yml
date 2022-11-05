@@ -28,7 +28,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest tox
         cd extern/rds2cpp
-        cmake -S .
+        cmake .
+        ls -la
         cd ../..
     # - name: Lint with flake8
     #   run: |
@@ -38,6 +39,7 @@ jobs:
     #     # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with tox
       run: |
+        python setup.py build_ext --inplace
         tox
     - name: Build docs
       run: |
