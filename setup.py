@@ -24,7 +24,7 @@ if __name__ == "__main__":
                         include_dirs=["extern/rds2cpp/include", "extern/rds2cpp/_deps/byteme-src/include", numpy.get_include()],
                         language="c++",
                         extra_compile_args=[
-                           "-lz", "-std=c++17",
+                           "-lz -lzstd -llzma", "-std=c++17",
                         ]
                     )
                 ],
