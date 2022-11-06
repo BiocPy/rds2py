@@ -1,0 +1,7 @@
+rds2py
+======
+
+.. toctree::
+   :maxdepth: 4
+
+   rds2py

@@ -1,0 +1,29 @@
+rds2py package
+==============
+
+Submodules
+----------
+
+rds2py.core module
+------------------
+
+.. automodule:: rds2py.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+rds2py.interface module
+-----------------------
+
+.. automodule:: rds2py.interface
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Module contents
+---------------
+
+.. automodule:: rds2py
+   :members:
+   :undoc-members:
+   :show-inheritance:
