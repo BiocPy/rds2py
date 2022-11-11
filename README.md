@@ -22,7 +22,11 @@ from rds2py import as_SCE, read_rds
 rObj = read_rds(<path_to_file>)
 ```
 
-This `rObj` contains the realized structure of the RDS file as a compatible `dict` object. The package provides friendly functions to easily convert R representations to more useful python representations.
+This `rObj` contains the realized structure of the RDS file as a compatible `dict` object, it contains two keys 
+- `data` if atomic entities, contains the numpy view of the memory space
+- `attributes`: additional properties available for the object. 
+
+The package provides friendly functions to easily convert some R representations to useful python representations.
 
 ```python
 from rds2py import as_spase_matrix, as_SCE

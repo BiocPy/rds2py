@@ -12,7 +12,13 @@ from rds2py import as_SCE, read_rds
 rObj = read_rds(<path_to_file>)
 ```
 
-Once we have a realized structure of the RDS file, we can now start to build useful Python representations. We provide a few common methods to easily convert a realized R object. 
+Once we have a realized structure of the RDS file, we can now start to build useful Python representations.
+
+This `rObj` contains the realized structure of the RDS file as a compatible `dict` object, it contains two keys 
+- `data` if atomic entities, contains the numpy view of the memory space
+- `attributes`: additional properties available for the object. 
+
+The package provides friendly functions to easily convert some R representations to useful python representations.
 
 ## Step 2: Python representations
 
