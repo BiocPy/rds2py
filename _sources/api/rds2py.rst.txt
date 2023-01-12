@@ -20,6 +20,22 @@ rds2py.interface module
    :undoc-members:
    :show-inheritance:
 
+rds2py.parser module
+--------------------
+
+.. automodule:: rds2py.parser
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+rds2py.pdf module
+-----------------
+
+.. automodule:: rds2py.pdf
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 
