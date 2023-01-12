@@ -1,8 +1,11 @@
-from .core import PyParsedObject
+from .parser import get_class
+from .pdf import as_pandas_from_data_frame, as_pandas_from_dframe
 
 import pandas as pd
 from scipy import sparse as sp
 import numpy as np
+
+from typing import MutableMapping
 
 from biocpy.singlecellexperiment import SingleCellExperiment
 from biocpy.summarizedexperiment import SummarizedExperiment
@@ -12,115 +15,37 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def read_rds(file: str) -> dict:
-    """Read a Rds file and get a python representation
+def as_pandas(robj: MutableMapping) -> pd.DataFrame:
+    """Convert a realized R object as a Pandas `DataFrame`.
+        Currently supports `DFrame` or `data.frame` class objects from R.
 
     Args:
-        file (str): Path to file
-
-    Returns:
-        dict: realized R object
-    """
-    parsed_obj = PyParsedObject(file)
-    robject_obj = parsed_obj.get_robject()
-    realized = robject_obj.realize_value()
-
-    return realized
-
-
-def get_class(robj: dict) -> str:
-    """generic method to get the class of the realized R object
-
-    Args:
-        robj (dict): realized R object
-
-    Returns:
-        str: class name
-    """
-    if "class_name" in robj:
-        return robj["class_name"]
-
-    if "attributes" in robj and len(robj["attributes"].keys()) > 0:
-        obj_attr = robj["attributes"]
-        if "class" in obj_attr:
-            return obj_attr["class"]["data"][0]
-
-        # kind of making this assumption, if we ever see a dim, its a matrix
-        if "dim" in obj_attr:
-            return "densematrix"
-
-    return None
-
-
-def as_pandas_from_data_frame(robj: dict) -> pd.DataFrame:
-    """Convert a realized R object to a pandas data frame representation
-
-    Args:
-        obj (dict): object parsed from the Rds file
+        robj (MutableMapping): object parsed from the RDS file
 
     Raises:
-        Exception: incorrect class
+        TypeError: Is not a valid class
 
     Returns:
-        pd.DataFrame: a pandas dataframe of the R Object
+        pd.DataFrame: a Pandas `DataFrame` representation of the R Object
     """
-
     cls = get_class(robj)
 
-    if cls != "data.frame":
-        raise Exception(f"obj is not a `data.frame` but is `{cls}`")
-
-    df = pd.DataFrame(
-        robj["data"],
-        columns=robj["attributes"]["names"]["data"],
-        index=robj["attributes"]["row.names"]["data"],
-    )
-
-    return df
+    if cls == "DFrame":
+        return as_pandas_from_dframe(robj)
+    elif cls == "data.frame":
+        return as_pandas_from_data_frame(robj)
+    else:
+        raise TypeError(f"robj must be either a `DFrame` or `data.frame` but is {cls}")
 
 
-def as_pandas_from_dframe(robj: dict) -> pd.DataFrame:
-    """Convert a realized R object to a pandas data frame representation
-
-    Args:
-        obj (dict): object parsed from the Rds file
-
-    Raises:
-        Exception: incorrect class
-
-    Returns:
-        pd.DataFrame: a pandas dataframe of the R Object
-    """
-
-    cls = get_class(robj)
-
-    if cls != "DFrame":
-        raise Exception(f"obj is not a `DFrame` but is `{cls}`")
-
-    data = {}
-    col_names = robj["attributes"]["listData"]["attributes"]["names"]["data"]
-    for idx in range(len(col_names)):
-        idx_asy = robj["attributes"]["listData"]["data"][idx]
-
-        data[col_names[idx]] = idx_asy["data"]
-
-    index = None
-    if robj["attributes"]["rownames"]["data"]:
-        index = robj["attributes"]["rownames"]["data"]
-
-    df = pd.DataFrame(data, columns=col_names, index=index,)
-
-    return df
-
-
-def as_sparse_matrix(robj: dict) -> sp.spmatrix:
+def as_sparse_matrix(robj: MutableMapping) -> sp.spmatrix:
     """Convert a realized R object to a sparse representation
 
     Args:
-        robj (dict): object parsed from the Rds file
+        robj (MutableMapping): object parsed from the Rds file
 
     Raises:
-        Exception: incorrect class
+        TypeError: not a supported class
 
     Returns:
         sp.spmatrix: a sparse matrix of the R object
@@ -128,7 +53,7 @@ def as_sparse_matrix(robj: dict) -> sp.spmatrix:
     cls = get_class(robj)
 
     if cls not in ["dgCMatrix", "dgRMatrix"]:
-        raise Exception(
+        raise TypeError(
             f"obj is not a supported sparse matrix format (`dgCMatrix`, `dgRMatrix`) but is `{cls}`"
         )
 
@@ -153,15 +78,15 @@ def as_sparse_matrix(robj: dict) -> sp.spmatrix:
         )
 
 
-def as_dense_matrix(robj: dict, order: str = "F") -> np.ndarray:
+def as_dense_matrix(robj: MutableMapping, order: str = "F") -> np.ndarray:
     """Convert a realized R object to a dense matrix representation
 
     Args:
-        robj (dict): object parsed from the Rds file
+        robj (MutableMapping): object parsed from the Rds file
         order (str): Row-major (C-style) or column-major (Fortran-style) order. Defaults to "F".
 
     Raises:
-        Exception: incorrect class
+        TypeError: not a dense matrix
 
     Returns:
         np.ndarray: a dense np array of the R object
@@ -169,7 +94,7 @@ def as_dense_matrix(robj: dict, order: str = "F") -> np.ndarray:
     cls = get_class(robj)
 
     if cls not in ["densematrix"]:
-        raise Exception(f"obj is not a supported dense matrix format, but is `{cls}`")
+        raise TypeError(f"obj is not a supported dense matrix format, but is `{cls}`")
 
     return np.ndarray(
         shape=tuple(robj["attributes"]["dim"]["data"].tolist()),
@@ -178,17 +103,16 @@ def as_dense_matrix(robj: dict, order: str = "F") -> np.ndarray:
     )
 
 
-def as_SCE(robj: dict) -> np.ndarray:
-    """Convert a realized R object to a SingleCellExperiment or SummarizedExperiment.
-
-    Feel free to modify or write your own custom function to fully represent an SCE/SE.
+def as_SCE(robj: MutableMapping) -> np.ndarray:
+    """Convert a realized R object to a python `SingleCellExperiment` or `SummarizedExperiment` representation.
+        Feel free to modify or write your own custom function to fully represent an SCE/SE.
 
     Args:
-        robj (dict): object parsed from the Rds file
+        robj (MutableMapping): object parsed from the Rds file
         order (str): Row-major (C-style) or column-major (Fortran-style) order. Defaults to "F".
 
     Raises:
-        Exception: incorrect class
+        TypeError: not a supported class
 
     Returns:
         np.ndarray: a dense np array of the R object
@@ -196,7 +120,7 @@ def as_SCE(robj: dict) -> np.ndarray:
     cls = get_class(robj)
 
     if cls not in ["SingleCellExperiment", "SummarizedExperiment"]:
-        raise Exception(
+        raise TypeError(
             f"obj is not a `SingleCellExperiment` or `SummarizedExperiment`, but is `{cls}`"
         )
 
@@ -292,3 +216,5 @@ def as_SCE(robj: dict) -> np.ndarray:
             alterExps=robj_altExps,
             reducedDims=robj_reduced_dims,
         )
+    else:
+        raise TypeError("robj is neither a `SummarizedExperiment` nor `SingleCellExperiment` , provided {cls}")

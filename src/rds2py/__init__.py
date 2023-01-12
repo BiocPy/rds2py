@@ -20,8 +20,8 @@ finally:
 from .interface import (
     as_dense_matrix,
     as_sparse_matrix,
-    as_pandas_from_data_frame,
-    as_pandas_from_dframe,
+    as_pandas,
     as_SCE,
-    read_rds,
 )
+
+from .parser import read_rds, get_class

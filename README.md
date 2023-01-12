@@ -1,8 +1,8 @@
 # rds2py
 
-Parse, extract and create Python representations for datasets stored in RDS files. It supports Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` objects. This is possible because of [Aaron's rds2cpp library](https://github.com/LTLA/rds2cpp). 
+Parse and construct Python representations for datasets stored in RDS files. It supports a few base classes from R and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. ***This is possible because of [Aaron's rds2cpp library](https://github.com/LTLA/rds2cpp).***
 
-The package uses memory views (except for strings) so that we can access the same memory from C++ space in Python (through Cython of course). This is especially useful for large datasets so we don't make copies of data.
+The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython ofcourse). This is especially useful for large datasets so we don't make multiple copies of data.
 
 ## Install
 
@@ -22,11 +22,13 @@ from rds2py import as_SCE, read_rds
 rObj = read_rds(<path_to_file>)
 ```
 
-This `rObj` contains the realized structure of the RDS file as a compatible `dict` object, it contains two keys 
-- `data` if atomic entities, contains the numpy view of the memory space
+Once we have a realized structure of the RDS file, we can now build useful Python representations.
+
+This `rObj` contains the realized structure of the RDS file as a Python `dict` object, it contains two keys 
+- `data`: if atomic entities, contains the numpy view of the memory space.
 - `attributes`: additional properties available for the object. 
 
-The package provides friendly functions to easily convert some R representations to useful python representations.
+The package provides friendly functions to easily convert few R representations to Python representations.
 
 ```python
 from rds2py import as_spase_matrix, as_SCE
@@ -38,14 +40,16 @@ sp_mat = as_sparse(rObj)
 sce = as_SCE(rObj)
 ```
 
-For more use cases reading `data.frame`, `dgCMatrix`, `dgRMatrix` etc, checkout the [documentation](https://biocpy.github.io/rds2py/)
+For more use cases converting `data.frame`, `dgCMatrix`, `dgRMatrix` to Python, checkout the [documentation](https://biocpy.github.io/rds2py/).
+
+***If you want to add more representations, feel free to send a PR on this repository!***
 
 
 ## Developer Notes
 
-This project uses Cython to provide bindings from C++ to Python and tries to use the same memory space (except for strings) instead of making copy of the data.
+This project uses Cython to provide bindings from C++ to Python. It tries to use the same memory space (except for strings) instead of making copy of the data.
 
-Steps to properly setup
+Steps to setup dependencies - 
 
 - git submodules is initialized in `extern/rds2cpp`
 - `cmake .` in `extern/rds2cpp` directory to download dependencies, especially the `byteme` library
