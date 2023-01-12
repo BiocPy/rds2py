@@ -1,6 +1,6 @@
 from typing import MutableMapping
 import pandas as pd
-
+from .parser import get_class
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
