@@ -5,63 +5,63 @@ name: Test the library
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-      with:
-        submodules: true
-    - name: 'Install dependencies'
-      run: |
-        sudo apt-get install zlib1g-dev
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.9
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 pytest tox cython numpy
-        cd extern/rds2cpp
-        cmake .
-        cd ../..
-    # - name: Lint with flake8
-    #   run: |
-    #     # stop the build if there are Python syntax errors or undefined names
-    #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-    #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-    #     # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-    - name: Test with tox
-      run: |
-        python setup.py build_ext --inplace
-        tox
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: "Install dependencies"
+        run: |
+          sudo apt-get install zlib1g-dev
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 pytest tox cython numpy
+          cd extern/rds2cpp
+          cmake .
+          cd ../..
+      # - name: Lint with flake8
+      #   run: |
+      #     # stop the build if there are Python syntax errors or undefined names
+      #     flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      #     # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+      #     # flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Test with tox
+        run: |
+          python setup.py build_ext --inplace
+          tox
 
+  build_wheels:
     - name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-20.04, windows-2019, macos-11]
+      runs-on: ${{ matrix.os }}
+      strategy:
+        matrix:
+          os: [ubuntu-20.04, windows-2019, macos-11]
 
-    steps:
-      - uses: actions/checkout@v3
+      steps:
+        - uses: actions/checkout@v3
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.12.1
-        # env:
-        #   CIBW_SOME_OPTION: value
-        #    ...
-        with:
-          # package-dir: .
-          output-dir: dist
-          # config-file: "{package}/pyproject.toml"
+        - name: Build wheels
+          uses: pypa/cibuildwheel@v2.12.1
+          # env:
+          #   CIBW_SOME_OPTION: value
+          #    ...
+          with:
+            # package-dir: .
+            output-dir: dist
+            # config-file: "{package}/pyproject.toml"
 
-      - uses: actions/upload-artifact@v3
-        with:
-          path: ./dist/*.whl
+        - uses: actions/upload-artifact@v3
+          with:
+            path: ./dist/*.whl
