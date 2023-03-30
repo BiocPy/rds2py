@@ -51,7 +51,6 @@ jobs:
           folder: ./docs/_build/html
           clean: true # Automatically remove deleted files from the deploy branch
 
-          build_wheels:
       - name: Build wheels on ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
