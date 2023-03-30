@@ -11,10 +11,11 @@ on:
 
 jobs:
   build:
+    name: Running tests
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: true
       - name: "Install dependencies"
@@ -45,6 +46,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install dependencies
+        run: |
+          cd extern/rds2cpp
+          cmake .
+          cd ../..
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.12.1
@@ -58,6 +67,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install dependencies
+        run: |
+          cd extern/rds2cpp
+          cmake .
+          cd ../..
 
       - name: Build sdist
         run: pipx run build --sdist
