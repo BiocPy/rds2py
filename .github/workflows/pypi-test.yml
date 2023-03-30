@@ -43,7 +43,6 @@ jobs:
         python setup.py build_ext --inplace
         tox
 
-  build_wheels:
     - name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
