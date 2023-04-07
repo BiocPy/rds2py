@@ -2,7 +2,7 @@
 
 Parse and construct Python representations for datasets stored in RDS files. It supports a few base classes from R and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. ***This is possible because of [Aaron's rds2cpp library](https://github.com/LTLA/rds2cpp).***
 
-The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython ofcourse). This is especially useful for large datasets so we don't make multiple copies of data.
+The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython of course). This is especially useful for large datasets so we don't make multiple copies of data.
 
 ## Install
 
