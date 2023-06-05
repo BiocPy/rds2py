@@ -38,7 +38,7 @@ def test_read_atomic_lists_df():
     assert array is not None
     assert len(array) > 0
 
-def test_read_atomic_lists_nested_deep():
+def test_read_atomic_lists_nested_deep_rownames():
     parsed_obj = PyParsedObject("tests/data/lists_df_rownames.rds")
     robject_obj = parsed_obj.get_robject()
     array = robject_obj.realize_value()

@@ -52,9 +52,9 @@ def as_sparse_matrix(robj: MutableMapping) -> sp.spmatrix:
     """
     cls = get_class(robj)
 
-    if cls not in ["dgCMatrix", "dgRMatrix"]:
+    if cls not in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
         raise TypeError(
-            f"obj is not a supported sparse matrix format (`dgCMatrix`, `dgRMatrix`) but is `{cls}`"
+            f"obj is not a supported sparse matrix format (`dgCMatrix`, `dgRMatrix`, `dgTMatrix`) but is `{cls}`"
         )
 
     if cls == "dgCMatrix":
@@ -73,6 +73,18 @@ def as_sparse_matrix(robj: MutableMapping) -> sp.spmatrix:
                 robj["attributes"]["x"]["data"],
                 robj["attributes"]["i"]["data"],
                 robj["attributes"]["p"]["data"],
+            ),
+            shape=tuple(robj["attributes"]["Dim"]["data"].tolist()),
+        )
+
+    if cls == "dgTMatrix":
+        return sp.csr_matrix(
+            (
+                robj["attributes"]["x"]["data"],
+                (
+                    robj["attributes"]["i"]["data"],
+                    robj["attributes"]["j"]["data"],
+                ),
             ),
             shape=tuple(robj["attributes"]["Dim"]["data"].tolist()),
         )
@@ -137,7 +149,7 @@ def as_SCE(robj: MutableMapping) -> np.ndarray:
 
         asy_cls = get_class(idx_asy)
 
-        if asy_cls in ["dgCMatrix", "dgRMatrix"]:
+        if asy_cls in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
             robj_asys[asy_names[idx]] = as_sparse_matrix(idx_asy)
             if assay_dims is None:
                 assay_dims = robj_asys[asy_names[idx]].shape

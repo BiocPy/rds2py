@@ -40,7 +40,7 @@ sp_mat = as_sparse(rObj)
 sce = as_SCE(rObj)
 ```
 
-For more use cases converting `data.frame`, `dgCMatrix`, `dgRMatrix` to Python, checkout the [documentation](https://biocpy.github.io/rds2py/).
+For more use cases converting `data.frame`, `dgCMatrix`, `dgRMatrix`, `dgTMatrix` to Python, checkout the [documentation](https://biocpy.github.io/rds2py/).
 
 ***If you want to add more representations, feel free to send a PR on this repository!***
 

@@ -24,7 +24,7 @@ The package provides friendly functions to convert some R representations to use
 
 ### Matrices
 
-Use these methods if the RDS file contains either a sparse matrix (`dgCMatrix` or `dgRMatrix`) or a dense matrix.
+Use these methods if the RDS file contains either a sparse matrix (`dgCMatrix`, `dgRMatrix`, or `dgTMatrix`) or a dense matrix.
 
 
 ***Note: If an R object contains `dims` in the `attributes`, we consider this as a matrix.***
