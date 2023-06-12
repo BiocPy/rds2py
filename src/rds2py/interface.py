@@ -110,6 +110,7 @@ def as_dense_matrix(robj: MutableMapping, order: str = "F") -> np.ndarray:
 
     return np.ndarray(
         shape=tuple(robj["attributes"]["dim"]["data"].tolist()),
+        dtype=robj["data"].dtype,
         buffer=robj["data"],
         order=order,
     )
