@@ -106,7 +106,7 @@ master_doc = "index"
 
 # General information about the project.
 project = "rds2py"
-copyright = "2022, jkanche"
+copyright = "2023, jkanche"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -165,6 +165,15 @@ pygments_style = "sphinx"
 
 # If this is True, todo emits a warning for each TODO entries. The default is False.
 todo_emit_warnings = True
+
+autodoc_default_options = {
+    'special-members': True,
+    'undoc-members': False,
+    'exclude-members': '__weakref__, __dict__, __str__, __module__, __init__'
+}
+
+autosummary_generate = True
+autosummary_imported_members = True
 
 
 # -- Options for HTML output -------------------------------------------------
