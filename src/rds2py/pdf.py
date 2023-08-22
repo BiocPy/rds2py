@@ -1,5 +1,7 @@
 from typing import MutableMapping
-import pandas as pd
+
+from pandas import DataFrame
+
 from .parser import get_class
 
 __author__ = "jkanche"
@@ -7,25 +9,26 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def as_pandas_from_data_frame(robj: MutableMapping) -> pd.DataFrame:
-    """Convert a realized R object to a Pandas `DataFrame` representation.
+def as_pandas_from_data_frame(robj: MutableMapping) -> DataFrame:
+    """Read an R object to a :py:class:`~pandas.DataFrame`.
 
     Args:
-        obj (MutableMapping): dict object parsed from the RDS file
+        robj (MutableMapping): Object parsed from the `RDS` file.
+            Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
     Raises:
-        TypeError: `robj` is not a compatible class
+        TypeError: If ``robj`` is not a compatible class.
 
     Returns:
-        pd.DataFrame: a Pandas `DataFrame` representation of the R Object
+        DataFrame: A `DataFrame` from the R Object.
     """
 
     cls = get_class(robj)
 
     if cls != "data.frame":
-        raise TypeError(f"robj is not a `data.frame` but is `{cls}`")
+        raise TypeError("`robj` does not contain a 'data.frame'.")
 
-    df = pd.DataFrame(
+    df = DataFrame(
         robj["data"],
         columns=robj["attributes"]["names"]["data"],
         index=robj["attributes"]["row.names"]["data"],
@@ -34,23 +37,24 @@ def as_pandas_from_data_frame(robj: MutableMapping) -> pd.DataFrame:
     return df
 
 
-def as_pandas_from_dframe(robj: MutableMapping) -> pd.DataFrame:
+def as_pandas_from_dframe(robj: MutableMapping) -> DataFrame:
     """Convert a realized R object to a pandas data frame representation
 
     Args:
-        obj (MutableMapping): object parsed from the RDS file
+        robj (MutableMapping): Object parsed from the `RDS` file.
+            Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
     Raises:
-        Exception: incorrect class
+        Exception: If ``robj`` does not contain any dataframe.
 
     Returns:
-        pd.DataFrame: a Pandas `DataFrame` representation of the R Object
+        DataFrame: A `DataFrame` from the R Object.
     """
 
     cls = get_class(robj)
 
     if cls != "DFrame":
-        raise Exception(f"robj is not a `DFrame` but is `{cls}`")
+        raise Exception("`robj` does not contain a 'DFrame'.")
 
     data = {}
     col_names = robj["attributes"]["listData"]["attributes"]["names"]["data"]
@@ -63,6 +67,10 @@ def as_pandas_from_dframe(robj: MutableMapping) -> pd.DataFrame:
     if robj["attributes"]["rownames"]["data"]:
         index = robj["attributes"]["rownames"]["data"]
 
-    df = pd.DataFrame(data, columns=col_names, index=index,)
+    df = DataFrame(
+        data,
+        columns=col_names,
+        index=index,
+    )
 
     return df
