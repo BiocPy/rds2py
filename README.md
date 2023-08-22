@@ -1,3 +1,7 @@
+[![Project generated with PyScaffold](https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold)](https://pyscaffold.org/)
+[![PyPI-Server](https://img.shields.io/pypi/v/rds2py.svg)](https://pypi.org/project/rds2py/)
+![Unit tests](https://github.com/BiocPy/rds2py/actions/workflows/pypi-test.yml/badge.svg)
+
 # rds2py
 
 Parse and construct Python representations for datasets stored in RDS files. `rds2py` supports a few base classes from R and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_This is possible because of [Aaron's rds2cpp library](https://github.com/LTLA/rds2cpp)._**
