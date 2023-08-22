@@ -21,7 +21,7 @@ from .interface import (
     as_dense_matrix,
     as_sparse_matrix,
     as_pandas,
-    as_SCE,
+    as_summarized_experiment,
 )
 
 from .parser import read_rds, get_class

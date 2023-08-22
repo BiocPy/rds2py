@@ -22,7 +22,7 @@ robj = rds2py.read_rds("tests/test.rds")
 # # print(actual_arrau["class_name"])
 # # print(robject_obj)
 
-sce = rds2py.as_SCE(robj)
+sce = rds2py.as_summarized_experiment(robj)
 print(sce)
 
 # actual_arrau_names = robject_obj.get_attribute_names()
