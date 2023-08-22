@@ -67,7 +67,7 @@ jobs:
 
       - name: Download dependencies
         run: |
-          cd extern/knncolle
+          cd extern/rds2cpp
           cmake .
           cd ../..
 
