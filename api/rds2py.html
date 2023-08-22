@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="../">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="rds2py" href="modules.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>rds2py package - rds2py 0.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.2 and Furo 2023.08.19 -->
+        <title>rds2py package - rds2py 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">rds2py 0.2.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">rds2py 0.3.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.2.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.3.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -161,7 +161,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
-<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Module Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="modules.html">Module Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">rds2py package</a></li>
 </ul>
 </li>
@@ -200,207 +200,259 @@
         </div>
         <article role="main">
           <section id="rds2py-package">
-<h1>rds2py package<a class="headerlink" href="#rds2py-package" title="Permalink to this heading">#</a></h1>
+<h1>rds2py package<a class="headerlink" href="#rds2py-package" title="Link to this heading">#</a></h1>
 <section id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">#</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
 </section>
-<section id="module-rds2py.core">
-<span id="rds2py-core-module"></span><h2>rds2py.core module<a class="headerlink" href="#module-rds2py.core" title="Permalink to this heading">#</a></h2>
-<dl class="py class">
+<section id="rds2py-core-module">
+<h2>rds2py.core module<a class="headerlink" href="#rds2py-core-module" title="Link to this heading">#</a></h2>
+<dl class="py class" id="module-rds2py.core">
 <dt class="sig sig-object py" id="rds2py.core.PyParsedObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.core.</span></span><span class="sig-name descname"><span class="pre">PyParsedObject</span></span><a class="headerlink" href="#rds2py.core.PyParsedObject" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.core.</span></span><span class="sig-name descname"><span class="pre">PyParsedObject</span></span><a class="headerlink" href="#rds2py.core.PyParsedObject" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="py method">
+<dt class="sig sig-object py" id="rds2py.core.PyParsedObject.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyParsedObject.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rds2py.core.PyParsedObject.__reduce__">
+<span class="sig-name descname"><span class="pre">__reduce__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyParsedObject.__reduce__" title="Link to this definition">#</a></dt>
+<dd><p>Helper for pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rds2py.core.PyParsedObject.__setstate__">
+<span class="sig-name descname"><span class="pre">__setstate__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyParsedObject.__setstate__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyParsedObject.get_robject">
-<span class="sig-name descname"><span class="pre">get_robject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyParsedObject.get_robject" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_robject</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyParsedObject.get_robject" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.core.</span></span><span class="sig-name descname"><span class="pre">PyRObject</span></span><a class="headerlink" href="#rds2py.core.PyRObject" title="Permalink to this definition">#</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.core.</span></span><span class="sig-name descname"><span class="pre">PyRObject</span></span><a class="headerlink" href="#rds2py.core.PyRObject" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.R_MIN">
-<span class="sig-name descname"><span class="pre">R_MIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-2147483648</span></em><a class="headerlink" href="#rds2py.core.PyRObject.R_MIN" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">R_MIN</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-2147483648</span></em><a class="headerlink" href="#rds2py.core.PyRObject.R_MIN" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rds2py.core.PyRObject.__new__">
+<span class="sig-name descname"><span class="pre">__new__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.__new__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rds2py.core.PyRObject.__reduce__">
+<span class="sig-name descname"><span class="pre">__reduce__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.__reduce__" title="Link to this definition">#</a></dt>
+<dd><p>Helper for pickle.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rds2py.core.PyRObject.__setstate__">
+<span class="sig-name descname"><span class="pre">__setstate__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.__setstate__" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.find_attribute">
-<span class="sig-name descname"><span class="pre">find_attribute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.find_attribute" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">find_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.find_attribute" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.get_attribute_names">
-<span class="sig-name descname"><span class="pre">get_attribute_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_attribute_names" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_attribute_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_attribute_names" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.get_class_name">
-<span class="sig-name descname"><span class="pre">get_class_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_class_name" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_class_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_class_name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.get_dimensions">
-<span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_dimensions" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_dimensions" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.get_package_name">
-<span class="sig-name descname"><span class="pre">get_package_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_package_name" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_package_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_package_name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.get_rsize">
-<span class="sig-name descname"><span class="pre">get_rsize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_rsize" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_rsize</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_rsize" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.get_rtype">
-<span class="sig-name descname"><span class="pre">get_rtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_rtype" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">get_rtype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.get_rtype" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.load_attribute_by_index">
-<span class="sig-name descname"><span class="pre">load_attribute_by_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.load_attribute_by_index" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load_attribute_by_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.load_attribute_by_index" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.load_attribute_by_name">
-<span class="sig-name descname"><span class="pre">load_attribute_by_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.load_attribute_by_name" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load_attribute_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.load_attribute_by_name" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.load_vec_element">
-<span class="sig-name descname"><span class="pre">load_vec_element</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.load_vec_element" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">load_vec_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.load_vec_element" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.realize_attr_value">
-<span class="sig-name descname"><span class="pre">realize_attr_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.realize_attr_value" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">realize_attr_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.realize_attr_value" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.realize_value">
-<span class="sig-name descname"><span class="pre">realize_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.realize_value" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">realize_value</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.realize_value" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.core.PyRObject.shennanigans_to_py_reprs">
-<span class="sig-name descname"><span class="pre">shennanigans_to_py_reprs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.shennanigans_to_py_reprs" title="Permalink to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">shennanigans_to_py_reprs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.PyRObject.shennanigans_to_py_reprs" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
-</section>
-<section id="module-rds2py.interface">
-<span id="rds2py-interface-module"></span><h2>rds2py.interface module<a class="headerlink" href="#module-rds2py.interface" title="Permalink to this heading">#</a></h2>
 <dl class="py function">
-<dt class="sig sig-object py" id="rds2py.interface.as_SCE">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_SCE</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_SCE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_SCE" title="Permalink to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>Convert a realized R object to a python <cite>SingleCellExperiment</cite> or <cite>SummarizedExperiment</cite> representation.</dt><dd><p>Feel free to modify or write your own custom function to fully represent an SCE/SE.</p>
-</dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>robj</strong> (<em>MutableMapping</em>) – object parsed from the Rds file</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Row-major (C-style) or column-major (Fortran-style) order. Defaults to “F”.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – not a supported class</p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a dense np array of the R object</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>np.ndarray</p>
-</dd>
-</dl>
-</dd></dl>
+<dt class="sig sig-object py" id="rds2py.core.__reduce_cython__">
+<span class="sig-prename descclassname"><span class="pre">rds2py.core.</span></span><span class="sig-name descname"><span class="pre">__reduce_cython__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.__reduce_cython__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="rds2py.core.__setstate_cython__">
+<span class="sig-prename descclassname"><span class="pre">rds2py.core.</span></span><span class="sig-name descname"><span class="pre">__setstate_cython__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">__pyx_state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#rds2py.core.__setstate_cython__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="rds2py-interface-module">
+<h2>rds2py.interface module<a class="headerlink" href="#rds2py-interface-module" title="Link to this heading">#</a></h2>
+<dl class="py function" id="module-rds2py.interface">
 <dt class="sig sig-object py" id="rds2py.interface.as_dense_matrix">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_dense_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_dense_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_dense_matrix" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert a realized R object to a dense matrix representation</p>
+<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_dense_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Literal" title="(in Python v3.9)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'C'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_dense_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_dense_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Read an R object as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>robj</strong> (<em>MutableMapping</em>) – object parsed from the Rds file</p></li>
-<li><p><strong>order</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Row-major (C-style) or column-major (Fortran-style) order. Defaults to “F”.</p></li>
+<li><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p></li>
+<li><p><strong>order</strong> (<em>Literal</em><em>[</em><em>&quot;C&quot;</em><em>, </em><em>&quot;F&quot;</em><em>]</em>) – Row-major (<strong>C</strong>-style) or Column-major (<a href="#id1"><span class="problematic" id="id2">**</span></a>F**ortran-style)
+order. Defaults to “F”.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – not a dense matrix</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">robj</span></code> does not contain a dense matrix.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a dense np array of the R object</p>
+<dd class="field-odd"><p>A dense ndarray of the R object.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>np.ndarray</p>
+<dd class="field-even"><p>ndarray</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rds2py.interface.as_pandas">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_pandas" title="Permalink to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>Convert a realized R object as a Pandas <cite>DataFrame</cite>.</dt><dd><p>Currently supports <cite>DFrame</cite> or <cite>data.frame</cite> class objects from R.</p>
-</dd>
-</dl>
+<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_pandas" title="Link to this definition">#</a></dt>
+<dd><p>Read an R object as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p>
+<p>Currently supports <code class="docutils literal notranslate"><span class="pre">DFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">data.frame</span></code> class objects from R.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – object parsed from the RDS file</p>
+<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – Is not a valid class</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – Is not a valid class.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a Pandas <cite>DataFrame</cite> representation of the R Object</p>
+<dd class="field-odd"><p>A <cite>DataFrame</cite> containing the data from the R Object.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame</p>
+<dd class="field-even"><p>DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rds2py.interface.as_sparse_matrix">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html#scipy.sparse.spmatrix" title="(in SciPy v1.10.0)"><span class="pre">spmatrix</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_sparse_matrix" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert a realized R object to a sparse representation</p>
+<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html#scipy.sparse.csc_matrix" title="(in SciPy v1.11.2)"><span class="pre">csc_matrix</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_sparse_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Read an R object as a sparse matrix.</p>
+<p>Only supports reading of <cite>dgCMatrix</cite>, <cite>dgRMatrix</cite>, <cite>dgTMatrix</cite> marices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – object parsed from the Rds file</p>
+<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – not a supported class</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – If sparse representation in <code class="docutils literal notranslate"><span class="pre">robj</span></code> is not a supported class.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a sparse matrix of the R object</p>
+<dd class="field-odd"><p>A sparse matrix of the R object.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>sp.spmatrix</p>
+<dd class="field-even"><p>Union[csc_matrix, csc_matrix]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.interface.as_summarized_experiment">
+<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_summarized_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.SummarizedExperiment.SummarizedExperiment" title="(in SummarizedExperiment v0.3.0)"><span class="pre">SummarizedExperiment</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="(in SingleCellExperiment v0.3.0)"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_summarized_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_summarized_experiment" title="Link to this definition">#</a></dt>
+<dd><p>Read an R object as a
+<a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="(in SingleCellExperiment v0.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a>
+or <a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.SummarizedExperiment.SummarizedExperiment" title="(in SummarizedExperiment v0.3.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code></a>.</p>
+<p>Note: This function demonstrates how to parse a complex RDS object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p></li>
+<li><p><strong>order</strong> (<em>Literal</em><em>[</em><em>&quot;C&quot;</em><em>, </em><em>&quot;F&quot;</em><em>]</em>) – <p>Row-major (<strong>C</strong>-style) or Column-major (<a href="#id3"><span class="problematic" id="id4">**</span></a>F**ortran-style)
+order.</p>
+<p>Only used if the <code class="docutils literal notranslate"><span class="pre">robj</span></code> contains a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.25)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>.</p>
+<p>Defaults to “F”.</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">robj</span></code> is not a supported class.</p>
+</dd>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A <cite>SummarizedExperiment</cite> or
+<cite>SingleCellExperiment</cite> from the R object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[SummarizedExperiment, SingleCellExperiment]</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="module-rds2py.parser">
-<span id="rds2py-parser-module"></span><h2>rds2py.parser module<a class="headerlink" href="#module-rds2py.parser" title="Permalink to this heading">#</a></h2>
-<dl class="py function">
+<section id="rds2py-parser-module">
+<h2>rds2py.parser module<a class="headerlink" href="#rds2py-parser-module" title="Link to this heading">#</a></h2>
+<dl class="py function" id="module-rds2py.parser">
 <dt class="sig sig-object py" id="rds2py.parser.get_class">
-<span class="sig-prename descclassname"><span class="pre">rds2py.parser.</span></span><span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/rds2py/parser.html#get_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.parser.get_class" title="Permalink to this definition">#</a></dt>
-<dd><p>Generic method to get the class information of the realized R object</p>
+<span class="sig-prename descclassname"><span class="pre">rds2py.parser.</span></span><span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/rds2py/parser.html#get_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.parser.get_class" title="Link to this definition">#</a></dt>
+<dd><p>Generic method to get the class information of the R object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – realized R object as dict</p>
+<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>class name</p>
+<dd class="field-even"><p>Class name.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
@@ -410,14 +462,14 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rds2py.parser.read_rds">
-<span class="sig-prename descclassname"><span class="pre">rds2py.parser.</span></span><span class="sig-name descname"><span class="pre">read_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></span><a class="reference internal" href="../_modules/rds2py/parser.html#read_rds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.parser.read_rds" title="Permalink to this definition">#</a></dt>
-<dd><p>Read an RDS file as a python dict</p>
+<span class="sig-prename descclassname"><span class="pre">rds2py.parser.</span></span><span class="sig-name descname"><span class="pre">read_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Dict" title="(in Python v3.9)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/rds2py/parser.html#read_rds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.parser.read_rds" title="Link to this definition">#</a></dt>
+<dd><p>Read an RDS file as a <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to RDS file</p>
+<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to RDS file.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>realized R object as a python dict</p>
+<dd class="field-even"><p>R object as a python dictionary.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>MutableMapping</p>
@@ -426,52 +478,54 @@
 </dd></dl>
 
 </section>
-<section id="module-rds2py.pdf">
-<span id="rds2py-pdf-module"></span><h2>rds2py.pdf module<a class="headerlink" href="#module-rds2py.pdf" title="Permalink to this heading">#</a></h2>
-<dl class="py function">
+<section id="rds2py-pdf-module">
+<h2>rds2py.pdf module<a class="headerlink" href="#rds2py-pdf-module" title="Link to this heading">#</a></h2>
+<dl class="py function" id="module-rds2py.pdf">
 <dt class="sig sig-object py" id="rds2py.pdf.as_pandas_from_data_frame">
-<span class="sig-prename descclassname"><span class="pre">rds2py.pdf.</span></span><span class="sig-name descname"><span class="pre">as_pandas_from_data_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/rds2py/pdf.html#as_pandas_from_data_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.pdf.as_pandas_from_data_frame" title="Permalink to this definition">#</a></dt>
-<dd><p>Convert a realized R object to a Pandas <cite>DataFrame</cite> representation.</p>
+<span class="sig-prename descclassname"><span class="pre">rds2py.pdf.</span></span><span class="sig-name descname"><span class="pre">as_pandas_from_data_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/rds2py/pdf.html#as_pandas_from_data_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.pdf.as_pandas_from_data_frame" title="Link to this definition">#</a></dt>
+<dd><p>Read an R object to a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obj</strong> (<em>MutableMapping</em>) – dict object parsed from the RDS file</p>
+<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – <cite>robj</cite> is not a compatible class</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#TypeError" title="(in Python v3.9)"><strong>TypeError</strong></a> – If <code class="docutils literal notranslate"><span class="pre">robj</span></code> is not a compatible class.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a Pandas <cite>DataFrame</cite> representation of the R Object</p>
+<dd class="field-odd"><p>A <cite>DataFrame</cite> from the R Object.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame</p>
+<dd class="field-even"><p>DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="rds2py.pdf.as_pandas_from_dframe">
-<span class="sig-prename descclassname"><span class="pre">rds2py.pdf.</span></span><span class="sig-name descname"><span class="pre">as_pandas_from_dframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.5.2)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/rds2py/pdf.html#as_pandas_from_dframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.pdf.as_pandas_from_dframe" title="Permalink to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">rds2py.pdf.</span></span><span class="sig-name descname"><span class="pre">as_pandas_from_dframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.0.3)"><span class="pre">DataFrame</span></a></span></span><a class="reference internal" href="../_modules/rds2py/pdf.html#as_pandas_from_dframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.pdf.as_pandas_from_dframe" title="Link to this definition">#</a></dt>
 <dd><p>Convert a realized R object to a pandas data frame representation</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>obj</strong> (<em>MutableMapping</em>) – object parsed from the RDS file</p>
+<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
+Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – incorrect class</p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><strong>Exception</strong></a> – If <code class="docutils literal notranslate"><span class="pre">robj</span></code> does not contain any dataframe.</p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>a Pandas <cite>DataFrame</cite> representation of the R Object</p>
+<dd class="field-odd"><p>A <cite>DataFrame</cite> from the R Object.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame</p>
+<dd class="field-even"><p>DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="module-rds2py">
-<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-rds2py" title="Permalink to this heading">#</a></h2>
-</section>
+<section id="module-contents">
+<h2>Module contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<span class="target" id="module-rds2py"></span></section>
 </section>
 
         </article>
@@ -495,7 +549,7 @@
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2022, jkanche
+                Copyright &#169; 2023, jkanche
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -523,13 +577,19 @@
             <ul>
 <li><a class="reference internal" href="#">rds2py package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-rds2py.core">rds2py.core module</a><ul>
+<li><a class="reference internal" href="#rds2py-core-module">rds2py.core module</a><ul>
 <li><a class="reference internal" href="#rds2py.core.PyParsedObject"><code class="docutils literal notranslate"><span class="pre">PyParsedObject</span></code></a><ul>
+<li><a class="reference internal" href="#rds2py.core.PyParsedObject.__new__"><code class="docutils literal notranslate"><span class="pre">PyParsedObject.__new__()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.core.PyParsedObject.__reduce__"><code class="docutils literal notranslate"><span class="pre">PyParsedObject.__reduce__()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.core.PyParsedObject.__setstate__"><code class="docutils literal notranslate"><span class="pre">PyParsedObject.__setstate__()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.core.PyParsedObject.get_robject"><code class="docutils literal notranslate"><span class="pre">PyParsedObject.get_robject()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#rds2py.core.PyRObject"><code class="docutils literal notranslate"><span class="pre">PyRObject</span></code></a><ul>
 <li><a class="reference internal" href="#rds2py.core.PyRObject.R_MIN"><code class="docutils literal notranslate"><span class="pre">PyRObject.R_MIN</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.core.PyRObject.__new__"><code class="docutils literal notranslate"><span class="pre">PyRObject.__new__()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.core.PyRObject.__reduce__"><code class="docutils literal notranslate"><span class="pre">PyRObject.__reduce__()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.core.PyRObject.__setstate__"><code class="docutils literal notranslate"><span class="pre">PyRObject.__setstate__()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.core.PyRObject.find_attribute"><code class="docutils literal notranslate"><span class="pre">PyRObject.find_attribute()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.core.PyRObject.get_attribute_names"><code class="docutils literal notranslate"><span class="pre">PyRObject.get_attribute_names()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.core.PyRObject.get_class_name"><code class="docutils literal notranslate"><span class="pre">PyRObject.get_class_name()</span></code></a></li>
@@ -545,26 +605,28 @@
 <li><a class="reference internal" href="#rds2py.core.PyRObject.shennanigans_to_py_reprs"><code class="docutils literal notranslate"><span class="pre">PyRObject.shennanigans_to_py_reprs()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#rds2py.core.__reduce_cython__"><code class="docutils literal notranslate"><span class="pre">__reduce_cython__()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.core.__setstate_cython__"><code class="docutils literal notranslate"><span class="pre">__setstate_cython__()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.interface">rds2py.interface module</a><ul>
-<li><a class="reference internal" href="#rds2py.interface.as_SCE"><code class="docutils literal notranslate"><span class="pre">as_SCE()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py-interface-module">rds2py.interface module</a><ul>
 <li><a class="reference internal" href="#rds2py.interface.as_dense_matrix"><code class="docutils literal notranslate"><span class="pre">as_dense_matrix()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.interface.as_pandas"><code class="docutils literal notranslate"><span class="pre">as_pandas()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.interface.as_sparse_matrix"><code class="docutils literal notranslate"><span class="pre">as_sparse_matrix()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.interface.as_summarized_experiment"><code class="docutils literal notranslate"><span class="pre">as_summarized_experiment()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.parser">rds2py.parser module</a><ul>
+<li><a class="reference internal" href="#rds2py-parser-module">rds2py.parser module</a><ul>
 <li><a class="reference internal" href="#rds2py.parser.get_class"><code class="docutils literal notranslate"><span class="pre">get_class()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.parser.read_rds"><code class="docutils literal notranslate"><span class="pre">read_rds()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.pdf">rds2py.pdf module</a><ul>
+<li><a class="reference internal" href="#rds2py-pdf-module">rds2py.pdf module</a><ul>
 <li><a class="reference internal" href="#rds2py.pdf.as_pandas_from_data_frame"><code class="docutils literal notranslate"><span class="pre">as_pandas_from_data_frame()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.pdf.as_pandas_from_dframe"><code class="docutils literal notranslate"><span class="pre">as_pandas_from_dframe()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py">Module contents</a></li>
+<li><a class="reference internal" href="#module-contents">Module contents</a></li>
 </ul>
 </li>
 </ul>
@@ -576,12 +638,9 @@
       
     </aside>
   </div>
-</div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/jquery.js"></script>
-    <script src="../_static/underscore.js"></script>
-    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
-    <script src="../_static/scripts/furo.js"></script>
+</div><script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>

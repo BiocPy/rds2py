@@ -1,15 +1,15 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial.html" /><link rel="prev" title="rds2py" href="index.html" />
 
-    <!-- Generated with Sphinx 5.3.0 and Furo 2022.12.07 -->
-        <title>rds2py - rds2py 0.2.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=91d0f0d1c444bdcb17a68e833c7a53903343c195" />
-    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=30d1aed668e5c3a91c3e3bf6a60b675221979f0e" />
+    <!-- Generated with Sphinx 7.2.2 and Furo 2023.08.19 -->
+        <title>rds2py - rds2py 0.3.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=36a5483c" />
     
     
 
@@ -123,7 +123,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.2.0 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.3.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -146,7 +146,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.2.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.3.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -161,7 +161,7 @@
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle child pages in navigation</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/modules.html">Module Reference</a><input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of Module Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
 <li class="toctree-l2"><a class="reference internal" href="api/rds2py.html">rds2py package</a></li>
 </ul>
 </li>
@@ -200,46 +200,45 @@
         </div>
         <article role="main">
           <section class="tex2jax_ignore mathjax_ignore" id="rds2py">
-<h1>rds2py<a class="headerlink" href="#rds2py" title="Permalink to this heading">#</a></h1>
-<p>Parse and construct Python representations for datasets stored in RDS files. It supports a few base classes from R and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <em><strong>This is possible because of <a class="reference external" href="https://github.com/LTLA/rds2cpp">Aaron’s rds2cpp library</a>.</strong></em></p>
-<p>The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython ofcourse). This is especially useful for large datasets so we don’t make multiple copies of data.</p>
+<h1>rds2py<a class="headerlink" href="#rds2py" title="Link to this heading">#</a></h1>
+<p>Parse and construct Python representations for datasets stored in RDS files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports a few base classes from R and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <strong><em>This is possible because of <a class="reference external" href="https://github.com/LTLA/rds2cpp">Aaron’s rds2cpp library</a>.</em></strong></p>
+<p>The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython of course). This is especially useful for large datasets so we don’t make multiple copies of data.</p>
 <section id="install">
-<h2>Install<a class="headerlink" href="#install" title="Permalink to this heading">#</a></h2>
+<h2>Install<a class="headerlink" href="#install" title="Link to this heading">#</a></h2>
 <p>Package is published to <a class="reference external" href="https://pypi.org/project/rds2py/">PyPI</a></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>rds2py
 </pre></div>
 </div>
 </section>
 <section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this heading">#</a></h2>
-<p>If you do not have an RDS object handy, feel free to download from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_SCE</span><span class="p">,</span> <span class="n">read_rds</span>
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<p>If you do not have an RDS object handy, feel free to download one from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_summarized_experiment</span><span class="p">,</span> <span class="n">read_rds</span>
 
 <span class="n">rObj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_file</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Once we have a realized structure of the RDS file, we can now build useful Python representations.</p>
-<p>This <code class="docutils literal notranslate"><span class="pre">rObj</span></code> contains the realized structure of the RDS file as a Python <code class="docutils literal notranslate"><span class="pre">dict</span></code> object, it contains two keys</p>
+<p>Once we have a dictionary representation of the RDS file, we can now build useful Python representations from these objects.</p>
+<p>This <code class="docutils literal notranslate"><span class="pre">rObj</span></code> contains two keys</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: if atomic entities, contains the numpy view of the memory space.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">attributes</span></code>: additional properties available for the object.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: If atomic entities, contains the numpy view of the memory space.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">attributes</span></code>: Additional properties available for the object.</p></li>
 </ul>
-<p>The package provides friendly functions to easily convert few R representations to Python representations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_spase_matrix</span><span class="p">,</span> <span class="n">as_SCE</span>
+<p>The package provides friendly functions to easily convert a few R representations to Python.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_spase_matrix</span><span class="p">,</span> <span class="n">as_summarized_experiment</span>
 
 <span class="c1"># to convert an robject to a sparse matrix</span>
 <span class="n">sp_mat</span> <span class="o">=</span> <span class="n">as_sparse</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
 
 <span class="c1"># to convert an robject to SCE</span>
-<span class="n">sce</span> <span class="o">=</span> <span class="n">as_SCE</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
+<span class="n">sce</span> <span class="o">=</span> <span class="n">as_summarized_experiment</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For more use cases converting <code class="docutils literal notranslate"><span class="pre">data.frame</span></code>, <code class="docutils literal notranslate"><span class="pre">dgCMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgRMatrix</span></code> to Python, checkout the <a class="reference external" href="https://biocpy.github.io/rds2py/">documentation</a>.</p>
-<p><em><strong>If you want to add more representations, feel free to send a PR on this repository!</strong></em></p>
+<p>For more examples converting <code class="docutils literal notranslate"><span class="pre">data.frame</span></code>, <code class="docutils literal notranslate"><span class="pre">dgCMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgRMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgTMatrix</span></code> to Python, checkout the <a class="reference external" href="https://biocpy.github.io/rds2py/">documentation</a>.</p>
 </section>
 <section id="developer-notes">
-<h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Permalink to this heading">#</a></h2>
-<p>This project uses Cython to provide bindings from C++ to Python. It tries to use the same memory space (except for strings) instead of making copy of the data.</p>
+<h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Link to this heading">#</a></h2>
+<p>This project uses Cython to provide bindings from C++ to Python.</p>
 <p>Steps to setup dependencies -</p>
 <ul class="simple">
 <li><p>git submodules is initialized in <code class="docutils literal notranslate"><span class="pre">extern/rds2cpp</span></code></p></li>
@@ -256,8 +255,8 @@
 <!-- pyscaffold-notes -->
 </section>
 <section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Permalink to this heading">#</a></h2>
-<p>This project has been set up using PyScaffold 4.3. For details and usage
+<h2>Note<a class="headerlink" href="#note" title="Link to this heading">#</a></h2>
+<p>This project has been set up using PyScaffold 4.5. For details and usage
 information on PyScaffold see <a class="reference external" href="https://pyscaffold.org/">https://pyscaffold.org/</a>.</p>
 </section>
 </section>
@@ -291,7 +290,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
         <div class="bottom-of-page">
           <div class="left-details">
             <div class="copyright">
-                Copyright &#169; 2022, jkanche
+                Copyright &#169; 2023, jkanche
             </div>
             Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
             
@@ -333,12 +332,9 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/sphinx_highlight.js"></script>
-    <script src="_static/scripts/furo.js"></script>
+</div><script src="_static/documentation_options.js?v=e259d695"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/scripts/furo.js?v=32e29ea5"></script>
     </body>
 </html>
