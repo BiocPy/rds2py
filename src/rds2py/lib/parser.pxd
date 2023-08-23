@@ -17,7 +17,7 @@ cdef extern from "rds_parser.cpp":
     uintptr_t parse_robject_int_vector(uintptr_t ptr) nogil except +
     vector[string_c] parse_robject_string_vector(uintptr_t ptr) nogil except +
     vector[string_c] parse_robject_attribute_names(uintptr_t ptr) nogil except +
-    
+
     int parse_robject_find_attribute(uintptr_t ptr, string_c name) nogil except +
     uintptr_t parse_robject_load_attribute_by_index(uintptr_t ptr, int i) nogil except +
     uintptr_t parse_robject_load_attribute_by_name(uintptr_t ptr, string_c name) nogil except +

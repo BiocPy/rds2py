@@ -14,12 +14,14 @@ def test_read_s4_class():
 
     assert array is not None
 
+
 def test_read_s4_matrix():
     parsed_obj = PyParsedObject("tests/data/s4_matrix.rds")
     robject_obj = parsed_obj.get_robject()
     array = robject_obj.realize_value()
 
     assert array is not None
+
 
 def test_read_s4_matrix_dgt():
     parsed_obj = PyParsedObject("tests/data/s4_matrix_dgt.rds")

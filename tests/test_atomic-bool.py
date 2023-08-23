@@ -15,6 +15,7 @@ def test_read_atomic_logical():
     assert array is not None
     assert array["data"].shape[0] > 0
 
+
 def test_read_atomic_logical_na():
     parsed_obj = PyParsedObject("tests/data/atomic_logical_wNA.rds")
     robject_obj = parsed_obj.get_robject()

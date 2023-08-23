@@ -95,4 +95,3 @@ saveRDS(y, file="s4_matrix.rds")
 setClass("FOO", slots=c(bar="integer"))
 y <- new("FOO", bar=2L)
 saveRDS(y, file="s4_class.rds")
-
