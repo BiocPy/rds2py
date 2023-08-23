@@ -131,9 +131,8 @@ def as_dense_matrix(robj: MutableMapping, order: Literal["C", "F"] = "F") -> nda
 def as_summarized_experiment(
     robj: MutableMapping,
 ) -> Union[SummarizedExperiment, SingleCellExperiment]:
-    """Read an R object as a
-    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`
-    or :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+    """Read an R object as a :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment` or
+    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
     Note: This function demonstrates how to parse a complex RDS object.
 
@@ -154,7 +153,6 @@ def as_summarized_experiment(
     Returns:
         Union[SummarizedExperiment, SingleCellExperiment]: A `SummarizedExperiment` or
         `SingleCellExperiment` from the R object.
-
     """
     _cls = get_class(robj)
 

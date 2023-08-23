@@ -8,19 +8,16 @@ build-backend = "setuptools.build_meta"
 version_scheme = "no-guess-dev"
 
 [tool.ruff]
-line-length = 100
+line-length = 120
 src = ["src"]
+exclude = ["tests"]
+extend-ignore = ["F821"]
 
 [tool.ruff.pydocstyle]
 convention = "google"
 
 [tool.ruff.per-file-ignores]
 "__init__.py" = ["E402", "F401"]
-
-[tool.isort]
-profile = "black"
-known_first_party = "rds2py"
-skip = ["__init__.py"]
 
 [tool.black]
 force-exclude = "__init__.py"
