@@ -38,7 +38,7 @@ def as_pandas_from_data_frame(robj: MutableMapping) -> DataFrame:
 
 
 def as_pandas_from_dframe(robj: MutableMapping) -> DataFrame:
-    """Convert a realized R object to a pandas data frame representation
+    """Convert a realized R object to a pandas data frame representation.
 
     Args:
         robj (MutableMapping): Object parsed from the `RDS` file.

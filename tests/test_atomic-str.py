@@ -15,6 +15,7 @@ def test_read_atomic_chars():
     assert array is not None
     assert len(array["data"]) == 26
 
+
 def test_read_atomic_chars_unicode():
     parsed_obj = PyParsedObject("tests/data/atomic_chars_unicode.rds")
     robject_obj = parsed_obj.get_robject()
