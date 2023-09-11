@@ -1,27 +1,32 @@
 #include "rds2cpp/rds2cpp.hpp"
 #include <iostream>
 
-// Interface methods to Parser Object
+/** Interface methods to parser object **/
 
-inline uintptr_t py_parser_rds_file(std::string file) {
+//[[export]]
+uintptr_t py_parser_rds_file(std::string file) {
     rds2cpp::Parsed res = rds2cpp::parse_rds(file);
 
     return reinterpret_cast<uintptr_t>(new rds2cpp::Parsed(std::move(res)));
 }
 
-inline uintptr_t py_parser_extract_robject(uintptr_t ptr) {
+//[[export]]
+uintptr_t py_parser_extract_robject(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::Parsed *>(ptr);
     return reinterpret_cast<uintptr_t>(parsed->object.get());
 }
 
-// probably don't need this, mostly for testing
-inline void py_read_parsed_ptr(uintptr_t ptr) {
+/** probably don't need this, mostly for testing **/
+
+
+void py_read_parsed_ptr(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::Parsed *>(ptr);
 }
 
-// Interface Methods to RObject
+/** Interface Methods to RObject **/
 
-inline std::string py_robject_extract_type(uintptr_t ptr) {
+//[export]
+std::string py_robject_extract_type(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     switch (parsed->type()) {
         case rds2cpp::SEXPType::INT:
@@ -50,7 +55,8 @@ int _size_(const rds2cpp::RObject* ptr) {
     return xptr->data.size();
 }
 
-inline int py_robject_extract_size(uintptr_t ptr) {
+//[export]
+int py_robject_extract_size(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     switch (parsed->type()) {
         case rds2cpp::SEXPType::INT:
@@ -75,7 +81,8 @@ uintptr_t _get_vector_ptr(const rds2cpp::RObject* ptr) {
     return reinterpret_cast<uintptr_t>(xptr->data.data());
 }
 
-inline uintptr_t parse_robject_int_vector(uintptr_t ptr) {
+//[export]
+uintptr_t parse_robject_int_vector(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     switch (parsed->type()) {
         case rds2cpp::SEXPType::INT:
@@ -91,19 +98,8 @@ inline uintptr_t parse_robject_int_vector(uintptr_t ptr) {
     return _get_vector_ptr<rds2cpp::IntegerVector>(parsed); // avoid compiler warning.
 }
 
-// inline uintptr_t parse_robject_double_vector(uintptr_t ptr) {
-//     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
-//     switch (parsed->type()) {
-//         case rds2cpp::SEXPType::REAL:
-//             return _get_vector_ptr<rds2cpp::DoubleVector>(parsed);
-//         default:
-//             break;
-//     }
-//     throw std::runtime_error("cannot obtain numeric values for non-numeric RObject type");
-//     return _get_vector_ptr<rds2cpp::DoubleVector>(parsed); // avoid compiler warning.
-// }
-
-inline std::vector<std::string> parse_robject_string_vector(uintptr_t ptr) {
+//[export]
+std::vector<std::string> parse_robject_string_vector(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     if (parsed->type() != rds2cpp::SEXPType::STR) {
         throw std::runtime_error("cannot return string values for non-string RObject type");
@@ -119,7 +115,8 @@ const rds2cpp::Attributes& _get_attr_ptr(const rds2cpp::RObject* ptr) {
     return aptr->attributes;
 }
 
-inline std::vector<std::string> parse_robject_attribute_names(uintptr_t ptr) {
+//[export]
+std::vector<std::string> parse_robject_attribute_names(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     switch (parsed->type()) {
         case rds2cpp::SEXPType::INT:
@@ -157,7 +154,8 @@ int _contains_attr_(const rds2cpp::RObject* ptr, const std::string& name) {
     return -1;
 }
 
-inline int parse_robject_find_attribute(uintptr_t ptr, std::string name) {
+//[export]
+int parse_robject_find_attribute(uintptr_t ptr /** void_p */, std::string name) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     switch (parsed->type()) {
         case rds2cpp::SEXPType::INT:
@@ -188,7 +186,8 @@ uintptr_t _load_attr_idx_(const rds2cpp::RObject* ptr, int i) {
     return reinterpret_cast<uintptr_t>(chosen.get());
 }
 
-inline uintptr_t parse_robject_load_attribute_by_index(uintptr_t ptr, int i) {
+//[export]
+uintptr_t parse_robject_load_attribute_by_index(uintptr_t ptr /** void_p */, int i) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     switch (parsed->type()) {
         case rds2cpp::SEXPType::INT:
@@ -211,7 +210,8 @@ inline uintptr_t parse_robject_load_attribute_by_index(uintptr_t ptr, int i) {
     return _load_attr_idx_<rds2cpp::S4Object>(parsed, i); // avoid compiler warnings.
 }
 
-inline uintptr_t parse_robject_load_attribute_by_name(uintptr_t ptr, std::string name) {
+//[export]
+uintptr_t parse_robject_load_attribute_by_name(uintptr_t ptr /** void_p */, std::string name) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     int idx = parse_robject_find_attribute(ptr, name);
     if (idx < 0) {
@@ -220,7 +220,8 @@ inline uintptr_t parse_robject_load_attribute_by_name(uintptr_t ptr, std::string
     return parse_robject_load_attribute_by_index(ptr, idx);
 }
 
-inline uintptr_t parse_robject_load_vec_element(uintptr_t ptr, int i) {
+//[export]
+uintptr_t parse_robject_load_vec_element(uintptr_t ptr /** void_p */, int i) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     if (parsed->type() != rds2cpp::SEXPType::VEC) {
         throw std::runtime_error("cannot return list element for non-list R object");
@@ -229,7 +230,8 @@ inline uintptr_t parse_robject_load_vec_element(uintptr_t ptr, int i) {
     return reinterpret_cast<uintptr_t>(lptr->data[i].get());
 }
 
-inline std::string parse_robject_class_name(uintptr_t ptr) {
+//[export]
+std::string parse_robject_class_name(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     if (parsed->type() != rds2cpp::SEXPType::S4) {
         throw std::runtime_error("cannot return class name for non-S4 R object");
@@ -238,7 +240,8 @@ inline std::string parse_robject_class_name(uintptr_t ptr) {
     return sptr->class_name;
 }
 
-inline std::string parse_robject_package_name(uintptr_t ptr) {
+//[export]
+std::string parse_robject_package_name(uintptr_t ptr /** void_p */) {
     auto parsed = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     if (parsed->type() != rds2cpp::SEXPType::S4) {
         throw std::runtime_error("cannot return class name for non-S4 R object");
@@ -247,7 +250,8 @@ inline std::string parse_robject_package_name(uintptr_t ptr) {
     return sptr->package_name;
 }
 
-inline std::pair<size_t, size_t> parse_robject_dimensions(uintptr_t ptr) {
+//[export]
+std::pair<size_t, size_t> parse_robject_dimensions(uintptr_t ptr /** void_p */) {
     auto dimobj = reinterpret_cast<const rds2cpp::RObject *>(ptr);
     if (dimobj->type() != rds2cpp::SEXPType::INT) {
         throw std::runtime_error("expected matrix dimensions to be integer");

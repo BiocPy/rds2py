@@ -51,6 +51,10 @@ For more examples converting `data.frame`, `dgCMatrix`, `dgRMatrix`, `dgTMatrix`
 
 This project uses Cython to provide bindings from C++ to Python.
 
+```shell
+cpptypes src/rds2py/lib --py src/rds2py/_cpphelpers.py --cpp src/rds2py/lib/bindings.cpp --dll _core
+```
+
 Steps to setup dependencies -
 
 - git submodules is initialized in `extern/rds2cpp`
