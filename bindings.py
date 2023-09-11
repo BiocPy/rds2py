@@ -3,28 +3,31 @@
 import os
 import ctypes as ct
 
+
 def _catch_errors(f):
     def wrapper(*args):
         errcode = ct.c_int32(0)
         errmsg = ct.c_char_p(0)
         output = f(*args, ct.byref(errcode), ct.byref(errmsg))
         if errcode.value != 0:
-            msg = errmsg.value.decode('ascii')
+            msg = errmsg.value.decode("ascii")
             lib.free_error_message(errmsg)
             raise RuntimeError(msg)
         return output
+
     return wrapper
+
 
 # TODO: surely there's a better way than whatever this is.
 dirname = os.path.dirname(os.path.abspath(__file__))
 contents = os.listdir(dirname)
 lib = None
 for x in contents:
-    if x.startswith('core') and not x.endswith("py"):
+    if x.startswith("core") and not x.endswith("py"):
         lib = ct.CDLL(os.path.join(dirname, x))
         break
 
 if lib is None:
     raise ImportError("failed to find the core.* module")
 
-lib.free_error_message.argtypes = [ ct.POINTER(ct.c_char_p) ]
+lib.free_error_message.argtypes = [ct.POINTER(ct.c_char_p)]
