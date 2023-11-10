@@ -243,15 +243,15 @@ def as_summarized_experiment(
 
     if _cls == "SummarizedExperiment":
         return SummarizedExperiment(
-            assays=robj_asys, rowData=robj_rowdata, colData=robj_coldata
+            assays=robj_asys, row_data=robj_rowdata, col_data=robj_coldata
         )
     elif _cls == "SingleCellExperiment":
         return SingleCellExperiment(
             assays=robj_asys,
-            rowData=robj_rowdata,
-            colData=robj_coldata,
-            alterExps=robj_altExps,
-            reducedDims=robj_reduced_dims,
+            row_data=robj_rowdata,
+            col_data=robj_coldata,
+            alternative_experiments=robj_altExps,
+            reduced_dims=robj_reduced_dims,
         )
     else:
         raise TypeError(
