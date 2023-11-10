@@ -37,6 +37,12 @@ jobs:
           DEPENDENCIES=$(python -c 'from setuptools.config.setupcfg import read_configuration as c; a = c("setup.cfg"); print(" ".join(a["options"]["install_requires"][1:] + a["options"]["extras_require"]["testing"][1:]))')
           pip install ${DEPENDENCIES}
 
+      - name: Download rds2cpp deps
+        run: |
+          cd extern/rds2cpp
+          cmake .
+          cd ../..
+
       # We do proper tests if we're on the master branch, or if we're creating a new release.
       - name: Test with tox
         if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/')
