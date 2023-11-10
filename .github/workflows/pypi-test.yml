@@ -77,7 +77,7 @@ jobs:
 
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
-    # if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
