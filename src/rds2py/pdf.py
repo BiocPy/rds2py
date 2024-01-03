@@ -1,7 +1,3 @@
-from typing import MutableMapping
-
-from pandas import DataFrame
-
 from .parser import get_class
 
 __author__ = "jkanche"
@@ -9,19 +5,19 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def as_pandas_from_data_frame(robj: MutableMapping) -> DataFrame:
+def as_pandas_from_data_frame(robj):
     """Read an R object to a :py:class:`~pandas.DataFrame`.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
+        robj:
+            Object parsed from the `RDS` file.
+
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
-    Raises:
-        TypeError: If ``robj`` is not a compatible class.
-
     Returns:
-        DataFrame: A `DataFrame` from the R Object.
+        A `DataFrame` from the R Object.
     """
+    from pandas import DataFrame
 
     cls = get_class(robj)
 
@@ -37,19 +33,19 @@ def as_pandas_from_data_frame(robj: MutableMapping) -> DataFrame:
     return df
 
 
-def as_pandas_from_dframe(robj: MutableMapping) -> DataFrame:
+def as_pandas_from_dframe(robj):
     """Convert a realized R object to a pandas data frame representation.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
+        robj:
+            Object parsed from the `RDS` file.
+
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
-    Raises:
-        Exception: If ``robj`` does not contain any dataframe.
-
     Returns:
-        DataFrame: A `DataFrame` from the R Object.
+        A `DataFrame` from the R Object.
     """
+    from pandas import DataFrame
 
     cls = get_class(robj)
 

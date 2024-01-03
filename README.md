@@ -23,17 +23,17 @@ If you do not have an RDS object handy, feel free to download one from [single-c
 ```python
 from rds2py import as_summarized_experiment, read_rds
 
-rObj = read_rds(<path_to_file>)
+r_obj = read_rds(<path_to_file>)
 ```
 
-Once we have a dictionary representation of the RDS file, we can now build useful Python representations from these objects.
+This `r_obj` holds a dictionary representation of the RDS file, we can now transform this object into Python representations.
 
-This `rObj` contains two keys
+`rObj` always contains two keys
 
-- `data`: If atomic entities, contains the numpy view of the memory space.
+- `data`: If atomic entities, contains the NumPy view of the array.
 - `attributes`: Additional properties available for the object.
 
-The package provides friendly functions to easily convert a few R representations to Python.
+In addition, the package provides functions to convert parsed R objects into Python representations.
 
 ```python
 from rds2py import as_spase_matrix, as_summarized_experiment
