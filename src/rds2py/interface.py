@@ -1,10 +1,9 @@
-from typing import Literal, MutableMapping, Union
+from typing import Literal
 
 from numpy import ndarray
-from pandas import DataFrame
-from scipy.sparse import csc_matrix, csr_matrix
 from singlecellexperiment import SingleCellExperiment
 from summarizedexperiment import SummarizedExperiment
+from biocframe import BiocFrame
 
 from .parser import get_class
 from .pdf import as_pandas_from_data_frame, as_pandas_from_dframe
@@ -14,20 +13,19 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def as_pandas(robj: MutableMapping) -> DataFrame:
-    """Read an R object as a :py:class:`~pandas.DataFrame`.
+def as_pandas(robj):
+    """Parse an R object as a :py:class:`~pandas.DataFrame`.
 
     Currently supports ``DFrame`` or ``data.frame`` class objects from R.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
+        robj:
+            Object parsed from the `RDS` file.
+
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
-    Raises:
-        TypeError: Is not a valid class.
-
     Returns:
-        DataFrame: A `DataFrame` containing the data from the R Object.
+        A :py:class:`~pandas.DataFrame` containing the data from the R Object.
     """
     _cls = get_class(robj)
 
@@ -37,25 +35,26 @@ def as_pandas(robj: MutableMapping) -> DataFrame:
         return as_pandas_from_data_frame(robj)
     else:
         raise TypeError(
-            f"`robj` must be either a 'DFrame' or 'data.frame' but is {_cls}"
+            f"`robj` must be either a 'DFrame' or 'data.frame' but is {_cls}."
         )
 
 
-def as_sparse_matrix(robj: MutableMapping) -> Union[csc_matrix, csc_matrix]:
-    """Read an R object as a sparse matrix.
+def as_sparse_matrix(robj):
+    """Parse an R object as a sparse matrix.
 
     Only supports reading of `dgCMatrix`, `dgRMatrix`, `dgTMatrix` marices.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
+        robj:
+            Object parsed from the `RDS` file.
+
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
-    Raises:
-        TypeError: If sparse representation in ``robj`` is not a supported class.
-
     Returns:
-        Union[csc_matrix, csc_matrix]: A sparse matrix of the R object.
+        A sparse matrix of the R object.
     """
+    from scipy.sparse import csc_matrix, csr_matrix
+
     _cls = get_class(robj)
 
     if _cls not in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
@@ -96,21 +95,23 @@ def as_sparse_matrix(robj: MutableMapping) -> Union[csc_matrix, csc_matrix]:
         )
 
 
-def as_dense_matrix(robj: MutableMapping, order: Literal["C", "F"] = "F") -> ndarray:
-    """Read an R object as a :py:class:`~numpy.ndarray`.
+def as_dense_matrix(robj, order: Literal["C", "F"] = "F") -> ndarray:
+    """Parse an R object as a :py:class:`~numpy.ndarray`.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
+        robj:
+            Object parsed from the `RDS` file.
+
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
-        order (Literal["C", "F"]): Row-major (**C**-style) or Column-major (**F**ortran-style)
-            order. Defaults to "F".
+        order:
+            Row-major (**C**-style) or Column-major (**F**ortran-style)
+            order.
 
-    Raises:
-        TypeError: If ``robj`` does not contain a dense matrix.
+            Defaults to "F".
 
     Returns:
-        ndarray: A dense ndarray of the R object.
+        An ``ndarray`` of the R object.
     """
     _cls = get_class(robj)
 
@@ -118,7 +119,7 @@ def as_dense_matrix(robj: MutableMapping, order: Literal["C", "F"] = "F") -> nda
         raise ValueError("order must be either 'C' or 'F'.")
 
     if _cls not in ["densematrix"]:
-        raise TypeError(f"obj is not a supported dense matrix format, but is `{_cls}`")
+        raise TypeError(f"obj is not a supported dense matrix format, but is `{_cls}`.")
 
     return ndarray(
         shape=tuple(robj["attributes"]["dim"]["data"].tolist()),
@@ -128,32 +129,30 @@ def as_dense_matrix(robj: MutableMapping, order: Literal["C", "F"] = "F") -> nda
     )
 
 
-def as_summarized_experiment(
-    robj: MutableMapping,
-) -> Union[SummarizedExperiment, SingleCellExperiment]:
-    """Read an R object as a :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment` or
+def as_summarized_experiment(robj):
+    """Parse an R object as a :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment` or
     :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
-    Note: This function demonstrates how to parse a complex RDS object.
+    Note: This function demonstrates how to parse a complex RDS objects in Python and may not work for all
+    scenarios.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
+        robj:
+            Object parsed from the `RDS` file.
+
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
 
-        order (Literal["C", "F"]): Row-major (**C**-style) or Column-major (**F**ortran-style)
-            order.
-
-            Only used if the ``robj`` contains a :py:class:`~numpy.ndarray`.
+        order:
+            Row-major (**C**-style) or Column-major (**F**ortran-style)
+            order. Only used if the ``robj`` contains a :py:class:`~numpy.ndarray`.
 
             Defaults to "F".
 
-    Raises:
-        TypeError: If ``robj`` is not a supported class.
-
     Returns:
-        Union[SummarizedExperiment, SingleCellExperiment]: A `SummarizedExperiment` or
+        A `SummarizedExperiment` or
         `SingleCellExperiment` from the R object.
     """
+
     _cls = get_class(robj)
 
     if _cls not in ["SingleCellExperiment", "SummarizedExperiment"]:
@@ -188,7 +187,7 @@ def as_summarized_experiment(
     # parse coldata
     robj_coldata = as_pandas_from_dframe(robj["attributes"]["colData"])
     if robj_coldata.empty:
-        robj_coldata = DataFrame({"_cols": range(assay_dims[1])})
+        robj_coldata = BiocFrame({"_cols": range(assay_dims[1])})
 
     # parse rowRanges
     robj_rowdata = None
@@ -197,7 +196,7 @@ def as_summarized_experiment(
             robj["attributes"]["rowRanges"]["attributes"]["elementMetadata"]
         )
     else:
-        robj_rowdata = DataFrame({"_rows": range(assay_dims[0])})
+        robj_rowdata = BiocFrame({"_rows": range(assay_dims[0])})
 
     # check red. dims, alternative expts
     robj_reduced_dims = None
@@ -243,13 +242,13 @@ def as_summarized_experiment(
 
     if _cls == "SummarizedExperiment":
         return SummarizedExperiment(
-            assays=robj_asys, row_data=robj_rowdata, col_data=robj_coldata
+            assays=robj_asys, row_data=robj_rowdata, column_data=robj_coldata
         )
     elif _cls == "SingleCellExperiment":
         return SingleCellExperiment(
             assays=robj_asys,
             row_data=robj_rowdata,
-            col_data=robj_coldata,
+            column_data=robj_coldata,
             alternative_experiments=robj_altExps,
             reduced_dims=robj_reduced_dims,
         )
