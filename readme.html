@@ -218,16 +218,16 @@
 <p>If you do not have an RDS object handy, feel free to download one from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_summarized_experiment</span><span class="p">,</span> <span class="n">read_rds</span>
 
-<span class="n">rObj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_file</span><span class="o">&gt;</span><span class="p">)</span>
+<span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_file</span><span class="o">&gt;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Once we have a dictionary representation of the RDS file, we can now build useful Python representations from these objects.</p>
-<p>This <code class="docutils literal notranslate"><span class="pre">rObj</span></code> contains two keys</p>
+<p>This <code class="docutils literal notranslate"><span class="pre">r_obj</span></code> holds a dictionary representation of the RDS file, we can now transform this object into Python representations.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rObj</span></code> always contains two keys</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: If atomic entities, contains the numpy view of the memory space.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: If atomic entities, contains the NumPy view of the array.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">attributes</span></code>: Additional properties available for the object.</p></li>
 </ul>
-<p>The package provides friendly functions to easily convert a few R representations to Python.</p>
+<p>In addition, the package provides functions to convert parsed R objects into Python representations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_spase_matrix</span><span class="p">,</span> <span class="n">as_summarized_experiment</span>
 
 <span class="c1"># to convert an robject to a sparse matrix</span>
