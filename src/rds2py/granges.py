@@ -11,6 +11,17 @@ __license__ = "MIT"
 
 
 def as_granges(robj):
+    """Parse an R object as a :py:class:`~genomicranges.GenomicRanges.GenomicRanges`.
+
+    Args:
+        robj:
+            Object parsed from the `RDS` file.
+
+            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+
+    Returns:
+        A ``GenomicRanges`` object.
+    """
     _cls = get_class(robj)
 
     if _cls not in ["GenomicRanges", "GRanges"]:
@@ -65,6 +76,17 @@ def as_granges(robj):
 
 
 def _as_list(robj):
+    """Parse an R object as a :py:class:`~list`.
+
+    Args:
+        robj:
+            Object parsed from the `RDS` file.
+
+            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+
+    Returns:
+        A ``list`` of the Rle class.
+    """
     _cls = get_class(robj)
 
     if _cls not in ["Rle"]:
