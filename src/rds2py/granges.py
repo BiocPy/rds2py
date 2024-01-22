@@ -47,7 +47,9 @@ def as_granges(robj):
         genome=_seqinfo_genome,
     )
 
-    _mcols = BiocFrame.from_pandas(as_pandas_from_dframe(robj["attributes"]["elementMetadata"]))
+    _mcols = BiocFrame.from_pandas(
+        as_pandas_from_dframe(robj["attributes"]["elementMetadata"])
+    )
 
     _gr_names = None
     if "NAMES" in robj["attributes"]:
@@ -73,7 +75,7 @@ def _as_list(robj):
     if "attributes" in _attr_vals["values"]:
         if "levels" in _attr_vals["values"]["attributes"]:
             _levels_data = _attr_vals["values"]["attributes"]["levels"]["data"]
-            _data = [_levels_data[x-1] for x in _data]
+            _data = [_levels_data[x - 1] for x in _data]
 
     if "lengths" in _attr_vals:
         _final = []
