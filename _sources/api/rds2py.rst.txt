@@ -4,6 +4,14 @@ rds2py package
 Submodules
 ----------
 
+rds2py.granges module
+---------------------
+
+.. automodule:: rds2py.granges
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 rds2py.interface module
 -----------------------
 
