@@ -99,7 +99,7 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_ARCHS_LINUX: x86_64 # remove this later so we build for all linux archs
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
           CIBW_SKIP: pp* # remove this later, but for some reason fails to generate pypy wheels
 
       - uses: actions/upload-artifact@v3
