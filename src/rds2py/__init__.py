@@ -24,4 +24,4 @@ from .interface import (
     as_summarized_experiment,
 )
 
-from .parser import read_rds, get_class
+from .rds_interface import read_rds, get_class

@@ -1,4 +1,4 @@
-from .parser import get_class
+from .rds_interface import get_class
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"

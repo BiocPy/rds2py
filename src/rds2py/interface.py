@@ -5,7 +5,7 @@ from singlecellexperiment import SingleCellExperiment
 from summarizedexperiment import SummarizedExperiment
 from biocframe import BiocFrame
 
-from .parser import get_class
+from .rds_interface import get_class
 from .pdf import as_pandas_from_data_frame, as_pandas_from_dframe
 
 __author__ = "jkanche"
