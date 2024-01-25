@@ -12,7 +12,7 @@ registry = {}
 
 @singledispatch
 def save_object(x, path: str):
-    """Save a Python object as RDS file
+    """Save a Python object as RDS file.
 
     Args:
         x:

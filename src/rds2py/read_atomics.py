@@ -15,4 +15,3 @@ def load_atomic_objects(robj: dict):
 
 @save_object
 def save_atomics_objects(x: list):
-    

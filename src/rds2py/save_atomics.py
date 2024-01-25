@@ -8,4 +8,3 @@ __license__ = "MIT"
 
 @save_object.register
 def save_atomics_objects(x: list, path: str):
-    
