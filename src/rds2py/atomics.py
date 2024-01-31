@@ -1,18 +1,23 @@
+from .generics import REGISTRY, save_rds
 from .rds_interface import load_rds
-from .generics import load_rds, save_object
+
+from biocutils import BooleanList
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def load_atomic_objects(robj: dict):
+def load_boolean_objects(robj: dict):
     _keys = list(robj.keys())
 
     if list(_keys) == 1 and list(_keys) == ["data"]:
-        return robj["data"]
+        return BooleanList(robj["data"])
 
 
-@save_object
+REGISTRY["boolean"] = load_boolean_objects
+
+
+@save_rds
 def save_atomics_objects(x: list):
-    
+    pass

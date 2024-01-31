@@ -7,11 +7,11 @@ __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
-registry = {}
+REGISTRY = {}
 
 
 @singledispatch
-def save_object(x, path: str):
+def save_rds(x, path: str):
     """Save a Python object as RDS file
 
     Args:
@@ -22,12 +22,12 @@ def save_object(x, path: str):
             Path to save the object.
     """
     raise NotImplementedError(
-        "No `save_object` method implemented for '" + type(x[0]).__name__ + "' objects."
+        f"No `save_rds` method implemented for '{type(x).__name__}' objects."
     )
 
 
-def read_object(path: str, **kwargs):
-    """Read an object from RDS file.
+def read_rds(path: str, **kwargs):
+    """Read an RDS file as Python object.
 
     Args:
         path:
@@ -42,16 +42,17 @@ def read_object(path: str, **kwargs):
     _robj = load_rds(path=path)
     _class_name = get_class(_robj)
 
-    if _class_name not in registry:
+    if _class_name not in REGISTRY:
         raise NotImplementedError(
-            "no `read_object` method implemented for '{_class_name}' objects."
+            "no `read_rds` method implemented for '{_class_name}' objects."
         )
 
-    command = registry[_class_name]
+    # from Aaron's dolomite-base package
+    command = REGISTRY[_class_name]
     if isinstance(command, str):
         first_period = command.find(".")
         mod = import_module(command[:first_period])
         command = getattr(mod, command[first_period + 1 :])
-        registry[_class_name] = command
+        REGISTRY[_class_name] = command
 
     return command(path, **kwargs)
