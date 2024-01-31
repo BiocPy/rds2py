@@ -48,4 +48,3 @@ def get_class(robj: dict) -> str:
     return None
 
 def save_rds(r_obj, path):
-    
