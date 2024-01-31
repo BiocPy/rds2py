@@ -12,7 +12,7 @@ REGISTRY = {}
 
 @singledispatch
 def save_rds(x, path: str):
-    """Save a Python object as RDS file
+    """Save a Python object as RDS file.
 
     Args:
         x:

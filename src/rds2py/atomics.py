@@ -1,5 +1,4 @@
 from .generics import REGISTRY, save_rds
-from .rds_interface import load_rds
 
 from biocutils import BooleanList
 
