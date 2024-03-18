@@ -18,7 +18,10 @@ if __name__ == "__main__":
                 [
                     Extension(
                         "rds2py.core",
-                        ["src/rds2py/lib/rds2cpp_wrapper.cpp", "src/rds2py/lib/parser.pyx"],
+                        [
+                            "src/rds2py/lib/rds2cpp_wrapper.cpp",
+                            "src/rds2py/lib/parser.pyx",
+                        ],
                         include_dirs=[
                             "extern/rds2cpp/include",
                             "extern/rds2cpp/_deps/byteme-src/include",

@@ -15,6 +15,7 @@ def test_read_atomic_ints():
     assert isinstance(arr, IntegerList)
     assert len(arr) == 112
 
+
 def test_read_atomic_ints_with_names():
     arr = read_rds("tests/data/atomic_ints_with_names.rds")
 

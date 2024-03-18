@@ -13,7 +13,6 @@ REGISTRY = {
     "boolean_vector": "rds2py.parse_boolean_vector",
     "string_vector": "rds2py.parse_string_vector",
     "double_vector": "rds2py.parse_double_vector",
-
 }
 
 
