@@ -59,8 +59,8 @@ cdef class PyRObject:
         return self.rsize
 
     def shennanigans_to_py_reprs(self, result):
-        if result is None:
-            return result
+        # if result is None:
+        #     return result
 
         if self.rtype.decode() in ["integer"]:
             if self.rsize == 2 and result["data"][0] == self.R_MIN and result["data"][1] < 0:
@@ -69,33 +69,44 @@ cdef class PyRObject:
         return result
 
     def realize_value(self):
-        result = {}
-        if self.rtype.decode() in ["integer", "boolean"]:
+        result = {
+            "data": None,
+            "attributes": None,
+            "class_name": None,
+            "package_name": None,
+            "rtype": self.rtype.decode('UTF-8')
+        }
+
+        if result["rtype"] in ["integer"]:
             result["data"] = self._get_int_or_bool_arr()
             result["attributes"] = self.realize_attr_value()
-        elif self.rtype.decode('UTF-8') in ["double"]:
+            result["class_name"] = "integer_vector"
+        elif result["rtype"] in ["boolean"]:
+            result["data"] = self._get_int_or_bool_arr()
+            result["attributes"] = self.realize_attr_value()
+            result["class_name"] = "boolean_vector"
+        elif result["rtype"] in ["double"]:
             result["data"] =  self._get_double_arr()
             result["attributes"] = self.realize_attr_value()
-        elif self.rtype.decode('UTF-8') in ["string"]:
+            result["class_name"] = "double_vector"
+        elif result["rtype"] in ["string"]:
             result["data"] =  [s.decode() for s in self._get_string_arr()]
-        elif self.rtype.decode('UTF-8') in ["vector"]:
+            result["attributes"] = self.realize_attr_value()
+            result["class_name"] = "string_vector"
+        elif result["rtype"] in ["vector"]:
             result["data"] =  self._get_vector_arr()
             result["attributes"] = self.realize_attr_value()
-        elif self.rtype.decode('UTF-8') in ["null"]:
-            return  None
-        elif self.rtype.decode('UTF-8') in ["S4"]:
-            result = {
-                "data": None,
-                "package_name": self.get_package_name(),
-                "class_name": self.get_class_name()
-            }
+            result["class_name"] = self.get_class_name()
+        elif result["rtype"] in ["null"]:
+            return result
+        elif result["rtype"] in ["S4"]:
+            result["package_name"] = self.get_package_name()
+            result["class_name"] = self.get_class_name()
             result["attributes"] = self.realize_attr_value()
+            return result
         else:
-            return {
-                "data": None,
-                "attributes": None
-            }
-            # raise Exception(f'Cannot realize {self.rtype.decode()}')
+            # return result
+            raise Exception(f'Cannot realize {self.rtype.decode()}')
 
         return self.shennanigans_to_py_reprs(result)
 
@@ -150,10 +161,9 @@ cdef class PyRObject:
         raise Exception(f'package name does not exist on non-S4 classes')
 
     def get_class_name(self):
-        if self.rtype.decode() == "S4":
-            return parse_robject_class_name(self.ptr).decode()
-
-        raise Exception(f'class name does not exist on non-S4 classes')
+        # if self.rtype.decode() == "S4":
+        return parse_robject_class_name(self.ptr).decode()
+        # raise Exception(f'class name does not exist on non-S4 classes')
 
     def get_dimensions(self):
         return parse_robject_dimensions(self.ptr)

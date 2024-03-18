@@ -5,8 +5,8 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def load_rds(path: str) -> dict:
-    """Read an RDS file as a :py:class:`~dict`.
+def parse_rds(path: str) -> dict:
+    """Parse an RDS file as a :py:class:`~dict`.
 
     Args:
         path:
@@ -46,5 +46,3 @@ def get_class(robj: dict) -> str:
             return "densematrix"
 
     return None
-
-def save_rds(r_obj, path):

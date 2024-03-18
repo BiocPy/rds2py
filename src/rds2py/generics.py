@@ -1,13 +1,20 @@
 from functools import singledispatch
 from importlib import import_module
 
-from .rds_interface import get_class, load_rds
+# from .atomics import parse_integer_vector
+from .rdsutils import get_class, parse_rds
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
-REGISTRY = {}
+REGISTRY = {
+    "integer_vector": "rds2py.parse_integer_vector",
+    "boolean_vector": "rds2py.parse_boolean_vector",
+    "string_vector": "rds2py.parse_string_vector",
+    "double_vector": "rds2py.parse_double_vector",
+
+}
 
 
 @singledispatch
@@ -39,12 +46,16 @@ def read_rds(path: str, **kwargs):
     Returns:
         Some kind of object.
     """
-    _robj = load_rds(path=path)
+    _robj = parse_rds(path=path)
     _class_name = get_class(_robj)
+
+    print("in READ_RDS")
+    print(_robj)
+    print(_class_name)
 
     if _class_name not in REGISTRY:
         raise NotImplementedError(
-            "no `read_rds` method implemented for '{_class_name}' objects."
+            f"no `read_rds` method implemented for '{_class_name}' objects."
         )
 
     # from Aaron's dolomite-base package
@@ -55,4 +66,4 @@ def read_rds(path: str, **kwargs):
         command = getattr(mod, command[first_period + 1 :])
         REGISTRY[_class_name] = command
 
-    return command(path, **kwargs)
+    return command(_robj, **kwargs)

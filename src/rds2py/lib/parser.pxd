@@ -5,7 +5,7 @@ from libc.stdint cimport uintptr_t
 from libcpp.vector cimport vector
 from libcpp.utility cimport pair
 
-cdef extern from "rds_parser.cpp":
+cdef extern from "rds2cpp_wrapper.cpp":
     uintptr_t py_parser_rds_file(string_c file) nogil except +
     uintptr_t py_parser_extract_robject(int ptr) nogil except +
 

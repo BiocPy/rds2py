@@ -194,7 +194,7 @@ inline uintptr_t parse_robject_load_attribute_by_index(uintptr_t ptr, int i) {
         case rds2cpp::SEXPType::INT:
             return _load_attr_idx_<rds2cpp::IntegerVector>(parsed, i);
         case rds2cpp::SEXPType::REAL:
-            return _load_attr_idx_<rds2cpp::FloatVector>(parsed, i);
+            return _load_attr_idx_<rds2cpp::DoubleVector>(parsed, i);
         case rds2cpp::SEXPType::LGL:
             return _load_attr_idx_<rds2cpp::LogicalVector>(parsed, i);
         case rds2cpp::SEXPType::STR:

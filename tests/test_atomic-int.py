@@ -1,16 +1,24 @@
-# import pytest
+import pytest
 
-# from rds2py.core import PyParsedObject
+from rds2py import read_rds
+from biocutils import IntegerList
 
-# __author__ = "jkanche"
-# __copyright__ = "jkanche"
-# __license__ = "MIT"
+__author__ = "jkanche"
+__copyright__ = "jkanche"
+__license__ = "MIT"
 
 
-# def test_read_atomic_ints():
-#     parsed_obj = PyParsedObject("tests/data/atomic_ints.rds")
-#     robject_obj = parsed_obj.get_robject()
-#     array = robject_obj.realize_value()
+def test_read_atomic_ints():
+    arr = read_rds("tests/data/atomic_ints.rds")
 
-#     assert array is not None
-#     assert array["data"].shape[0] == 112
+    assert arr is not None
+    assert isinstance(arr, IntegerList)
+    assert len(arr) == 112
+
+def test_read_atomic_ints_with_names():
+    arr = read_rds("tests/data/atomic_ints_with_names.rds")
+
+    assert arr is not None
+    assert isinstance(arr, IntegerList)
+    assert arr.names is not None
+    assert len(arr) == 112
