@@ -91,7 +91,7 @@ cdef class PyRObject:
             result["class_name"] = "double_vector"
         elif result["rtype"] in ["string"]:
             result["data"] =  [s.decode() for s in self._get_string_arr()]
-            result["attributes"] = self.realize_attr_value()
+            # result["attributes"] = self.realize_attr_value()
             result["class_name"] = "string_vector"
         elif result["rtype"] in ["vector"]:
             result["data"] =  self._get_vector_arr()
