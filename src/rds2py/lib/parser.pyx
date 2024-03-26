@@ -22,22 +22,22 @@ from cython cimport view
 cimport numpy as np
 import numpy as np
 
-cdef class PyParsedObject:
+cdef class PyRdsObject:
     cdef uintptr_t ptr
 
     def __cinit__(self, file):
-        self.ptr = py_parser_rds_file(file.encode())
+        self.ptr = py_parser_rds_file(file.encode('UTF-8'))
 
     def get_robject(self):
         cdef uintptr_t tmp = py_parser_extract_robject(self.ptr)
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
 cdef _map_ptr_to_view(uintptr_t ptr, shape, itemsize, format_type):
     cdef view.array my_array = view.array(shape=shape, itemsize=itemsize, format=format_type)
     my_array.data = <char *> ptr
     return np.asarray(my_array)
 
-cdef class PyRObject:
+cdef class PyRdsReader:
     cdef uintptr_t ptr
     cdef string_c rtype
     cdef int rsize
@@ -59,43 +59,51 @@ cdef class PyRObject:
         return self.rsize
 
     def shennanigans_to_py_reprs(self, result):
-        if result is None:
-            return result
+        # if result is None:
+        #     return result
 
-        if self.rtype.decode() in ["integer"]:
+        if self.rtype.decode('UTF-8') in ["integer"]:
             if self.rsize == 2 and result["data"][0] == self.R_MIN and result["data"][1] < 0:
                 result["data"] = range(result["data"][1] * -1)
 
         return result
 
     def realize_value(self):
-        result = {}
-        if self.rtype.decode() in ["integer", "boolean"]:
+        _rtype = self.rtype.decode('UTF-8')
+        result = {
+            "rtype": _rtype
+        }
+
+        if _rtype in ["integer"]:
             result["data"] = self._get_int_or_bool_arr()
             result["attributes"] = self.realize_attr_value()
-        elif self.rtype.decode('UTF-8') in ["double"]:
+            result["class_name"] = "integer_vector"
+        elif _rtype in ["boolean"]:
+            result["data"] = self._get_int_or_bool_arr()
+            result["attributes"] = self.realize_attr_value()
+            result["class_name"] = "boolean_vector"
+        elif _rtype in ["double"]:
             result["data"] =  self._get_double_arr()
             result["attributes"] = self.realize_attr_value()
-        elif self.rtype.decode('UTF-8') in ["string"]:
-            result["data"] =  [s.decode() for s in self._get_string_arr()]
-        elif self.rtype.decode('UTF-8') in ["vector"]:
+            result["class_name"] = "double_vector"
+        elif _rtype in ["string"]:
+            result["data"] =  [s.decode('UTF-8') for s in self._get_string_arr()]
+            # result["attributes"] = self.realize_attr_value()
+            result["class_name"] = "string_vector"
+        elif _rtype in ["vector"]:
             result["data"] =  self._get_vector_arr()
             result["attributes"] = self.realize_attr_value()
-        elif self.rtype.decode('UTF-8') in ["null"]:
-            return  None
-        elif self.rtype.decode('UTF-8') in ["S4"]:
-            result = {
-                "data": None,
-                "package_name": self.get_package_name(),
-                "class_name": self.get_class_name()
-            }
+            result["class_name"] = self.get_class_name()
+        elif _rtype in ["null"]:
+            return result
+        elif _rtype in ["S4"]:
+            result["package_name"] = self.get_package_name()
+            result["class_name"] = self.get_class_name()
             result["attributes"] = self.realize_attr_value()
+            return result
         else:
-            return {
-                "data": None,
-                "attributes": None
-            }
-            # raise Exception(f'Cannot realize {self.rtype.decode()}')
+            # return result
+            raise Exception('Cannot realize object of type: ', _rtype)
 
         return self.shennanigans_to_py_reprs(result)
 
@@ -129,31 +137,30 @@ cdef class PyRObject:
         return arr_str
 
     def find_attribute(self, name):
-        return parse_robject_find_attribute(self.ptr, name.encode())
+        return parse_robject_find_attribute(self.ptr, name.encode('UTF-8'))
 
     def load_attribute_by_index(self, index):
         cdef uintptr_t tmp =  parse_robject_load_attribute_by_index(self.ptr, index)
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
     def load_attribute_by_name(self, name):
-        cdef uintptr_t tmp =  parse_robject_load_attribute_by_name(self.ptr, name.encode())
-        return PyRObject(tmp)
+        cdef uintptr_t tmp =  parse_robject_load_attribute_by_name(self.ptr, name.encode('UTF-8'))
+        return PyRdsReader(tmp)
 
     def load_vec_element(self, i):
         cdef uintptr_t tmp =  parse_robject_load_vec_element(self.ptr, i)
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
     def get_package_name(self):
-        if self.rtype.decode() == "S4":
-            return parse_robject_package_name(self.ptr).decode()
+        if self.rtype.decode('UTF-8') == "S4":
+            return parse_robject_package_name(self.ptr).decode('UTF-8')
 
         raise Exception(f'package name does not exist on non-S4 classes')
 
     def get_class_name(self):
-        if self.rtype.decode() == "S4":
-            return parse_robject_class_name(self.ptr).decode()
-
-        raise Exception(f'class name does not exist on non-S4 classes')
+        # if self.rtype.decode('UTF-8') == "S4":
+        return parse_robject_class_name(self.ptr).decode('UTF-8')
+        # raise Exception(f'class name does not exist on non-S4 classes')
 
     def get_dimensions(self):
         return parse_robject_dimensions(self.ptr)
@@ -162,7 +169,7 @@ cdef class PyRObject:
         result = {}
 
         for ro_attr in self.get_attribute_names():
-            tmp_obj = self.load_attribute_by_name(ro_attr.decode())
-            result[ro_attr.decode()] = tmp_obj.realize_value()
+            tmp_obj = self.load_attribute_by_name(ro_attr.decode('UTF-8'))
+            result[ro_attr.decode('UTF-8')] = tmp_obj.realize_value()
 
         return result
