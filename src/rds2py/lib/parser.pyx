@@ -22,7 +22,7 @@ from cython cimport view
 cimport numpy as np
 import numpy as np
 
-cdef class PyParsedObject:
+cdef class PyRdsObject:
     cdef uintptr_t ptr
 
     def __cinit__(self, file):
@@ -30,14 +30,14 @@ cdef class PyParsedObject:
 
     def get_robject(self):
         cdef uintptr_t tmp = py_parser_extract_robject(self.ptr)
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
 cdef _map_ptr_to_view(uintptr_t ptr, shape, itemsize, format_type):
     cdef view.array my_array = view.array(shape=shape, itemsize=itemsize, format=format_type)
     my_array.data = <char *> ptr
     return np.asarray(my_array)
 
-cdef class PyRObject:
+cdef class PyRdsReader:
     cdef uintptr_t ptr
     cdef string_c rtype
     cdef int rsize
@@ -71,10 +71,6 @@ cdef class PyRObject:
     def realize_value(self):
         _rtype = self.rtype.decode('UTF-8')
         result = {
-            "data": None,
-            "attributes": None,
-            "class_name": None,
-            "package_name": None,
             "rtype": _rtype
         }
 
@@ -145,15 +141,15 @@ cdef class PyRObject:
 
     def load_attribute_by_index(self, index):
         cdef uintptr_t tmp =  parse_robject_load_attribute_by_index(self.ptr, index)
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
     def load_attribute_by_name(self, name):
         cdef uintptr_t tmp =  parse_robject_load_attribute_by_name(self.ptr, name.encode('UTF-8'))
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
     def load_vec_element(self, i):
         cdef uintptr_t tmp =  parse_robject_load_vec_element(self.ptr, i)
-        return PyRObject(tmp)
+        return PyRdsReader(tmp)
 
     def get_package_name(self):
         if self.rtype.decode('UTF-8') == "S4":

@@ -1,4 +1,4 @@
-from .core import PyParsedObject
+from .core import PyRdsObject
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -15,7 +15,7 @@ def parse_rds(path: str) -> dict:
     Returns:
         A dictionary with the contents of the RDS file.
     """
-    parsed_obj = PyParsedObject(path)
+    parsed_obj = PyRdsObject(path)
     robject_obj = parsed_obj.get_robject()
     realized = robject_obj.realize_value()
 
