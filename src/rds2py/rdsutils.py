@@ -1,37 +1,37 @@
-from typing import Dict, MutableMapping
-
-from .core import PyParsedObject
+from .core import PyRdsObject
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def read_rds(file: str) -> Dict:
-    """Read an RDS file as a :py:class:`~dict`.
+def parse_rds(path: str) -> dict:
+    """Parse an RDS file as a :py:class:`~dict`.
 
     Args:
-        file (str): Path to RDS file.
+        path:
+            Path to RDS file.
 
     Returns:
-        MutableMapping: R object as a python dictionary.
+        A dictionary with the contents of the RDS file.
     """
-    parsed_obj = PyParsedObject(file)
+    parsed_obj = PyRdsObject(path)
     robject_obj = parsed_obj.get_robject()
     realized = robject_obj.realize_value()
 
     return realized
 
 
-def get_class(robj: MutableMapping) -> str:
-    """Generic method to get the class information of the R object.
+def get_class(robj: dict) -> str:
+    """Guess class information of the R object.
 
     Args:
-        robj (MutableMapping): Object parsed from the `RDS` file.
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+        robj:
+            Object parsed from the `RDS` file.
+            Usually the result of :py:func:`~rds2py.parser.load_rds`.
 
     Returns:
-        str: Class name.
+        A string representing the class name from R.
     """
     if "class_name" in robj:
         return robj["class_name"]
