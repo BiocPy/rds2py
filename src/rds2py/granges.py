@@ -53,8 +53,10 @@ def as_granges(robj):
     _seqinfo_genome = robj["attributes"]["seqinfo"]["attributes"]["genome"]["data"]
     _seqinfo = SeqInfo(
         seqnames=_seqinfo_seqnames,
-        seqlengths=[None if x == -2147483648 else x for x in _seqinfo_seqlengths],
-        is_circular=[None if x == -2147483648 else x for x in _seqinfo_is_circular],
+        seqlengths=[None if x == -2147483648 else int(x) for x in _seqinfo_seqlengths],
+        is_circular=[
+            None if x == -2147483648 else bool(x) for x in _seqinfo_is_circular
+        ],
         genome=_seqinfo_genome,
     )
 
