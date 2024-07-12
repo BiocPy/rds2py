@@ -44,17 +44,25 @@ def as_granges(robj):
             _strands = [_levels_data[x] for x in _strands]
 
     _seqinfo_seqnames = robj["attributes"]["seqinfo"]["attributes"]["seqnames"]["data"]
-    _seqinfo_seqlengths = robj["attributes"]["seqinfo"]["attributes"]["seqlengths"]["data"]
-    _seqinfo_is_circular = robj["attributes"]["seqinfo"]["attributes"]["is_circular"]["data"]
+    _seqinfo_seqlengths = robj["attributes"]["seqinfo"]["attributes"]["seqlengths"][
+        "data"
+    ]
+    _seqinfo_is_circular = robj["attributes"]["seqinfo"]["attributes"]["is_circular"][
+        "data"
+    ]
     _seqinfo_genome = robj["attributes"]["seqinfo"]["attributes"]["genome"]["data"]
     _seqinfo = SeqInfo(
         seqnames=_seqinfo_seqnames,
         seqlengths=[None if x == -2147483648 else int(x) for x in _seqinfo_seqlengths],
-        is_circular=[None if x == -2147483648 else bool(x) for x in _seqinfo_is_circular],
+        is_circular=[
+            None if x == -2147483648 else bool(x) for x in _seqinfo_is_circular
+        ],
         genome=_seqinfo_genome,
     )
 
-    _mcols = BiocFrame.from_pandas(as_pandas_from_dframe(robj["attributes"]["elementMetadata"]))
+    _mcols = BiocFrame.from_pandas(
+        as_pandas_from_dframe(robj["attributes"]["elementMetadata"])
+    )
 
     _gr_names = None
     if "NAMES" in robj["attributes"]:
