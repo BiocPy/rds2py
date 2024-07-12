@@ -1,6 +1,11 @@
 # Changelog
 
-## Version 0.3.0 (development)
+## Version 0.4.0 - 0.4.3
+
+- Migrate to the new class implementations
+- Add reader for objects containing genomic ranges
+
+## Version 0.3.0
 
 This release migrates the package to a more palatable Google's Python style guide. A major modification to the package is with casing, all `camelCase` properties, methods, functions and parameters are now `snake_case`.
 
@@ -12,6 +17,4 @@ Finally, pyscaffold has been updated to use "myst-parser" as the markdown compil
 
 ## Version 0.1
 
-- Feature A added
-- FIX: nasty bug #1729 fixed
-- add your changes here!
+- First implementation
