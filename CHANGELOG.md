@@ -1,5 +1,11 @@
 # Changelog
 
+## Version 0.4.4
+
+- Add methods to parse RDS files containing `GenomicRangesList`
+- Fix bug in reading strand information; mostly RLE vectors.
+- Update tests and documentation
+
 ## Version 0.4.0 - 0.4.3
 
 - Migrate to the new class implementations

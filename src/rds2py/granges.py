@@ -1,6 +1,6 @@
-from genomicranges import GenomicRanges, SeqInfo
-from iranges import IRanges
 from biocframe import BiocFrame
+from genomicranges import GenomicRanges, GenomicRangesList, SeqInfo
+from iranges import IRanges
 
 from .parser import get_class
 from .pdf import as_pandas_from_dframe
@@ -36,12 +36,16 @@ def as_granges(robj):
 
     _seqnames = _as_list(robj["attributes"]["seqnames"])
 
-    _strand_obj = robj["attributes"]["strand"]["attributes"]["values"]
-    _strands = _strand_obj["data"]
+    _strands = robj["attributes"]["strand"]
+    _fstrand = None
     if "attributes" in _strands:
-        if "levels" in _strands["attributes"]:
-            _levels_data = _strands["attributes"]["levels"]["data"]
-            _strands = [_levels_data[x] for x in _strands]
+        _lengths = _strands["attributes"]["lengths"]["data"]
+        _factors = _strands["attributes"]["values"]["data"]
+        _levels = _strands["attributes"]["values"]["attributes"]["levels"]["data"]
+        _strds = [_levels[x - 1] for x in _factors]
+        _fstrand = []
+        for i, x in enumerate(_lengths):
+            _fstrand.extend([_strds[i]] * x)
 
     _seqinfo_seqnames = robj["attributes"]["seqinfo"]["attributes"]["seqnames"]["data"]
     _seqinfo_seqlengths = robj["attributes"]["seqinfo"]["attributes"]["seqlengths"][
@@ -71,6 +75,7 @@ def as_granges(robj):
     return GenomicRanges(
         seqnames=_seqnames,
         ranges=_ranges,
+        strand=_fstrand,
         names=_gr_names,
         mcols=_mcols,
         seqinfo=_seqinfo,
@@ -111,3 +116,36 @@ def _as_list(robj):
         _data = _final
 
     return _data
+
+
+def as_granges_list(robj):
+    """Parse an R object as a :py:class:`~genomicranges.GenomicRangesList.GenomicRangesList`.
+
+    Args:
+        robj:
+            Object parsed from the `RDS` file.
+
+            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+
+    Returns:
+        A ``GenomicRangesList`` object.
+    """
+
+    _cls = get_class(robj)
+
+    if _cls not in ["CompressedGRangesList", "GRangesList"]:
+        raise TypeError(f"obj is not genomic ranges list, but is `{_cls}`.")
+
+    _gre = as_granges(robj["attributes"]["unlistData"])
+
+    _groups = robj["attributes"]["partitioning"]["attributes"]["NAMES"]["data"]
+    _partitionends = robj["attributes"]["partitioning"]["attributes"]["end"]["data"]
+
+    _grelist = []
+
+    current = 0
+    for _pend in _partitionends:
+        _grelist.append(_gre[current:_pend])
+        current = _pend
+
+    return GenomicRangesList(ranges=_grelist, names=_groups)
