@@ -1,4 +1,4 @@
-from functools import singledispatch
+# from functools import singledispatch
 from importlib import import_module
 
 # from .atomics import parse_integer_vector
@@ -16,20 +16,20 @@ REGISTRY = {
 }
 
 
-@singledispatch
-def save_rds(x, path: str):
-    """Save a Python object as RDS file.
+# @singledispatch
+# def save_rds(x, path: str):
+#     """Save a Python object as RDS file.
 
-    Args:
-        x:
-            Object to save.
+#     Args:
+#         x:
+#             Object to save.
 
-        path:
-            Path to save the object.
-    """
-    raise NotImplementedError(
-        f"No `save_rds` method implemented for '{type(x).__name__}' objects."
-    )
+#         path:
+#             Path to save the object.
+#     """
+#     raise NotImplementedError(
+#         f"No `save_rds` method implemented for '{type(x).__name__}' objects."
+#     )
 
 
 def read_rds(path: str, **kwargs):
