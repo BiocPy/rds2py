@@ -1,4 +1,4 @@
-from biocutils import BooleanList, FloatList, IntegerList, StringList
+from biocutils import IntegerList
 
 from .generics import save_rds
 
