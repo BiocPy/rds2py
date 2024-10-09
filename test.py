@@ -1,6 +1,6 @@
 import rds2py
 
-# parsed_obj = rds2py.PyParsedObject("tests/data/s4_dense_matrix.rds")
+# parsed_obj = rds2py.PyRdsObject("tests/data/s4_dense_matrix.rds")
 robj = rds2py.read_rds("tests/test.rds")
 # print(parsed_obj)
 

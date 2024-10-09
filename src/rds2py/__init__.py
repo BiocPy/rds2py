@@ -17,11 +17,5 @@ finally:
 
 # from .core import *
 
-from .interface import (
-    as_dense_matrix,
-    as_sparse_matrix,
-    as_pandas,
-    as_summarized_experiment,
-)
-
-from .parser import read_rds, get_class
+from .generics import read_rds
+from .read_atomic_vector import parse_boolean_vector, parse_double_vector, parse_integer_vector, parse_string_vector
