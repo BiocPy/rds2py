@@ -6,7 +6,7 @@ __license__ = "MIT"
 
 
 def parse_rle(x: dict) -> list:
-    """Parse an S4Vector RLE class as list
+    """Parse an S4Vector RLE class as list.
 
     Args:
         x:

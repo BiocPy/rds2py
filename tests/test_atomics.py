@@ -10,12 +10,15 @@ __license__ = "MIT"
 
 ## With attributes
 
+
 def test_read_atomic_attrs():
     obj = read_rds("tests/data/atomic_attr.rds")
 
     assert obj is not None
 
+
 ## Booleans
+
 
 def test_read_atomic_logical():
     arr = read_rds("tests/data/atomic_logical.rds")
@@ -32,7 +35,9 @@ def test_read_atomic_logical_na():
     assert isinstance(arr, BooleanList)
     assert len(arr) > 0
 
+
 ## Doubles/Floats
+
 
 def test_read_atomic_double():
     obj = read_rds("tests/data/atomic_double.rds")
@@ -43,6 +48,7 @@ def test_read_atomic_double():
 
 
 ## Ints
+
 
 def test_read_atomic_ints():
     arr = read_rds("tests/data/atomic_ints.rds")
@@ -63,6 +69,7 @@ def test_read_atomic_ints_with_names():
 
 
 ## Strings
+
 
 def test_read_atomic_chars():
     arr = read_rds("tests/data/atomic_chars.rds")
