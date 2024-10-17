@@ -1,5 +1,10 @@
+#include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
+#include <pybind11/numpy.h>
 #include "rds2cpp/rds2cpp.hpp"
 #include <iostream>
+
+namespace py = pybind11;
 
 // Interface methods to Parser Object
 
@@ -263,4 +268,190 @@ inline std::pair<size_t, size_t> parse_robject_dimensions(uintptr_t ptr) {
     }
 
     return std::pair<size_t, size_t>(dims[0], dims[1]);
+}
+
+// Class definitions
+
+class PyRdsObject {
+private:
+    std::unique_ptr<rds2cpp::Parsed> parsed;
+
+public:
+    PyRdsObject(const std::string& file) : parsed(std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(file))) {}
+
+    py::object get_robject() {
+        return py::cast(parsed->object.get());
+    }
+};
+
+class PyRdsReader {
+private:
+    const rds2cpp::RObject* ptr;
+    std::string rtype;
+    int rsize;
+
+public:
+    static constexpr int R_MIN = -2147483648;
+
+    PyRdsReader(const rds2cpp::RObject* p) : ptr(p) {
+        get_rtype();
+        get_rsize();
+    }
+
+    std::string get_rtype() {
+        if (rtype.empty()) {
+            rtype = py_robject_extract_type(reinterpret_cast<uintptr_t>(ptr));
+        }
+        return rtype;
+    }
+
+    int get_rsize() {
+        if (rsize == 0) {
+            rsize = py_robject_extract_size(reinterpret_cast<uintptr_t>(ptr));
+        }
+        return rsize;
+    }
+
+    py::object realize_value() {
+        py::dict result;
+        result["rtype"] = rtype;
+
+        if (rtype == "integer" || rtype == "boolean") {
+            result["data"] = _get_int_or_bool_arr();
+            result["attributes"] = realize_attr_value();
+            result["class_name"] = rtype == "integer" ? "integer_vector" : "boolean_vector";
+        } else if (rtype == "double") {
+            result["data"] = _get_double_arr();
+            result["attributes"] = realize_attr_value();
+            result["class_name"] = "double_vector";
+        } else if (rtype == "string") {
+            result["data"] = _get_string_arr();
+            result["class_name"] = "string_vector";
+        } else if (rtype == "vector") {
+            result["data"] = _get_vector_arr();
+            result["attributes"] = realize_attr_value();
+            result["class_name"] = "vector";
+        } else if (rtype == "null") {
+            return result;
+        } else if (rtype == "S4") {
+            result["package_name"] = get_package_name();
+            result["class_name"] = get_class_name();
+            result["attributes"] = realize_attr_value();
+            return result;
+        } else {
+            throw std::runtime_error("Cannot realize object of type: " + rtype);
+        }
+
+        return shennanigans_to_py_reprs(result);
+    }
+
+    py::object shennanigans_to_py_reprs(py::dict result) {
+        if (rtype == "integer") {
+            py::array_t<int> data = result["data"].cast<py::array_t<int>>();
+            if (rsize == 2 && data.at(0) == R_MIN && data.at(1) < 0) {
+                // Create a Python range object manually
+                py::object range_func = py::module::import("builtins").attr("range");
+                result["data"] = range_func(data.at(1) * -1);
+            }
+        }
+        return result;
+    }
+
+    py::array _get_int_or_bool_arr() {
+        if (rsize == 0) {
+            return py::array_t<int>();
+        }
+        uintptr_t arr_ptr = parse_robject_int_vector(reinterpret_cast<uintptr_t>(ptr));
+        return py::array_t<int>({rsize}, {sizeof(int)}, reinterpret_cast<int*>(arr_ptr));
+    }
+
+    py::array _get_double_arr() {
+        if (rsize == 0) {
+            return py::array_t<double>();
+        }
+        uintptr_t arr_ptr = parse_robject_int_vector(reinterpret_cast<uintptr_t>(ptr));
+        return py::array_t<double>({rsize}, {sizeof(double)}, reinterpret_cast<double*>(arr_ptr));
+    }
+
+    py::list _get_string_arr() {
+        std::vector<std::string> arr_str = parse_robject_string_vector(reinterpret_cast<uintptr_t>(ptr));
+        return py::cast(arr_str);
+    }
+
+    py::list _get_vector_arr() {
+        py::list vec;
+        for (int i = 0; i < rsize; ++i) {
+            uintptr_t elem_ptr = parse_robject_load_vec_element(reinterpret_cast<uintptr_t>(ptr), i);
+            PyRdsReader elem_reader(reinterpret_cast<const rds2cpp::RObject*>(elem_ptr));
+            vec.append(elem_reader.realize_value());
+        }
+        return vec;
+    }
+
+    py::list get_attribute_names() {
+        return py::cast(parse_robject_attribute_names(reinterpret_cast<uintptr_t>(ptr)));
+    }
+
+    int find_attribute(const std::string& name) {
+        return parse_robject_find_attribute(reinterpret_cast<uintptr_t>(ptr), name);
+    }
+
+    PyRdsReader load_attribute_by_index(int index) {
+        uintptr_t tmp = parse_robject_load_attribute_by_index(reinterpret_cast<uintptr_t>(ptr), index);
+        return PyRdsReader(reinterpret_cast<const rds2cpp::RObject*>(tmp));
+    }
+
+    PyRdsReader load_attribute_by_name(const std::string& name) {
+        uintptr_t tmp = parse_robject_load_attribute_by_name(reinterpret_cast<uintptr_t>(ptr), name);
+        return PyRdsReader(reinterpret_cast<const rds2cpp::RObject*>(tmp));
+    }
+
+    PyRdsReader load_vec_element(int i) {
+        uintptr_t tmp = parse_robject_load_vec_element(reinterpret_cast<uintptr_t>(ptr), i);
+        return PyRdsReader(reinterpret_cast<const rds2cpp::RObject*>(tmp));
+    }
+
+    std::string get_package_name() {
+        if (rtype != "S4") {
+            throw std::runtime_error("package name does not exist on non-S4 classes");
+        }
+        return parse_robject_package_name(reinterpret_cast<uintptr_t>(ptr));
+    }
+
+    std::string get_class_name() {
+        return parse_robject_class_name(reinterpret_cast<uintptr_t>(ptr));
+    }
+
+    std::pair<size_t, size_t> get_dimensions() {
+        return parse_robject_dimensions(reinterpret_cast<uintptr_t>(ptr));
+    }
+
+    py::dict realize_attr_value() {
+        py::dict result;
+        for (const auto& ro_attr : get_attribute_names()) {
+            PyRdsReader tmp_obj = load_attribute_by_name(ro_attr.cast<std::string>());
+            result[ro_attr] = tmp_obj.realize_value();
+        }
+        return result;
+    }
+};
+
+PYBIND11_MODULE(lib_rds, m) {
+    py::class_<PyRdsObject>(m, "PyRdsObject")
+        .def(py::init<const std::string&>())
+        .def("get_robject", &PyRdsObject::get_robject);
+
+    py::class_<PyRdsReader>(m, "PyRdsReader")
+        .def(py::init<const rds2cpp::RObject*>())
+        .def("get_rtype", &PyRdsReader::get_rtype)
+        .def("get_rsize", &PyRdsReader::get_rsize)
+        .def("realize_value", &PyRdsReader::realize_value)
+        .def("get_attribute_names", &PyRdsReader::get_attribute_names)
+        .def("find_attribute", &PyRdsReader::find_attribute)
+        .def("load_attribute_by_index", &PyRdsReader::load_attribute_by_index)
+        .def("load_attribute_by_name", &PyRdsReader::load_attribute_by_name)
+        .def("load_vec_element", &PyRdsReader::load_vec_element)
+        .def("get_package_name", &PyRdsReader::get_package_name)
+        .def("get_class_name", &PyRdsReader::get_class_name)
+        .def("get_dimensions", &PyRdsReader::get_dimensions);
 }
