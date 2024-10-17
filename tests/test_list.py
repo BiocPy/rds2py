@@ -1,52 +1,44 @@
-# import pytest
+import pytest
 
-# from rds2py.core import PyRdsObject
+from rds2py import read_rds
 
-# __author__ = "jkanche"
-# __copyright__ = "jkanche"
-# __license__ = "MIT"
+from biocutils import BooleanList, FloatList, IntegerList, StringList
+
+__author__ = "jkanche"
+__copyright__ = "jkanche"
+__license__ = "MIT"
 
 
-# def test_read_atomic_lists():
-#     parsed_obj = PyRdsObject("tests/data/lists.rds")
-#     robject_obj = parsed_obj.get_robject()
-#     array = robject_obj.realize_value()
+def test_read_atomic_lists():
+    array = read_rds("tests/data/lists.rds")
 
-#     assert array is not None
-#     assert len(array) > 0
+    assert array is not None
+    assert len(array) > 0
 
 
 # def test_read_atomic_lists_nested():
-#     parsed_obj = PyRdsObject("tests/data/lists_nested.rds")
-#     robject_obj = parsed_obj.get_robject()
-#     array = robject_obj.realize_value()
+#     array = read_rds("tests/data/lists_nested.rds")
 
 #     assert array is not None
 #     assert len(array) > 0
 
 
 # def test_read_atomic_lists_nested_deep():
-#     parsed_obj = PyRdsObject("tests/data/lists_nested_deep.rds")
-#     robject_obj = parsed_obj.get_robject()
-#     array = robject_obj.realize_value()
+#     array = read_rds("tests/data/lists_nested_deep.rds")
 
 #     assert array is not None
 #     assert len(array) > 0
 
 
 # def test_read_atomic_lists_df():
-#     parsed_obj = PyRdsObject("tests/data/lists_df.rds")
-#     robject_obj = parsed_obj.get_robject()
-#     array = robject_obj.realize_value()
+#     array = read_rds("tests/data/lists_df.rds")
 
 #     assert array is not None
 #     assert len(array) > 0
 
 
 # def test_read_atomic_lists_nested_deep_rownames():
-#     parsed_obj = PyRdsObject("tests/data/lists_df_rownames.rds")
-#     robject_obj = parsed_obj.get_robject()
-#     array = robject_obj.realize_value()
+#     array = read_rds("tests/data/lists_df_rownames.rds")
 
 #     assert array is not None
 #     assert len(array) > 0

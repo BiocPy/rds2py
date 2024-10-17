@@ -13,6 +13,7 @@ REGISTRY = {
     "boolean_vector": "rds2py.parse_boolean_vector",
     "string_vector": "rds2py.parse_string_vector",
     "double_vector": "rds2py.parse_double_vector",
+    "vector": "rds2py.parse_vector",
 }
 
 
@@ -46,15 +47,15 @@ def read_rds(path: str, **kwargs):
         Some kind of object.
     """
     _robj = parse_rds(path=path)
+    print(_robj)
     _class_name = get_class(_robj)
 
     print("in READ_RDS")
-    print(_robj)
     print(_class_name)
 
     if _class_name not in REGISTRY:
         raise NotImplementedError(
-            f"no `read_rds` method implemented for '{_class_name}' objects."
+            f"No `read_rds` method implemented for '{_class_name}' objects."
         )
 
     # from Aaron's dolomite-base package

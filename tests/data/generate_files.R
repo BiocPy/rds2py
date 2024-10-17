@@ -70,6 +70,11 @@ attr(vals, "foo") <- c("BAR", "bar", "Bar")
 class(vals) <- "frog"
 saveRDS(vals, file="atomic_attr.rds")
 
+# scalars
+
+y <- 10
+saveRDS(y, file="scalar_int.rds")
+
 # lists
 
 y <- list(runif(10), runif(20), runif(30))

@@ -69,6 +69,8 @@ cdef class PyRdsReader:
         return result
 
     def realize_value(self):
+        print(self.rtype)
+        print("in realize value")
         _rtype = self.rtype.decode('UTF-8')
         result = {
             "rtype": _rtype
@@ -93,7 +95,7 @@ cdef class PyRdsReader:
         elif _rtype in ["vector"]:
             result["data"] =  self._get_vector_arr()
             result["attributes"] = self.realize_attr_value()
-            result["class_name"] = self.get_class_name()
+            result["class_name"] = "vector"
         elif _rtype in ["null"]:
             return result
         elif _rtype in ["S4"]:

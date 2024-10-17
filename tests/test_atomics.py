@@ -87,3 +87,15 @@ def test_read_atomic_chars_unicode():
     assert isinstance(arr, StringList)
     assert len(arr) == 4
     assert arr.names is None
+
+
+## Test scalar values, defaults to a vector
+
+
+def test_read_scalar_float():
+    obj = read_rds("tests/data/scalar_int.rds")
+
+    assert obj is not None
+    assert isinstance(obj, FloatList)
+    assert len(obj) == 1
+    assert obj[0] == 10.0

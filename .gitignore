@@ -52,3 +52,6 @@ MANIFEST
 .venv*/
 .conda*/
 .python-version
+
+extern/rds2cpp*
+src/rds2py/lib/parser.cpp
