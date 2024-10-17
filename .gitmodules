@@ -1,3 +1,0 @@
-[submodule "extern/rds2cpp"]
-	path = extern/rds2cpp
-	url = https://github.com/LTLA/rds2cpp

@@ -1,6 +1,6 @@
 import pytest
 
-from rds2py.core import PyParsedObject
+from rds2py.lib_rds import PyParsedObject
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
