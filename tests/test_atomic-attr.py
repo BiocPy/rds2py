@@ -9,7 +9,6 @@ __license__ = "MIT"
 
 def test_read_atomic_attrs():
     parsed_obj = PyRdsReader("tests/data/atomic_attr.rds")
-    print(parsed_obj)
     data = parsed_obj.read()
     print(data)
 
