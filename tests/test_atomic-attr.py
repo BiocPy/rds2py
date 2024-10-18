@@ -1,6 +1,6 @@
 import pytest
 
-from rds2py.lib_rds import PyRdsObject
+from rds2py.PyRdsReader import PyRdsReader
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -8,13 +8,10 @@ __license__ = "MIT"
 
 
 def test_read_atomic_attrs():
-    parsed_obj = PyRdsObject("tests/data/atomic_attr.rds")
-    robject_obj = parsed_obj.get_robject()
-    array = robject_obj.realize_value()
-    attr_names = robject_obj.get_attribute_names()
-    attr_values = robject_obj.realize_attr_value()
+    parsed_obj = PyRdsReader("tests/data/atomic_attr.rds")
+    data = parsed_obj.read()
 
-    assert array is not None
-    assert len(array) > 0
-    assert len(attr_names) is not None
-    assert len(attr_values) is not None
+    assert data is not None
+    assert len(data["data"]) > 0
+    assert len(data["attributes"]) >0
+    assert len(data["attributes"]["names"]["data"]) >0

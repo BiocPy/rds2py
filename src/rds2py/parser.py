@@ -1,6 +1,6 @@
 from typing import Dict, MutableMapping
 
-from . import lib_rds as lib
+from .PyRdsReader import PyRdsReader
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -16,9 +16,8 @@ def read_rds(file: str) -> Dict:
     Returns:
         MutableMapping: R object as a python dictionary.
     """
-    parsed_obj = lib.PyRdsObject(file)
-    robject_obj = parsed_obj.get_robject()
-    realized = robject_obj.realize_value()
+    parsed_obj = PyRdsReader(file)
+    realized = parsed_obj.read()
 
     return realized
 

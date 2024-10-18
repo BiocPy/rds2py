@@ -31,6 +31,6 @@ set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD 17)
 target_link_libraries(${TARGET} PRIVATE rds2cpp pybind11::pybind11)
 
 set_target_properties(${TARGET} PROPERTIES
-    OUTPUT_NAME lib_rds
+    OUTPUT_NAME rds_parser
     PREFIX ""
 )
