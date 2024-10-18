@@ -81,7 +81,7 @@ class PyRdsValue:
                     result["data"] = range(-data[1])
         return result
 
-def get_dimensions(self) -> Tuple[int, int]:
+    def get_dimensions(self) -> Tuple[int, int]:
         """Get dimensions of the RDS object"""
         try:
             return self.obj.get_dimensions()

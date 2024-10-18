@@ -1,7 +1,9 @@
+// rds_bindings.cpp
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
 #include "rds2cpp/rds2cpp.hpp"
+#include <memory>
 
 namespace py = pybind11;
 
@@ -85,6 +87,9 @@ public:
     }
 
     std::vector<std::string> get_attribute_names() const {
+        if (!ptr) {
+            throw std::runtime_error("Null pointer in get_attribute_names");
+        }
         switch (ptr->type()) {
             case rds2cpp::SEXPType::INT:
                 return static_cast<const rds2cpp::IntegerVector*>(ptr.get())->attributes.names;
@@ -191,7 +196,7 @@ private:
 public:
     RdsParser(const std::string& filename) {
         try {
-            parsed = std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(filename));        
+            parsed = std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(filename));
         } catch (const std::exception& e) {
             throw std::runtime_error("Failed to parse RDS file: " + std::string(e.what()));
         }
@@ -211,6 +216,7 @@ PYBIND11_MODULE(rds_parser, m) {
     py::register_exception<std::runtime_error>(m, "RdsParserError");
 
     py::class_<RdsObject>(m, "RdsObject")
+        // .def(py::init<const RdsObject&>())
         .def("get_type", &RdsObject::get_type)
         .def("get_size", &RdsObject::get_size)
         .def("get_numeric_data", &RdsObject::get_numeric_data)
