@@ -1,6 +1,6 @@
 import pytest
 
-from rds2py.lib_rds import PyParsedObject
+from rds2py.lib_rds import PyRdsObject
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -8,7 +8,7 @@ __license__ = "MIT"
 
 
 def test_read_atomic_attrs():
-    parsed_obj = PyParsedObject("tests/data/atomic_attr.rds")
+    parsed_obj = PyRdsObject("tests/data/atomic_attr.rds")
     robject_obj = parsed_obj.get_robject()
     array = robject_obj.realize_value()
     attr_names = robject_obj.get_attribute_names()

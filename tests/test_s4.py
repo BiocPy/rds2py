@@ -1,6 +1,6 @@
 import pytest
 
-from rds2py.lib_rds import PyParsedObject
+from rds2py.lib_rds import PyRdsObject
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -8,7 +8,7 @@ __license__ = "MIT"
 
 
 def test_read_s4_class():
-    parsed_obj = PyParsedObject("tests/data/s4_class.rds")
+    parsed_obj = PyRdsObject("tests/data/s4_class.rds")
     robject_obj = parsed_obj.get_robject()
     array = robject_obj.realize_value()
 
@@ -16,7 +16,7 @@ def test_read_s4_class():
 
 
 def test_read_s4_matrix():
-    parsed_obj = PyParsedObject("tests/data/s4_matrix.rds")
+    parsed_obj = PyRdsObject("tests/data/s4_matrix.rds")
     robject_obj = parsed_obj.get_robject()
     array = robject_obj.realize_value()
 
@@ -24,7 +24,7 @@ def test_read_s4_matrix():
 
 
 def test_read_s4_matrix_dgt():
-    parsed_obj = PyParsedObject("tests/data/s4_matrix_dgt.rds")
+    parsed_obj = PyRdsObject("tests/data/s4_matrix_dgt.rds")
     robject_obj = parsed_obj.get_robject()
     array = robject_obj.realize_value()
 

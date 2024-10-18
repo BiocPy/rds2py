@@ -16,7 +16,7 @@ def read_rds(file: str) -> Dict:
     Returns:
         MutableMapping: R object as a python dictionary.
     """
-    parsed_obj = lib.PyParsedObject(file)
+    parsed_obj = lib.PyRdsObject(file)
     robject_obj = parsed_obj.get_robject()
     realized = robject_obj.realize_value()
 
