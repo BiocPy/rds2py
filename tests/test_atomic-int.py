@@ -13,4 +13,5 @@ def test_read_atomic_ints():
     array = robject_obj.realize_value()
 
     assert array is not None
+    print(array)
     assert array["data"].shape[0] == 112

@@ -272,18 +272,6 @@ inline std::pair<size_t, size_t> parse_robject_dimensions(uintptr_t ptr) {
 
 // Class definitions
 
-class PyRdsObject {
-private:
-    std::unique_ptr<rds2cpp::Parsed> parsed;
-
-public:
-    PyRdsObject(const std::string& file) : parsed(std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(file))) {}
-
-    py::object get_robject() {
-        return py::cast(parsed->object.get());
-    }
-};
-
 class PyRdsReader {
 private:
     const rds2cpp::RObject* ptr;
@@ -319,18 +307,14 @@ public:
         if (rtype == "integer" || rtype == "boolean") {
             result["data"] = _get_int_or_bool_arr();
             result["attributes"] = realize_attr_value();
-            result["class_name"] = rtype == "integer" ? "integer_vector" : "boolean_vector";
         } else if (rtype == "double") {
             result["data"] = _get_double_arr();
             result["attributes"] = realize_attr_value();
-            result["class_name"] = "double_vector";
         } else if (rtype == "string") {
             result["data"] = _get_string_arr();
-            result["class_name"] = "string_vector";
         } else if (rtype == "vector") {
             result["data"] = _get_vector_arr();
             result["attributes"] = realize_attr_value();
-            result["class_name"] = "vector";
         } else if (rtype == "null") {
             return result;
         } else if (rtype == "S4") {
@@ -436,6 +420,18 @@ public:
     }
 };
 
+class PyRdsObject {
+private:
+    std::unique_ptr<rds2cpp::Parsed> parsed;
+
+public:
+    PyRdsObject(const std::string& file) : parsed(std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(file))) {}
+
+    PyRdsReader get_robject() {
+        return PyRdsReader(parsed->object.get());
+    }
+};
+
 PYBIND11_MODULE(lib_rds, m) {
     py::class_<PyRdsObject>(m, "PyRdsObject")
         .def(py::init<const std::string&>())
@@ -453,5 +449,6 @@ PYBIND11_MODULE(lib_rds, m) {
         .def("load_vec_element", &PyRdsReader::load_vec_element)
         .def("get_package_name", &PyRdsReader::get_package_name)
         .def("get_class_name", &PyRdsReader::get_class_name)
-        .def("get_dimensions", &PyRdsReader::get_dimensions);
+        .def("get_dimensions", &PyRdsReader::get_dimensions)
+        .def("realize_attr_value", &PyRdsReader::realize_attr_value);
 }
