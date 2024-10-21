@@ -67,8 +67,6 @@ class build_ext(build_ext_orig):
 
 
 if __name__ == "__main__":
-    import os
-
     try:
         setup(
             use_scm_version={"version_scheme": "no-guess-dev"},
