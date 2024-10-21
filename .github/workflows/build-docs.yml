@@ -31,7 +31,7 @@ jobs:
 
       - name: Build docs
         run: |
-          touch src/dolomite_base/lib_dolomite_base.py
+          touch src/rds2py/rds_parser.py
           sphinx-build --color -b html -d docs/doctrees docs docs/_build/html
           touch ./docs/_build/html/.nojekyll
 
