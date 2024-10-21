@@ -2,12 +2,10 @@
 <html class="no-js" lang="en" data-content_root="./">
   <head><meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial.html" /><link rel="prev" title="rds2py" href="index.html" />
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" />
 
-    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
-        <title>rds2py - rds2py unknown documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 --><title>Python Module Index - rds2py unknown documentation</title>
+<link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     
@@ -178,7 +176,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
         <div class="visually-hidden">Toggle table of contents sidebar</div>
         <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
       </label>
@@ -198,8 +196,8 @@
   <input type="hidden" name="area" value="default">
 </form>
 <div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
-  <ul class="current">
-<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Overview</a></li>
+  <ul>
+<li class="toctree-l1"><a class="reference internal" href="readme.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributions &amp; Help</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
@@ -228,13 +226,7 @@
           <span>Back to top</span>
         </a>
         <div class="content-icon-container">
-          <div class="view-this-page">
-  <a class="muted-link" href="_sources/readme.md.txt" title="View this page">
-    <svg><use href="#svg-eye"></use></svg>
-    <span class="visually-hidden">View this page</span>
-  </a>
-</div>
-<div class="theme-toggle-container theme-toggle-content">
+          <div class="theme-toggle-container theme-toggle-content">
             <button class="theme-toggle">
               <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
               <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
@@ -243,102 +235,46 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
             <div class="visually-hidden">Toggle table of contents sidebar</div>
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <p><a class="reference external" href="https://pyscaffold.org/"><img alt="Project generated with PyScaffold" src="https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold" /></a>
-<a class="reference external" href="https://pypi.org/project/rds2py/"><img alt="PyPI-Server" src="https://img.shields.io/pypi/v/rds2py.svg" /></a>
-<img alt="Unit tests" src="https://github.com/BiocPy/rds2py/actions/workflows/pypi-test.yml/badge.svg" /></p>
-<section class="tex2jax_ignore mathjax_ignore" id="rds2py">
-<h1>rds2py<a class="headerlink" href="#rds2py" title="Link to this heading">¶</a></h1>
-<p>Parse and construct Python representations for datasets stored in RDS files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports a few base classes from R and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <strong><em>This is possible because of <a class="reference external" href="https://github.com/LTLA/rds2cpp">Aaron’s rds2cpp library</a>.</em></strong></p>
-<p>The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython of course). This is especially useful for large datasets so we don’t make multiple copies of data.</p>
-<section id="install">
-<h2>Install<a class="headerlink" href="#install" title="Link to this heading">¶</a></h2>
-<p>Package is published to <a class="reference external" href="https://pypi.org/project/rds2py/">PyPI</a></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>rds2py
-</pre></div>
-</div>
+          
+<section class="domainindex-section">
+  <h1>Python Module Index</h1>
+  <div class="domainindex-jumpbox"><a href="#cap-r"><strong>r</strong></a></div>
 </section>
-<section id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
-<p>If you do not have an RDS object handy, feel free to download one from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_summarized_experiment</span><span class="p">,</span> <span class="n">read_rds</span>
-
-<span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_file</span><span class="o">&gt;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This <code class="docutils literal notranslate"><span class="pre">r_obj</span></code> holds a dictionary representation of the RDS file, we can now transform this object into Python representations.</p>
-<p><code class="docutils literal notranslate"><span class="pre">rObj</span></code> always contains two keys</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: If atomic entities, contains the NumPy view of the array.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">attributes</span></code>: Additional properties available for the object.</p></li>
-</ul>
-<p>In addition, the package provides functions to convert parsed R objects into Python representations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_spase_matrix</span><span class="p">,</span> <span class="n">as_summarized_experiment</span>
-
-<span class="c1"># to convert an robject to a sparse matrix</span>
-<span class="n">sp_mat</span> <span class="o">=</span> <span class="n">as_sparse</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
-
-<span class="c1"># to convert an robject to SCE</span>
-<span class="n">sce</span> <span class="o">=</span> <span class="n">as_summarized_experiment</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>For more examples converting <code class="docutils literal notranslate"><span class="pre">data.frame</span></code>, <code class="docutils literal notranslate"><span class="pre">dgCMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgRMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgTMatrix</span></code> to Python, checkout the <a class="reference external" href="https://biocpy.github.io/rds2py/">documentation</a>.</p>
-</section>
-<section id="developer-notes">
-<h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Link to this heading">¶</a></h2>
-<p>This project uses Cython to provide bindings from C++ to Python.</p>
-<p>Steps to setup dependencies -</p>
-<ul class="simple">
-<li><p>git submodules is initialized in <code class="docutils literal notranslate"><span class="pre">extern/rds2cpp</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">.</span></code> in <code class="docutils literal notranslate"><span class="pre">extern/rds2cpp</span></code> directory to download dependencies, especially the <code class="docutils literal notranslate"><span class="pre">byteme</span></code> library</p></li>
-</ul>
-<p>First one needs to build the extern library, this would generate a shared object file to <code class="docutils literal notranslate"><span class="pre">src/rds2py/core-[*].so</span></code></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace
-</pre></div>
-</div>
-<p>For typical development workflows, run</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tox
-</pre></div>
-</div>
-<!-- pyscaffold-notes -->
-</section>
-<section id="note">
-<h2>Note<a class="headerlink" href="#note" title="Link to this heading">¶</a></h2>
-<p>This project has been set up using PyScaffold 4.5. For details and usage
-information on PyScaffold see <a class="reference external" href="https://pyscaffold.org/">https://pyscaffold.org/</a>.</p>
-</section>
-</section>
+<table class="domainindex-table">
+  <tr class="pcap">
+    <td></td><td>&#160;</td><td></td>
+  </tr>
+  <tr class="cap" id="cap-r">
+    <td></td><td><strong>r</strong></td><td></td>
+  </tr>
+  <tr>
+    <td><img src="_static/minus.png" class="toggler"
+              id="toggle-1" style="display: none" alt="-" /></td>
+    <td>
+        <code class="xref">rds2py</code></td><td>
+    <em></em></td>
+  </tr>
+  <tr class="cg-1">
+    <td></td>
+    <td>&#160;&#160;&#160;
+        <a href="api/rds2py.html#module-rds2py.rds_parser"><code class="xref">rds2py.rds_parser</code></a></td><td>
+    <em></em></td>
+  </tr>
+</table>
 
         </article>
       </div>
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="tutorial.html">
-              <div class="page-info">
-                <div class="context">
-                  <span>Next</span>
-                </div>
-                <div class="title">Tutorial</div>
-              </div>
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-            </a>
-          <a class="prev-page" href="index.html">
-              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
-              <div class="page-info">
-                <div class="context">
-                  <span>Previous</span>
-                </div>
-                
-                <div class="title">Home</div>
-                
-              </div>
-            </a>
+          
+          
         </div>
         <div class="bottom-of-page">
           <div class="left-details">
@@ -357,30 +293,8 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
         
       </footer>
     </div>
-    <aside class="toc-drawer">
+    <aside class="toc-drawer no-toc">
       
-      
-      <div class="toc-sticky toc-scroll">
-        <div class="toc-title-container">
-          <span class="toc-title">
-            On this page
-          </span>
-        </div>
-        <div class="toc-tree-container">
-          <div class="toc-tree">
-            <ul>
-<li><a class="reference internal" href="#">rds2py</a><ul>
-<li><a class="reference internal" href="#install">Install</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
-<li><a class="reference internal" href="#developer-notes">Developer Notes</a></li>
-<li><a class="reference internal" href="#note">Note</a></li>
-</ul>
-</li>
-</ul>
-
-          </div>
-        </div>
-      </div>
       
       
     </aside>
