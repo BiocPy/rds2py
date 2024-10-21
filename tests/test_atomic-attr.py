@@ -14,5 +14,5 @@ def test_read_atomic_attrs():
 
     assert data is not None
     assert len(data["data"]) > 0
-    assert len(data["attributes"]) >0
+    assert len(data["attributes"]) > 0
     assert len(data["attributes"]["names"]["data"]) == 1000

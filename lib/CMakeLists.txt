@@ -22,7 +22,7 @@ set(TARGET rds2py)
 find_package(pybind11 CONFIG)
 
 # pybind11 method:
-pybind11_add_module(${TARGET} 
+pybind11_add_module(${TARGET}
     src/rdswrapper.cpp
 )
 

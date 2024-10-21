@@ -10,6 +10,7 @@ class PyRdsParserError(Exception):
 
 class PyRdsParser:
     """Python bindings to the rds2cpp interface."""
+
     def __init__(self, file_path: str):
         try:
             self.rds_object = RdsObject(file_path)
