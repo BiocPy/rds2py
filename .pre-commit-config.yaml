@@ -18,7 +18,7 @@ repos:
     args: ['--fix=auto']  # replace 'auto' with 'lf' to enforce Linux/Mac line endings or 'crlf' for Windows
 
 - repo: https://github.com/PyCQA/docformatter
-  rev: v1.7.5
+  rev: "master"
   hooks:
     - id: docformatter
       additional_dependencies: [tomli]
