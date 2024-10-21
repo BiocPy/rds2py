@@ -1,6 +1,6 @@
 import pytest
 
-from rds2py.PyRdsReader import PyRdsReader
+from rds2py.PyRdsReader import PyRdsParser
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -8,8 +8,8 @@ __license__ = "MIT"
 
 
 def test_read_atomic_ints():
-    parsed_obj = PyRdsReader("tests/data/atomic_ints.rds")
-    array = parsed_obj.read()
+    parsed_obj = PyRdsParser("tests/data/atomic_ints.rds")
+    array = parsed_obj.parse()
 
     assert array is not None
     print(array)
