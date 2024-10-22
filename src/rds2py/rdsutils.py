@@ -1,4 +1,3 @@
-
 from .PyRdsReader import PyRdsParser
 
 __author__ = "jkanche"
