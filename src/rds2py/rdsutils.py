@@ -17,7 +17,7 @@ def parse_rds(path: str) -> dict:
     Returns:
         A dictionary with the contents of the RDS file.
     """
-    parsed_obj = PyRdsParser(file)
+    parsed_obj = PyRdsParser(path)
     realized = parsed_obj.parse()
 
     return realized
