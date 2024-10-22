@@ -12,10 +12,12 @@ __license__ = "MIT"
 
 
 def test_read_atomic_attrs():
-    obj = read_rds("tests/data/atomic_attr.rds")
+    data = read_rds("tests/data/atomic_attr.rds")
 
-    assert obj is not None
-
+    assert data is not None
+    assert isinstance(data, IntegerList)
+    assert len(data) == 1000
+    assert data.names is not None
 
 ## Booleans
 

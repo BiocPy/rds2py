@@ -1,5 +1,7 @@
 from biocutils import BooleanList, FloatList, IntegerList, StringList
 
+from .generics import _dispatcher
+
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
@@ -9,7 +11,7 @@ def _extract_names(robject: dict):
     _names = None
     if "attributes" in robject and robject["attributes"] is not None:
         if "names" in robject["attributes"]:
-            _names = list(parse_string_vector(robject["attributes"]["names"]))
+            _names = _dispatcher(robject["attributes"]["names"])
 
     return _names
 

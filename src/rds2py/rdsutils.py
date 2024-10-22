@@ -1,4 +1,3 @@
-
 from .PyRdsReader import PyRdsParser
 
 __author__ = "jkanche"
@@ -33,16 +32,26 @@ def get_class(robj: dict) -> str:
     Returns:
         A string representing the class name from R.
     """
+    is_integer = False
     if "class_name" in robj:
-        return robj["class_name"]
+        if "integer" in robj["class_name"]:
+            is_integer = True
+        elif robj["class_name"] != "vector":
+            return robj["class_name"]
 
-    if "attributes" in robj and len(robj["attributes"].keys()) > 0:
+    print(is_integer, "before")
+    if "attributes" in robj:
         obj_attr = robj["attributes"]
-        if "class" in obj_attr:
-            return obj_attr["class"]["data"][0]
 
         # kind of making this assumption, if we ever see a dim, its a matrix
-        if "dim" in obj_attr:
-            return "densematrix"
+        print(is_integer, obj_attr)
+        if is_integer:
+            if "dim" in obj_attr:
+                return "ndarray"
+            else: 
+                return robj["class_name"]
+        
+        if "class" in obj_attr:
+            return obj_attr["class"]["data"][0]
 
     return None
