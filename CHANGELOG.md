@@ -1,5 +1,14 @@
 # Changelog
 
+## Development
+
+- Fix github issue with showing incorrect package version on github pages.
+
+## Version 0.4.5
+
+- Switch to pybind11 to implementing the bindings to rds2cpp.
+- Update tests, documentation and actions.
+
 ## Version 0.4.4
 
 - Add methods to parse RDS files containing `GenomicRangesList`
