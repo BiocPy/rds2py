@@ -7,13 +7,13 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def _as_sparse_matrix(robj: dict):
+def _as_sparse_matrix(robject: dict):
     """Parse an R object as a sparse matrix.
 
     Only supports reading of `dgCMatrix`, `dgRMatrix`, `dgTMatrix` marices.
 
     Args:
-        robj:
+        robject:
             Object parsed from the `RDS` file.
 
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
@@ -23,51 +23,51 @@ def _as_sparse_matrix(robj: dict):
     """
     from scipy.sparse import csc_matrix, csr_matrix
 
-    _cls = get_class(robj)
+    _cls = get_class(robject)
 
     if _cls not in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
-        raise TypeError(
-            f"`robj` does not contain not a supported sparse matrix format, contains `{_cls}`."
+        raise RuntimeError(
+            f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`."
         )
 
     if _cls == "dgCMatrix":
         return csc_matrix(
             (
-                robj["attributes"]["x"]["data"],
-                robj["attributes"]["i"]["data"],
-                robj["attributes"]["p"]["data"],
+                robject["attributes"]["x"]["data"],
+                robject["attributes"]["i"]["data"],
+                robject["attributes"]["p"]["data"],
             ),
-            shape=tuple(robj["attributes"]["Dim"]["data"].tolist()),
+            shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),
         )
 
     if _cls == "dgRMatrix":
         return csr_matrix(
             (
-                robj["attributes"]["x"]["data"],
-                robj["attributes"]["i"]["data"],
-                robj["attributes"]["p"]["data"],
+                robject["attributes"]["x"]["data"],
+                robject["attributes"]["i"]["data"],
+                robject["attributes"]["p"]["data"],
             ),
-            shape=tuple(robj["attributes"]["Dim"]["data"].tolist()),
+            shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),
         )
 
     if _cls == "dgTMatrix":
         return csr_matrix(
             (
-                robj["attributes"]["x"]["data"],
+                robject["attributes"]["x"]["data"],
                 (
-                    robj["attributes"]["i"]["data"],
-                    robj["attributes"]["j"]["data"],
+                    robject["attributes"]["i"]["data"],
+                    robject["attributes"]["j"]["data"],
                 ),
             ),
-            shape=tuple(robj["attributes"]["Dim"]["data"].tolist()),
+            shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),
         )
 
 
-def _as_dense_matrix(robj, order: Literal["C", "F"] = "F"):
+def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
     """Parse an R object as a :py:class:`~numpy.ndarray`.
 
     Args:
-        robj:
+        robject:
             Object parsed from the `RDS` file.
 
             Usually the result of :py:func:`~rds2py.parser.read_rds`.
@@ -81,7 +81,7 @@ def _as_dense_matrix(robj, order: Literal["C", "F"] = "F"):
     Returns:
         An ``ndarray`` of the R object.
     """
-    _cls = get_class(robj)
+    _cls = get_class(robject)
 
     from numpy import ndarray
 
@@ -92,24 +92,24 @@ def _as_dense_matrix(robj, order: Literal["C", "F"] = "F"):
         raise TypeError(f"obj is not a supported dense matrix format, but is `{_cls}`.")
 
     return ndarray(
-        shape=tuple(robj["attributes"]["dim"]["data"].tolist()),
-        dtype=robj["data"].dtype,
-        buffer=robj["data"],
+        shape=tuple(robject["attributes"]["dim"]["data"].tolist()),
+        dtype=robject["data"].dtype,
+        buffer=robject["data"],
         order=order,
     )
 
 
-def parse_dgcmatrix(robject: dict):
-    return _as_sparse_matrix(robject)
+def parse_dgcmatrix(robjectect: dict):
+    return _as_sparse_matrix(robjectect)
 
 
-def parse_dgrmatrix(robject: dict):
-    return _as_sparse_matrix(robject)
+def parse_dgrmatrix(robjectect: dict):
+    return _as_sparse_matrix(robjectect)
 
 
-def parse_dgtmatrix(robject: dict):
-    return _as_sparse_matrix(robject)
+def parse_dgtmatrix(robjectect: dict):
+    return _as_sparse_matrix(robjectect)
 
 
-def parse_ndarray(robject: dict, order: Literal["C", "F"] = "F"):
-    return _as_dense_matrix(robject, order=order)
+def parse_ndarray(robjectect: dict, order: Literal["C", "F"] = "F"):
+    return _as_dense_matrix(robjectect, order=order)

@@ -22,5 +22,5 @@ from .read_atomic import parse_boolean_vector, parse_double_vector, parse_intege
 from .read_matrix import parse_dgcmatrix, parse_dgrmatrix, parse_dgtmatrix, parse_ndarray
 from .read_frame import parse_data_frame, parse_dframe
 from .read_factor import parse_factor
-from .read_granges import parse_genomic_ranges
+from .read_granges import parse_genomic_ranges, parse_granges_list
 from .read_rle import parse_rle

@@ -7,7 +7,14 @@ __license__ = "MIT"
 
 
 def parse_factor(robject: dict):
-    print("in parsing factors")
+
+    _cls = get_class(robject)
+
+    if _cls not in ["factor"]:
+        raise RuntimeError(
+            f"`robject` does not contain not a factor object, contains `{_cls}`."
+        )
+
     data = robject["data"]
 
     levels = None

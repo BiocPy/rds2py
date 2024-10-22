@@ -29,6 +29,9 @@ REGISTRY = {
     "DFrame": "rds2py.parse_dframe",
     # genomic ranges
     "GRanges": "rds2py.parse_genomic_ranges",
+    "GenomicRanges": "rds2py.parse_genomic_ranges",
+    "CompressedGRangesList": "rds2py.parse_granges_list",
+    "GRangesList": "rds2py.parse_granges_list",
 }
 
 
@@ -62,18 +65,21 @@ def read_rds(path: str, **kwargs):
         Some kind of object.
     """
     _robj = parse_rds(path=path)
-    print(_robj)
     return _dispatcher(_robj, **kwargs)
 
 
 def _dispatcher(robject: dict, **kwargs):
     _class_name = get_class(robject)
 
-    print("in READ_RDS")
-    print(_class_name)
+    if _class_name is None:
+        return None
+
+    # print("in READ_RDS")
+    # print(_class_name)
     # if a class is registered, coerce the object
     # to the representation.
     if _class_name in REGISTRY:
+        # try:
         command = REGISTRY[_class_name]
         if isinstance(command, str):
             first_period = command.find(".")
@@ -82,6 +88,11 @@ def _dispatcher(robject: dict, **kwargs):
             REGISTRY[_class_name] = command
 
         return command(robject, **kwargs)
+        # except Exception as e:
+        #     warn(
+        #         f"Failed to coerce RDS object to class: '{_class_name}', returning the dictionary, {str(e)}",
+        #         RuntimeWarning,
+        #     )
     else:
         warn(
             f"RDS file contains an unknown class: '{_class_name}', returning the dictionary",

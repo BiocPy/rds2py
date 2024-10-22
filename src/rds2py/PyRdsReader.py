@@ -65,6 +65,7 @@ class PyRdsParser:
                 warn(f"Unsupported R object type: {rtype}", RuntimeWarning)
                 result["data"] = None
                 result["attributes"] = None
+                result["class_name"] = None
 
             return result
         except Exception as e:

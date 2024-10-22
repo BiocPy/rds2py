@@ -7,7 +7,6 @@ __license__ = "MIT"
 
 
 def parse_rle(robject: dict):
-    print("in parsing rle")
     data = list(_dispatcher(robject["attributes"]["values"]))
 
     if "lengths" in robject["attributes"]:
