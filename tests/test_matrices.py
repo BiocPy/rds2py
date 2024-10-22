@@ -11,7 +11,7 @@ __license__ = "MIT"
 
 def test_read_s4_matrix_dgc():
     array = read_rds("tests/data/s4_matrix.rds")
-    
+
     assert array is not None
     assert isinstance(array, sp.spmatrix)
 

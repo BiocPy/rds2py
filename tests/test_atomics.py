@@ -17,6 +17,7 @@ def test_read_atomic_attrs():
     assert data is not None
     assert isinstance(data, dict)
 
+
 ## Booleans
 
 

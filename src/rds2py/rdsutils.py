@@ -52,7 +52,7 @@ def get_class(robj: dict) -> str:
                 return obj_attr["class"]["data"][0]
             else: 
                 return robj["class_name"]
-        
+
         if "class" in obj_attr:
             return obj_attr["class"]["data"][0]
 
