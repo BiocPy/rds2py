@@ -1,6 +1,5 @@
 from typing import Literal
 
-from biocutils import BooleanList, FloatList, IntegerList, StringList
 
 from .rdsutils import get_class
 

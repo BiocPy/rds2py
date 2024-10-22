@@ -19,6 +19,7 @@ def test_read_atomic_attrs():
     assert len(data) == 1000
     assert data.names is not None
 
+
 ## Booleans
 
 
