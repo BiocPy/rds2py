@@ -1,5 +1,4 @@
 from .generics import _dispatcher
-from .rdsutils import get_class
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"

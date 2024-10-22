@@ -48,9 +48,9 @@ def get_class(robj: dict) -> str:
         if is_integer:
             if "dim" in obj_attr:
                 return "ndarray"
-            elif "class" in obj_attr: 
+            elif "class" in obj_attr:
                 return obj_attr["class"]["data"][0]
-            else: 
+            else:
                 return robj["class_name"]
 
         if "class" in obj_attr:

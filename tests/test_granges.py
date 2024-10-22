@@ -14,7 +14,18 @@ def test_granges():
     gr = read_rds("tests/data/granges.rds")
 
     assert isinstance(gr, GenomicRanges)
-    assert gr.get_seqnames("list") == ['chr1', 'chr2', 'chr2', 'chr2', 'chr1', 'chr1', 'chr3', 'chr3', 'chr3', 'chr3']
+    assert gr.get_seqnames("list") == [
+        "chr1",
+        "chr2",
+        "chr2",
+        "chr2",
+        "chr1",
+        "chr1",
+        "chr3",
+        "chr3",
+        "chr3",
+        "chr3",
+    ]
     assert np.allclose(gr.get_start(), range(101, 111))
 
 
