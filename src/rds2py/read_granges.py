@@ -1,16 +1,15 @@
-from biocframe import BiocFrame
 from genomicranges import GenomicRanges, GenomicRangesList, SeqInfo
 from iranges import IRanges
 
-from .rdsutils import get_class
 from .generics import _dispatcher
+from .rdsutils import get_class
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def as_granges(robj):
+def parse_genomic_ranges(robj):
     """Parse an R object as a :py:class:`~genomicranges.GenomicRanges.GenomicRanges`.
 
     Args:
@@ -32,29 +31,21 @@ def as_granges(robj):
     _range_names = None
     if "NAMES" in robj["attributes"]["ranges"]["attributes"]:
         _range_names = _dispatcher(robj["attributes"]["ranges"]["attributes"]["NAMES"])
-    _ranges = IRanges(_range_start, _range_width, names=_range_names)
 
-    _seqnames = _as_list(robj["attributes"]["seqnames"])
+    _ranges = IRanges(_range_start, _range_width, names=list(_range_names))
 
-    _strands = robj["attributes"]["strand"]
-    _fstrand = None
-    if "attributes" in _strands:
-        _lengths = _strands["attributes"]["lengths"]["data"]
-        _factors = _strands["attributes"]["values"]["data"]
-        _levels = _strands["attributes"]["values"]["attributes"]["levels"]["data"]
-        _strds = [_levels[x - 1] for x in _factors]
-        _fstrand = []
-        for i, x in enumerate(_lengths):
-            _fstrand.extend([_strds[i]] * x)
-
-    _seqinfo_seqnames = robj["attributes"]["seqinfo"]["attributes"]["seqnames"]["data"]
-    _seqinfo_seqlengths = robj["attributes"]["seqinfo"]["attributes"]["seqlengths"][
-        "data"
-    ]
-    _seqinfo_is_circular = robj["attributes"]["seqinfo"]["attributes"]["is_circular"][
-        "data"
-    ]
-    _seqinfo_genome = robj["attributes"]["seqinfo"]["attributes"]["genome"]["data"]
+    _strands = _dispatcher(robj["attributes"]["strand"])
+    _seqnames = _dispatcher(robj["attributes"]["seqnames"])
+    _seqinfo_seqnames = _dispatcher(
+        robj["attributes"]["seqinfo"]["attributes"]["seqnames"]
+    )
+    _seqinfo_seqlengths = _dispatcher(
+        robj["attributes"]["seqinfo"]["attributes"]["seqlengths"]
+    )
+    _seqinfo_is_circular = _dispatcher(
+        robj["attributes"]["seqinfo"]["attributes"]["is_circular"]
+    )
+    _seqinfo_genome = _dispatcher(robj["attributes"]["seqinfo"]["attributes"]["genome"])
     _seqinfo = SeqInfo(
         seqnames=_seqinfo_seqnames,
         seqlengths=[None if x == -2147483648 else int(x) for x in _seqinfo_seqlengths],
@@ -63,19 +54,18 @@ def as_granges(robj):
         ],
         genome=_seqinfo_genome,
     )
-
-    _mcols = BiocFrame.from_pandas(
-        as_pandas_from_dframe(robj["attributes"]["elementMetadata"])
-    )
+    _mcols = _dispatcher(robj["attributes"]["elementMetadata"])
 
     _gr_names = None
     if "NAMES" in robj["attributes"]:
-        _gr_names = robj["attributes"]["NAMES"]["data"]
+        _gr_names = _dispatcher(robj["attributes"]["NAMES"])
+
+    print("starts here", _seqnames, _ranges, _strands, _gr_names, _mcols, _seqinfo)
 
     return GenomicRanges(
         seqnames=_seqnames,
         ranges=_ranges,
-        strand=_fstrand,
+        strand=_strands,
         names=_gr_names,
         mcols=_mcols,
         seqinfo=_seqinfo,

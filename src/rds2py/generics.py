@@ -9,11 +9,16 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 REGISTRY = {
+    # vectors
     "integer_vector": "rds2py.parse_integer_vector",
     "boolean_vector": "rds2py.parse_boolean_vector",
     "string_vector": "rds2py.parse_string_vector",
     "double_vector": "rds2py.parse_double_vector",
     "vector": "rds2py.parse_vector",
+    # factors
+    "factor": "rds2py.parse_factor",
+    # Rle
+    "Rle": "rds2py.parse_rle",
     # matrices
     "dgCMatrix": "rds2py.parse_dgcmatrix",
     "dgRMatrix": "rds2py.parse_dgrmatrix",
@@ -22,6 +27,8 @@ REGISTRY = {
     # data frames
     "data.frame": "rds2py.parse_data_frame",
     "DFrame": "rds2py.parse_dframe",
+    # genomic ranges
+    "GRanges": "rds2py.parse_genomic_ranges",
 }
 
 

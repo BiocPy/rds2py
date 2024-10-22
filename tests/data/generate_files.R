@@ -111,3 +111,12 @@ gr <- GRanges(
     GC = seq(1, 0, length=10))
 
 saveRDS(gr, file="granges.rds")
+
+# factors
+
+f1 <- factor(c("chr1", "chr2", "chr1", "chr3"))
+saveRDS(f1, "simple_factors.rds")
+
+# Rle
+x2 <- Rle(LETTERS[c(21:26, 25:26)], 8:1)
+saveRDS(x2, "simple_rle.rds")

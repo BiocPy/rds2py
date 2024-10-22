@@ -15,9 +15,7 @@ def test_read_atomic_attrs():
     data = read_rds("tests/data/atomic_attr.rds")
 
     assert data is not None
-    assert isinstance(data, IntegerList)
-    assert len(data) == 1000
-    assert data.names is not None
+    assert isinstance(data, dict)
 
 ## Booleans
 

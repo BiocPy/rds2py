@@ -60,10 +60,10 @@ def parse_dframe(robj):
 
     data = {}
     col_names = _dispatcher(robj["attributes"]["listData"]["attributes"]["names"])
-    for idx in range(len(col_names)):
-        idx_asy = _dispatcher(robj["attributes"]["listData"]["data"][idx])
+    for idx, colname in enumerate(col_names):
+        data[colname] = _dispatcher(robj["attributes"]["listData"]["data"][idx])
 
-        data[col_names[idx]] = idx_asy["data"]
+    print("indframe", data)
 
     index = None
     if robj["attributes"]["rownames"]["data"]:
