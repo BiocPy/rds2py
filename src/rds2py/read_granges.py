@@ -16,7 +16,7 @@ def parse_genomic_ranges(robject):
         robject:
             Object parsed from the `RDS` file.
 
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+            Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
     Returns:
         A ``GenomicRanges`` object.
@@ -45,6 +45,7 @@ def parse_genomic_ranges(robject):
     _seqinfo_seqlengths = _dispatcher(
         robject["attributes"]["seqinfo"]["attributes"]["seqlengths"]
     )
+    print("SEQLENGTHS", _seqinfo_seqlengths)
     _seqinfo_is_circular = _dispatcher(
         robject["attributes"]["seqinfo"]["attributes"]["is_circular"]
     )
@@ -53,10 +54,8 @@ def parse_genomic_ranges(robject):
     )
     _seqinfo = SeqInfo(
         seqnames=_seqinfo_seqnames,
-        seqlengths=[None if x == -2147483648 else int(x) for x in _seqinfo_seqlengths],
-        is_circular=[
-            None if x == -2147483648 else bool(x) for x in _seqinfo_is_circular
-        ],
+        seqlengths=_seqinfo_seqlengths,
+        is_circular=_seqinfo_is_circular,
         genome=_seqinfo_genome,
     )
     _mcols = _dispatcher(robject["attributes"]["elementMetadata"])
@@ -83,7 +82,7 @@ def parse_granges_list(robject):
         robject:
             Object parsed from the `RDS` file.
 
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+            Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
     Returns:
         A ``GenomicRangesList`` object.
@@ -92,7 +91,7 @@ def parse_granges_list(robject):
     _cls = get_class(robject)
 
     if _cls not in ["CompressedGRangesList", "GRangesList"]:
-        raise TypeError(f"obj is not genomic ranges list, but is `{_cls}`.")
+        raise TypeError(f"`robject` is not genomic ranges list, but is `{_cls}`.")
 
     _gre = _dispatcher(robject["attributes"]["unlistData"])
 

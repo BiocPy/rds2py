@@ -22,7 +22,7 @@
 #         robj:
 #             Object parsed from the `RDS` file.
 
-#             Usually the result of :py:func:`~rds2py.parser.read_rds`.
+#             Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
 #     Returns:
 #         A :py:class:`~pandas.DataFrame` containing the data from the R Object.
@@ -48,7 +48,7 @@
 #         robj:
 #             Object parsed from the `RDS` file.
 
-#             Usually the result of :py:func:`~rds2py.parser.read_rds`.
+#             Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
 #     Returns:
 #         A sparse matrix of the R object.
@@ -102,7 +102,7 @@
 #         robj:
 #             Object parsed from the `RDS` file.
 
-#             Usually the result of :py:func:`~rds2py.parser.read_rds`.
+#             Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
 #         order:
 #             Row-major (**C**-style) or Column-major (**F**ortran-style)
@@ -140,7 +140,7 @@
 #         robj:
 #             Object parsed from the `RDS` file.
 
-#             Usually the result of :py:func:`~rds2py.parser.read_rds`.
+#             Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
 #         order:
 #             Row-major (**C**-style) or Column-major (**F**ortran-style)

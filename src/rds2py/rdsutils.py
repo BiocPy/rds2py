@@ -36,16 +36,17 @@ def get_class(robj: dict) -> str:
     if "class_name" in robj:
         if robj["class_name"] is None:
             return None
-
-        if "integer" in robj["class_name"]:
+        if "integer" in robj["class_name"] or "double" in robj["class_name"]:
             is_integer = True
         elif robj["class_name"] != "vector":
             return robj["class_name"]
 
+    print(is_integer, "before")
     if "attributes" in robj:
         obj_attr = robj["attributes"]
 
         # kind of making this assumption, if we ever see a dim, its a matrix
+        print(is_integer, obj_attr)
         if is_integer:
             if obj_attr is not None and "dim" in obj_attr:
                 return "ndarray"

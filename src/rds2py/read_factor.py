@@ -1,4 +1,5 @@
 from .generics import _dispatcher
+from .rdsutils import get_class
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -6,13 +7,10 @@ __license__ = "MIT"
 
 
 def parse_factor(robject: dict):
-
     _cls = get_class(robject)
 
     if _cls not in ["factor"]:
-        raise RuntimeError(
-            f"`robject` does not contain not a factor object, contains `{_cls}`."
-        )
+        raise RuntimeError(f"`robject` does not contain not a factor object, contains `{_cls}`.")
 
     data = robject["data"]
 

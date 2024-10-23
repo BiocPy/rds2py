@@ -13,7 +13,7 @@ def parse_data_frame(robject: dict):
         robject:
             Object parsed from the `RDS` file.
 
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+            Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
     Returns:
         A `DataFrame` from the R Object.
@@ -46,7 +46,7 @@ def parse_dframe(robject: dict):
         robject:
             Object parsed from the `RDS` file.
 
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+            Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
     Returns:
         A `DataFrame` from the R Object.

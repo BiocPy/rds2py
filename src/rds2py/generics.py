@@ -32,6 +32,9 @@ REGISTRY = {
     "GenomicRanges": "rds2py.parse_genomic_ranges",
     "CompressedGRangesList": "rds2py.parse_granges_list",
     "GRangesList": "rds2py.parse_granges_list",
+    # summarized experiment
+    "SummarizedExperiment": "rds2py.parse_summarized_experiment",
+    "RangedSummarizedExperiment": "rds2py.parse_ranged_summarized_experiment",
 }
 
 
@@ -65,6 +68,7 @@ def read_rds(path: str, **kwargs):
         Some kind of object.
     """
     _robj = parse_rds(path=path)
+    print("FULL OBJECT", _robj)
     return _dispatcher(_robj, **kwargs)
 
 
@@ -74,8 +78,8 @@ def _dispatcher(robject: dict, **kwargs):
     if _class_name is None:
         return None
 
-    # print("in READ_RDS")
-    # print(_class_name)
+    print("in READ_RDS")
+    print(_class_name)
     # if a class is registered, coerce the object
     # to the representation.
     if _class_name in REGISTRY:

@@ -16,7 +16,7 @@ def _as_sparse_matrix(robject: dict):
         robject:
             Object parsed from the `RDS` file.
 
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+            Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
     Returns:
         A sparse matrix of the R object.
@@ -70,7 +70,7 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
         robject:
             Object parsed from the `RDS` file.
 
-            Usually the result of :py:func:`~rds2py.parser.read_rds`.
+            Usually the result of :py:func:`~rds2py.generics.read_rds`.
 
         order:
             Row-major (**C**-style) or Column-major (**F**ortran-style)
