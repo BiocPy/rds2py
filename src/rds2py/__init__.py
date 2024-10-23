@@ -24,4 +24,4 @@ from .read_frame import parse_data_frame, parse_dframe
 from .read_factor import parse_factor
 from .read_granges import parse_genomic_ranges, parse_granges_list
 from .read_rle import parse_rle
-from .read_sumexp import parse_summarized_experiment, parse_ranged_summarized_experiment
+from .read_se import parse_summarized_experiment, parse_ranged_summarized_experiment
