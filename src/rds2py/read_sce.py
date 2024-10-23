@@ -32,14 +32,14 @@ def parse_single_cell_experiment(robject: dict):
     # check red. dims, alternative expts
     robj_reduced_dims = None
     robj_altExps = None
-    col_attrs = _dispatcher(robject["attributes"]["int_colData"]["attributes"]["listData"]["attributes"]["names"])
+    col_attrs = list(_dispatcher(robject["attributes"]["int_colData"]["attributes"]["listData"]["attributes"]["names"]))
 
     for idx in range(len(col_attrs)):
         idx_col = col_attrs[idx]
         idx_value = robject["attributes"]["int_colData"]["attributes"]["listData"]["data"][idx]
 
         if idx_col == "reducedDims" and idx_value["data"] is not None:
-            robj_reduced_dims = _dispatcher(robject["attributes"]["int_colData"]["attributes"]["listData"]["data"])
+            robj_reduced_dims = _dispatcher(idx_value)
 
         if idx_col == "altExps":
             alt_names = idx_value["attributes"]["listData"]["attributes"]["names"]["data"]

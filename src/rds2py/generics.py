@@ -71,7 +71,7 @@ def read_rds(path: str, **kwargs):
         Some kind of object.
     """
     _robj = parse_rds(path=path)
-    print("FULL OBJECT", _robj)
+    # print("FULL OBJECT", _robj)
     return _dispatcher(_robj, **kwargs)
 
 

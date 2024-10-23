@@ -142,3 +142,10 @@ rse <- SummarizedExperiment(assays=list(counts=counts),
                             rowRanges = rowRanges, colData=colData)
 saveRDS(se, "sumexpt.rds")
 saveRDS(rse, "ranged_se.rds")
+
+# SingleCell Experiment
+
+library(scRNAseq)
+sce <- ReprocessedAllenData("tophat_counts")
+sce_subset <- sce[1:100, 1:100]
+saveRDS(sce_subset, "simple_sce.rds")

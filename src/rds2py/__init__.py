@@ -15,13 +15,13 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-# from .core import *
-
 from .generics import read_rds
 from .read_atomic import parse_boolean_vector, parse_double_vector, parse_integer_vector, parse_string_vector
 from .read_matrix import parse_dgcmatrix, parse_dgrmatrix, parse_dgtmatrix, parse_ndarray
 from .read_frame import parse_data_frame, parse_dframe
 from .read_factor import parse_factor
+from .read_dict import parse_vector
 from .read_granges import parse_genomic_ranges, parse_granges_list
 from .read_rle import parse_rle
 from .read_se import parse_summarized_experiment, parse_ranged_summarized_experiment
+from .read_sce import parse_single_cell_experiment

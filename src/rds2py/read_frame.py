@@ -67,10 +67,15 @@ def parse_dframe(robject: dict):
     if robject["attributes"]["rownames"]["data"]:
         index = _dispatcher(robject["attributes"]["rownames"])
 
+    nrows = None
+    if robject["attributes"]["nrows"]["data"]:
+        nrows = list(_dispatcher(robject["attributes"]["nrows"]))[0]
+
     df = BiocFrame(
         data,
         # column_names=col_names,
         row_names=index,
+        number_of_rows=nrows,
     )
 
     return df
