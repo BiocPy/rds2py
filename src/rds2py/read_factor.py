@@ -10,7 +10,9 @@ def parse_factor(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["factor"]:
-        raise RuntimeError(f"`robject` does not contain not a factor object, contains `{_cls}`.")
+        raise RuntimeError(
+            f"`robject` does not contain not a factor object, contains `{_cls}`."
+        )
 
     data = robject["data"]
 
