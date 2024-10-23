@@ -14,8 +14,7 @@ def _sanitize_empty_frame(frame, nrows):
 
 
 def parse_summarized_experiment(robject: dict):
-    """Parse an R object as
-    :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+    """Parse an R object as :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
     Args:
         robject:
@@ -69,8 +68,7 @@ def parse_summarized_experiment(robject: dict):
 
 
 def parse_ranged_summarized_experiment(robject: dict):
-    """Parse an R object as
-    :py:class:`~summarizedexperiment.SummarizedExperiment.RangedSummarizedExperiment`.
+    """Parse an R object as :py:class:`~summarizedexperiment.SummarizedExperiment.RangedSummarizedExperiment`.
 
     Args:
         robject:

@@ -16,6 +16,7 @@ def test_read_summ_expt():
     assert isinstance(data, SummarizedExperiment)
     assert data.shape == (200, 6)
 
+
 def test_read_ranged_summ_expt():
     data = read_rds("tests/data/ranged_se.rds")
 
