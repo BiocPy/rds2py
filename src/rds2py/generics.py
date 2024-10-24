@@ -75,7 +75,10 @@ def read_rds(path: str, **kwargs):
 
 
 def _dispatcher(robject: dict, **kwargs):
+    # print("in dispatcher", robject)
     _class_name = get_class(robject)
+
+    print("in dispatcher ", _class_name)
 
     if _class_name is None:
         return None

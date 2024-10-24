@@ -16,6 +16,7 @@ def test_read_atomic_attrs():
 
     assert data is not None
     assert isinstance(data, dict)
+    assert data["attributes"]["class"]["data"][0] == "frog"
 
 
 ## Booleans
