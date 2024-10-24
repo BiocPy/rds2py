@@ -152,7 +152,7 @@ saveRDS(sce_subset, "simple_sce.rds")
 
 # lists
 
-x <- list(github = "jkanche", fullname=c("Kancherla", "Jayaram"), 
+x <- list(github = "jkanche", fullname=c("Kancherla", "Jayaram"),
           collab=list(github = "ltla", fullname=c("Lun", "Aaron")))
 saveRDS(x, "simple_list.rds")
 

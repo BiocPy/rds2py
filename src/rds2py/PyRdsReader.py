@@ -71,7 +71,9 @@ class PyRdsParser:
         except Exception as e:
             raise PyRdsParserError(f"Error processing object: {str(e)}")
 
-    def _handle_r_special_cases(self, data: np.ndarray, rtype: str, size: int) -> Union[np.ndarray, range]:
+    def _handle_r_special_cases(
+        self, data: np.ndarray, rtype: str, size: int
+    ) -> Union[np.ndarray, range]:
         """Handle special R data representations."""
         try:
             # Special handling for R integer containing NA
@@ -80,7 +82,12 @@ class PyRdsParser:
                     return [None if x == self.R_MIN else x for x in data]
 
             # Special handling for R integer sequences
-            if rtype == "integer" and size == 2 and data[0] == self.R_MIN and data[1] < 0:
+            if (
+                rtype == "integer"
+                and size == 2
+                and data[0] == self.R_MIN
+                and data[1] < 0
+            ):
                 if data[1] == self.R_MIN:
                     return [None, None]
                 return range(data[1] * -1)
@@ -99,7 +106,10 @@ class PyRdsParser:
             raise PyRdsParserError(f"Error getting numeric data: {str(e)}")
 
     def _process_vector(self, obj: RdsReader) -> List[Dict[str, Any]]:
-        return [self._process_object(obj.load_vec_element(i)) for i in range(obj.get_rsize())]
+        return [
+            self._process_object(obj.load_vec_element(i))
+            for i in range(obj.get_rsize())
+        ]
 
     def _process_attributes(self, obj: RdsReader) -> Dict[str, Dict[str, Any]]:
         try:

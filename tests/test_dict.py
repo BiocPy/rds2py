@@ -16,6 +16,7 @@ def test_read_simple_lists():
     assert "collab" in obj
     assert len(obj["collab"]) > 0
 
+
 def test_read_atomic_lists():
     obj = read_rds("tests/data/lists.rds")
 
