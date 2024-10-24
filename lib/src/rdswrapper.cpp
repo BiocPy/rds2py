@@ -20,12 +20,12 @@ public:
         if (!ptr) throw std::runtime_error("Null pointer in 'get_rtype'.");
         // py::print("arg::", static_cast<int>(ptr->type()));
         switch (ptr->type()) {
+            case rds2cpp::SEXPType::S4: return "S4";
             case rds2cpp::SEXPType::INT: return "integer";
             case rds2cpp::SEXPType::REAL: return "double";
             case rds2cpp::SEXPType::STR: return "string";
             case rds2cpp::SEXPType::LGL: return "boolean";
             case rds2cpp::SEXPType::VEC: return "vector";
-            case rds2cpp::SEXPType::S4: return "S4";
             case rds2cpp::SEXPType::NIL: return "null";
             default: return "other";
         }
