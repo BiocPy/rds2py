@@ -79,7 +79,7 @@ class PyRdsParser:
             # Special handling for R integer containing NA
             if size != 2:
                 if any(data == self.R_MIN):
-                    return [None if x == self.R_MIN else x for x in data]
+                    return np.array([np.nan if x == self.R_MIN else x for x in data])
 
             # Special handling for R integer sequences
             if (

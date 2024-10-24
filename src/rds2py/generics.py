@@ -37,6 +37,7 @@ REGISTRY = {
     "RangedSummarizedExperiment": "rds2py.parse_ranged_summarized_experiment",
     # single-cell experiment
     "SingleCellExperiment": "rds2py.parse_single_cell_experiment",
+    "SummarizedExperimentByColumn": "rds2py.parse_alts_summarized_experiment_by_column",
 }
 
 

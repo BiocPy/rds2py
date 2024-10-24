@@ -24,4 +24,4 @@ from .read_dict import parse_vector
 from .read_granges import parse_genomic_ranges, parse_granges_list
 from .read_rle import parse_rle
 from .read_se import parse_summarized_experiment, parse_ranged_summarized_experiment
-from .read_sce import parse_single_cell_experiment
+from .read_sce import parse_single_cell_experiment, parse_alts_summarized_experiment_by_column

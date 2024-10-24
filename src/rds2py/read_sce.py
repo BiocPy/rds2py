@@ -6,6 +6,22 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
+def parse_alts_summarized_experiment_by_column(robject: dict):
+    _cls = get_class(robject)
+
+    if _cls not in ["SummarizedExperimentByColumn"]:
+        raise RuntimeError(
+            f"`robject` does not contain a 'SummarizedExperimentByColumn' object, contains `{_cls}`."
+        )
+
+    objs = {}
+
+    for key, val in robject["attributes"].items():
+        objs[key] = _dispatcher(val)
+
+    return objs
+
+
 def parse_single_cell_experiment(robject: dict):
     """Parse an R object as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
@@ -32,7 +48,7 @@ def parse_single_cell_experiment(robject: dict):
 
     # check red. dims, alternative expts
     robj_reduced_dims = None
-    robj_altExps = None
+    robj_alt_exps = None
     col_attrs = list(
         _dispatcher(
             robject["attributes"]["int_colData"]["attributes"]["listData"][
@@ -47,28 +63,18 @@ def parse_single_cell_experiment(robject: dict):
             "data"
         ][idx]
 
-        if idx_col == "reducedDims" and idx_value["data"] is not None:
+        if idx_col == "reducedDims" and idx_value.get("data", None) is not None:
             robj_reduced_dims = _dispatcher(idx_value)
 
         if idx_col == "altExps":
-            alt_names = idx_value["attributes"]["listData"]["attributes"]["names"][
-                "data"
-            ]
-            robj_altExps = {}
-            for idx_alt_names in range(len(alt_names)):
-                altn = alt_names[idx_alt_names]
-
-                alt_key = list(
-                    idx_value["attributes"]["listData"]["data"][idx_alt_names][
-                        "attributes"
-                    ].keys()
-                )[0]
-
-                robj_altExps[altn] = _dispatcher(
-                    idx_value["attributes"]["listData"]["data"][idx_alt_names][
-                        "attributes"
-                    ][alt_key]
-                )
+            alt_names = list(
+                _dispatcher(idx_value["attributes"]["listData"]["attributes"]["names"])
+            )
+            robj_alt_exps = {}
+            for idx, altn in enumerate(alt_names):
+                robj_alt_exps[altn] = _dispatcher(
+                    idx_value["attributes"]["listData"]["data"][idx]
+                )["se"]
 
         # ignore colpairs for now, does anyone even use this ?
         # if col == "colPairs":
@@ -78,6 +84,6 @@ def parse_single_cell_experiment(robject: dict):
         row_data=_rse.row_data,
         column_data=_rse.column_data,
         row_ranges=_rse.row_ranges,
-        alternative_experiments=robj_altExps,
+        alternative_experiments=robj_alt_exps,
         reduced_dims=robj_reduced_dims,
     )
