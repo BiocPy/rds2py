@@ -7,8 +7,7 @@ __license__ = "MIT"
 
 
 def parse_single_cell_experiment(robject: dict):
-    """Parse an R object as
-    :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
+    """Parse an R object as :py:class:`~singlecellexperiment.SingleCellExperiment.SingleCellExperiment`.
 
     Args:
         robject:
@@ -24,7 +23,9 @@ def parse_single_cell_experiment(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["SingleCellExperiment"]:
-        raise RuntimeError(f"`robject` does not contain a 'SingleCellExperiment' object, contains `{_cls}`.")
+        raise RuntimeError(
+            f"`robject` does not contain a 'SingleCellExperiment' object, contains `{_cls}`."
+        )
 
     robject["class_name"] = "RangedSummarizedExperiment"
     _rse = _dispatcher(robject)
@@ -36,21 +37,31 @@ def parse_single_cell_experiment(robject: dict):
 
     for idx in range(len(col_attrs)):
         idx_col = col_attrs[idx]
-        idx_value = robject["attributes"]["int_colData"]["attributes"]["listData"]["data"][idx]
+        idx_value = robject["attributes"]["int_colData"]["attributes"]["listData"][
+            "data"
+        ][idx]
 
         if idx_col == "reducedDims" and idx_value["data"] is not None:
             robj_reduced_dims = _dispatcher(idx_value)
 
         if idx_col == "altExps":
-            alt_names = idx_value["attributes"]["listData"]["attributes"]["names"]["data"]
+            alt_names = idx_value["attributes"]["listData"]["attributes"]["names"][
+                "data"
+            ]
             robj_altExps = {}
             for idx_alt_names in range(len(alt_names)):
                 altn = alt_names[idx_alt_names]
 
-                alt_key = list(idx_value["attributes"]["listData"]["data"][idx_alt_names]["attributes"].keys())[0]
+                alt_key = list(
+                    idx_value["attributes"]["listData"]["data"][idx_alt_names][
+                        "attributes"
+                    ].keys()
+                )[0]
 
                 robj_altExps[altn] = _dispatcher(
-                    idx_value["attributes"]["listData"]["data"][idx_alt_names]["attributes"][alt_key]
+                    idx_value["attributes"]["listData"]["data"][idx_alt_names][
+                        "attributes"
+                    ][alt_key]
                 )
 
         # ignore colpairs for now, does anyone even use this ?
