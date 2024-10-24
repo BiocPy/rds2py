@@ -15,4 +15,3 @@ def test_read_sce():
     assert data is not None
     assert isinstance(data, SingleCellExperiment)
     assert data.shape == (100, 100)
-
