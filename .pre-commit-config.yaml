@@ -25,11 +25,11 @@ repos:
       args: [--in-place, --wrap-descriptions=120, --wrap-summaries=120]
       # --config, ./pyproject.toml
 
-- repo: https://github.com/psf/black
-  rev: 24.8.0
-  hooks:
-  - id: black
-    language_version: python3
+# - repo: https://github.com/psf/black
+#   rev: 24.8.0
+#   hooks:
+#   - id: black
+#     language_version: python3
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
