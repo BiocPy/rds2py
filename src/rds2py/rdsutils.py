@@ -37,9 +37,7 @@ def get_class(robj: dict) -> str:
         if "class_name" in robj:
             _inferred_cls_name = robj["class_name"]
             if _inferred_cls_name is not None and (
-                "integer" in _inferred_cls_name
-                or "double" in _inferred_cls_name
-                or _inferred_cls_name == "vector"
+                "integer" in _inferred_cls_name or "double" in _inferred_cls_name or _inferred_cls_name == "vector"
             ):
                 if "attributes" in robj:
                     obj_attr = robj["attributes"]

@@ -20,9 +20,7 @@ def parse_rle(robject: dict):
     _cls = get_class(robject)
 
     if _cls != "Rle":
-        raise RuntimeError(
-            f"`robject` does not contain a 'Rle' object, contains `{_cls}`."
-        )
+        raise RuntimeError(f"`robject` does not contain a 'Rle' object, contains `{_cls}`.")
 
     data = list(_dispatcher(robject["attributes"]["values"]))
 

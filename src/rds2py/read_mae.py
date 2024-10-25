@@ -44,9 +44,7 @@ def parse_multi_assay_experiment(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["MultiAssayExperiment"]:
-        raise RuntimeError(
-            f"`robject` does not contain a 'MultiAssayExperiment' object, contains `{_cls}`."
-        )
+        raise RuntimeError(f"`robject` does not contain a 'MultiAssayExperiment' object, contains `{_cls}`.")
 
     # parse experiment  names
     _expt_obj = robject["attributes"]["ExperimentList"]["attributes"]["listData"]

@@ -10,9 +10,7 @@ def parse_dict(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["vector"]:
-        raise RuntimeError(
-            f"`robject` does not contain not a vector/dictionary object, contains `{_cls}`."
-        )
+        raise RuntimeError(f"`robject` does not contain not a vector/dictionary object, contains `{_cls}`.")
 
     if "names" not in robject["attributes"]:
         return [_dispatcher(x) for x in robject["data"]]

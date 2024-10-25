@@ -39,18 +39,10 @@ def parse_genomic_ranges(robject):
 
     _strands = _dispatcher(robject["attributes"]["strand"])
     _seqnames = _dispatcher(robject["attributes"]["seqnames"])
-    _seqinfo_seqnames = _dispatcher(
-        robject["attributes"]["seqinfo"]["attributes"]["seqnames"]
-    )
-    _seqinfo_seqlengths = _dispatcher(
-        robject["attributes"]["seqinfo"]["attributes"]["seqlengths"]
-    )
-    _seqinfo_is_circular = _dispatcher(
-        robject["attributes"]["seqinfo"]["attributes"]["is_circular"]
-    )
-    _seqinfo_genome = _dispatcher(
-        robject["attributes"]["seqinfo"]["attributes"]["genome"]
-    )
+    _seqinfo_seqnames = _dispatcher(robject["attributes"]["seqinfo"]["attributes"]["seqnames"])
+    _seqinfo_seqlengths = _dispatcher(robject["attributes"]["seqinfo"]["attributes"]["seqlengths"])
+    _seqinfo_is_circular = _dispatcher(robject["attributes"]["seqinfo"]["attributes"]["is_circular"])
+    _seqinfo_genome = _dispatcher(robject["attributes"]["seqinfo"]["attributes"]["genome"])
     _seqinfo = SeqInfo(
         seqnames=_seqinfo_seqnames,
         seqlengths=_seqinfo_seqlengths,
@@ -99,9 +91,7 @@ def parse_granges_list(robject):
         _tmp_names = robject["attributes"]["partitioning"]["attributes"]["NAMES"]
         _groups = None if _tmp_names is None else _dispatcher(_tmp_names)
 
-    _partitionends = _dispatcher(
-        robject["attributes"]["partitioning"]["attributes"]["end"]
-    )
+    _partitionends = _dispatcher(robject["attributes"]["partitioning"]["attributes"]["end"])
 
     _grelist = []
 
