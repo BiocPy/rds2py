@@ -35,9 +35,7 @@ def _as_sparse_matrix(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
-        raise RuntimeError(
-            f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`."
-        )
+        raise RuntimeError(f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`.")
 
     if _cls == "dgCMatrix":
         mat = csc_matrix(
@@ -97,7 +95,6 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
         An ``ndarray`` of the R object.
     """
     _cls = get_class(robject)
-
 
     if order not in ["C", "F"]:
         raise ValueError("order must be either 'C' or 'F'.")
