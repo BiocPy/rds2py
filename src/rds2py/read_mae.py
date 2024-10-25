@@ -44,7 +44,7 @@ def _sanitize_expts(expts, **kwargs):
     return res
 
 
-def parse_multi_assay_experiment(robject: dict, **kwargs) -> MultiAssayExperiment:
+def read_multi_assay_experiment(robject: dict, **kwargs) -> MultiAssayExperiment:
     """Convert an R `MultiAssayExperiment` to a Python 
     :py:class:`~multiassayexperiment.MultiAssayExperiment` object.
 

@@ -26,38 +26,38 @@ __license__ = "MIT"
 
 REGISTRY = {
     # typed vectors
-    "integer_vector": "rds2py.read_atomic.parse_integer_vector",
-    "boolean_vector": "rds2py.read_atomic.parse_boolean_vector",
-    "string_vector": "rds2py.read_atomic.parse_string_vector",
-    "double_vector": "rds2py.read_atomic.parse_double_vector",
+    "integer_vector": "rds2py.read_atomic.read_integer_vector",
+    "boolean_vector": "rds2py.read_atomic.read_boolean_vector",
+    "string_vector": "rds2py.read_atomic.read_string_vector",
+    "double_vector": "rds2py.read_atomic.read_double_vector",
     # dictionary
-    "vector": "rds2py.read_dict.parse_dict",
+    "vector": "rds2py.read_dict.read_dict",
     # factors
-    "factor": "rds2py.read_factor.parse_factor",
+    "factor": "rds2py.read_factor.read_factor",
     # Rle
-    "Rle": "rds2py.read_rle.parse_rle",
+    "Rle": "rds2py.read_rle.read_rle",
     # matrices
-    "dgCMatrix": "rds2py.read_matrix.parse_dgcmatrix",
-    "dgRMatrix": "rds2py.read_matrix.parse_dgrmatrix",
-    "dgTMatrix": "rds2py.read_matrix.parse_dgtmatrix",
-    "ndarray": "rds2py.read_matrix.parse_ndarray",
+    "dgCMatrix": "rds2py.read_matrix.read_dgcmatrix",
+    "dgRMatrix": "rds2py.read_matrix.read_dgrmatrix",
+    "dgTMatrix": "rds2py.read_matrix.read_dgtmatrix",
+    "ndarray": "rds2py.read_matrix.read_ndarray",
     # data frames
-    "data.frame": "rds2py.read_frame.parse_data_frame",
-    "DFrame": "rds2py.read_frame.parse_dframe",
+    "data.frame": "rds2py.read_frame.read_data_frame",
+    "DFrame": "rds2py.read_frame.read_dframe",
     # genomic ranges
-    "GRanges": "rds2py.read_granges.parse_genomic_ranges",
-    "GenomicRanges": "rds2py.read_granges.parse_genomic_ranges",
-    "CompressedGRangesList": "rds2py.read_granges.parse_granges_list",
-    "GRangesList": "rds2py.read_granges.parse_granges_list",
+    "GRanges": "rds2py.read_granges.read_genomic_ranges",
+    "GenomicRanges": "rds2py.read_granges.read_genomic_ranges",
+    "CompressedGRangesList": "rds2py.read_granges.read_granges_list",
+    "GRangesList": "rds2py.read_granges.read_granges_list",
     # summarized experiment
-    "SummarizedExperiment": "rds2py.read_se.parse_summarized_experiment",
-    "RangedSummarizedExperiment": "rds2py.read_se.parse_ranged_summarized_experiment",
+    "SummarizedExperiment": "rds2py.read_se.read_summarized_experiment",
+    "RangedSummarizedExperiment": "rds2py.read_se.read_ranged_summarized_experiment",
     # single-cell experiment
-    "SingleCellExperiment": "rds2py.read_sce.parse_single_cell_experiment",
-    "SummarizedExperimentByColumn": "rds2py.read_sce.parse_alts_summarized_experiment_by_column",
+    "SingleCellExperiment": "rds2py.read_sce.read_single_cell_experiment",
+    "SummarizedExperimentByColumn": "rds2py.read_sce.read_alts_summarized_experiment_by_column",
     # multi assay experiment
-    "MultiAssayExperiment": "rds2py.read_mae.parse_multi_assay_experiment",
-    "ExperimentList": "rds2py.read_dict.parse_dict",
+    "MultiAssayExperiment": "rds2py.read_mae.read_multi_assay_experiment",
+    "ExperimentList": "rds2py.read_dict.read_dict",
 }
 
 

@@ -142,7 +142,7 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F", **kwargs) -> ndarr
     return mat
 
 
-def parse_dgcmatrix(robject: dict, **kwargs) -> spmatrix:
+def read_dgcmatrix(robject: dict, **kwargs) -> spmatrix:
     """Parse an R dgCMatrix (sparse column matrix).
 
     Args:
@@ -158,7 +158,7 @@ def parse_dgcmatrix(robject: dict, **kwargs) -> spmatrix:
     return _as_sparse_matrix(robject, **kwargs)
 
 
-def parse_dgrmatrix(robject: dict, **kwargs) -> spmatrix:
+def read_dgrmatrix(robject: dict, **kwargs) -> spmatrix:
     """Parse an R dgRMatrix (sparse row matrix).
 
     Args:
@@ -174,7 +174,7 @@ def parse_dgrmatrix(robject: dict, **kwargs) -> spmatrix:
     return _as_sparse_matrix(robject, **kwargs)
 
 
-def parse_dgtmatrix(robject: dict, **kwargs) -> spmatrix:
+def read_dgtmatrix(robject: dict, **kwargs) -> spmatrix:
     """Parse an R dgTMatrix (sparse triplet matrix)..
 
     Args:
@@ -190,7 +190,7 @@ def parse_dgtmatrix(robject: dict, **kwargs) -> spmatrix:
     return _as_sparse_matrix(robject, **kwargs)
 
 
-def parse_ndarray(robject: dict, order: Literal["C", "F"] = "F", **kwargs) -> ndarray:
+def read_ndarray(robject: dict, order: Literal["C", "F"] = "F", **kwargs) -> ndarray:
     """Parse an R matrix as a NumPy array.
 
     Args:

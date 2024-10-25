@@ -16,3 +16,4 @@ finally:
     del version, PackageNotFoundError
 
 from .generics import read_rds
+from .rdsutils import parse_rds

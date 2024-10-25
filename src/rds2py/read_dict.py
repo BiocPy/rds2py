@@ -13,7 +13,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_dict(robject: dict, **kwargs) -> dict:
+def read_dict(robject: dict, **kwargs) -> dict:
     """Convert an R named vector or list to a Python dictionary or list.
 
     Args:
@@ -29,7 +29,7 @@ def parse_dict(robject: dict, **kwargs) -> dict:
 
     Example:
         >>> # For a named R vector c(a=1, b=2)
-        >>> result = parse_dict(robject)
+        >>> result = read_dict(robject)
         >>> print(result)
         {'a': 1, 'b': 2}
     """

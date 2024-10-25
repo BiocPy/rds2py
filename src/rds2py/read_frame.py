@@ -15,7 +15,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_data_frame(robject: dict, **kwargs):
+def read_data_frame(robject: dict, **kwargs):
     """Convert an R data.frame to a :py:class:`~biocframe.BiocFrame` object.
 
     Args:
@@ -48,7 +48,7 @@ def parse_data_frame(robject: dict, **kwargs):
     return df
 
 
-def parse_dframe(robject: dict, **kwargs):
+def read_dframe(robject: dict, **kwargs):
     """Convert an R DFrame (Bioconductor's `DataFrame`) to a `BiocFrame` object.
 
     Args:

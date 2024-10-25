@@ -16,7 +16,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_genomic_ranges(robject: dict, **kwargs) -> GenomicRanges:
+def read_genomic_ranges(robject: dict, **kwargs) -> GenomicRanges:
     """Convert an R `GenomicRanges` object to a Python :py:class:`~genomicranges.GenomicRanges` object.
 
     Args:
@@ -75,7 +75,7 @@ def parse_genomic_ranges(robject: dict, **kwargs) -> GenomicRanges:
     )
 
 
-def parse_granges_list(robject: dict, **kwargs) -> GenomicRangesList:
+def read_granges_list(robject: dict, **kwargs) -> GenomicRangesList:
     """Convert an R `GenomicRangesList` object to a Python :py:class:`~genomicranges.GenomicRangesList`.
 
     Args:

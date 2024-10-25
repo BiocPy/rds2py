@@ -36,7 +36,7 @@ def _extract_names(robject: dict, **kwargs):
     return _names
 
 
-def parse_boolean_vector(robject: dict, **kwargs) -> BooleanList:
+def read_boolean_vector(robject: dict, **kwargs) -> BooleanList:
     """Convert an R boolean vector to a Python :py:class:`~biocutils.BooleanList`.
 
     Args:
@@ -56,7 +56,7 @@ def parse_boolean_vector(robject: dict, **kwargs) -> BooleanList:
     return obj
 
 
-def parse_integer_vector(robject: dict, **kwargs) -> IntegerList:
+def read_integer_vector(robject: dict, **kwargs) -> IntegerList:
     """Convert an R integer vector to a Python :py:class:`~biocutils.IntegerList`.
 
     Args:
@@ -76,7 +76,7 @@ def parse_integer_vector(robject: dict, **kwargs) -> IntegerList:
     return obj
 
 
-def parse_string_vector(robject: dict, **kwargs) -> StringList:
+def read_string_vector(robject: dict, **kwargs) -> StringList:
     """Convert an R string vector to a Python :py:class:`~biocutils.StringList`.
 
     Args:
@@ -96,7 +96,7 @@ def parse_string_vector(robject: dict, **kwargs) -> StringList:
     return obj
 
 
-def parse_double_vector(robject: dict, **kwargs) -> FloatList:
+def read_double_vector(robject: dict, **kwargs) -> FloatList:
     """Convert an R double vector to a Python :py:class:`~biocutils.FloatList`.
 
     Args:

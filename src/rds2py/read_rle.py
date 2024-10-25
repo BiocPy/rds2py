@@ -12,7 +12,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_rle(robject: dict, **kwargs) -> list:
+def read_rle(robject: dict, **kwargs) -> list:
     """Convert an R Rle object to a Python list.
 
     Args:
@@ -27,7 +27,7 @@ def parse_rle(robject: dict, **kwargs) -> list:
 
     Example:
         >>> # For Rle with values=[1,2] and lengths=[3,2]
-        >>> result = parse_rle(robject)
+        >>> result = read_rle(robject)
         >>> print(result)
         [1, 1, 1, 2, 2]
     """

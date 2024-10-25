@@ -27,7 +27,7 @@ def _sanitize_assays(assays):
     return res
 
 
-def parse_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
+def read_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
     """Convert an R SummarizedExperiment to Python :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
     Args:
@@ -74,7 +74,7 @@ def parse_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment
     )
 
 
-def parse_ranged_summarized_experiment(robject: dict, **kwargs) -> RangedSummarizedExperiment:
+def read_ranged_summarized_experiment(robject: dict, **kwargs) -> RangedSummarizedExperiment:
     """Convert an R RangedSummarizedExperiment to its Python equivalent.
 
     Args:

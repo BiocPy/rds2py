@@ -12,7 +12,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_factor(robject: dict, **kwargs) -> list:
+def read_factor(robject: dict, **kwargs) -> list:
     """Convert an R factor to a Python list.
 
     Args:

@@ -15,7 +15,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_alts_summarized_experiment_by_column(robject: dict, **kwargs):
+def read_alts_summarized_experiment_by_column(robject: dict, **kwargs):
     """Parse alternative experiments in a SingleCellExperiment."""
     _cls = get_class(robject)
 
@@ -30,7 +30,7 @@ def parse_alts_summarized_experiment_by_column(robject: dict, **kwargs):
     return objs
 
 
-def parse_single_cell_experiment(robject: dict, **kwargs) -> SingleCellExperiment:
+def read_single_cell_experiment(robject: dict, **kwargs) -> SingleCellExperiment:
     """Convert an R SingleCellExperiment to Python SingleCellExperiment.
 
     Args:
