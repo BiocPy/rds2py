@@ -1,10 +1,10 @@
-import pytest
+# import pytest
 
 from rds2py.PyRdsReader import PyRdsParser
 
-__author__ = "jkanche"
-__copyright__ = "jkanche"
-__license__ = "MIT"
+# __author__ = "jkanche"
+# __copyright__ = "jkanche"
+# __license__ = "MIT"
 
 
 def test_read_s4_class():

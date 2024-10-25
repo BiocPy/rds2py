@@ -1,13 +1,17 @@
 # Changelog
 
-## Development
+## Version 0.5.0
 
-- Fix github issue with showing incorrect package version on github pages.
+- Complete overhaul of the codebase using pybind11
+- Streamlined readers for R data types
+- Updated API for all classes and methods
+- Updated documentation and tests.
 
 ## Version 0.4.5
 
 - Switch to pybind11 to implementing the bindings to rds2cpp.
 - Update tests, documentation and actions.
+- Fix github issue with showing incorrect package version on github pages.
 
 ## Version 0.4.4
 

@@ -15,13 +15,5 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-# from .core import *
-
-from .interface import (
-    as_dense_matrix,
-    as_sparse_matrix,
-    as_pandas,
-    as_summarized_experiment,
-)
-
-from .parser import read_rds, get_class
+from .generics import read_rds
+from .rdsutils import parse_rds
