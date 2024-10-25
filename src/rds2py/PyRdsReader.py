@@ -1,3 +1,10 @@
+"""Low-level interface for reading RDS file format.
+
+This module provides the core functionality for parsing RDS files at a binary level
+and converting them into a dictionary representation that can be further processed
+by higher-level functions.
+"""
+
 from typing import Any, Dict, List, Union
 from warnings import warn
 
@@ -7,29 +14,63 @@ from .lib_rds_parser import RdsObject, RdsReader
 
 
 class PyRdsParserError(Exception):
+    """Exception raised for errors during RDS parsing."""
+
     pass
 
 
 class PyRdsParser:
-    """Python bindings to the rds2cpp interface."""
+    """Parser for reading RDS files.
+
+    This class provides low-level access to RDS file contents, handling the binary
+    format and converting it into Python data structures. It supports various R
+    data types and handles special R cases like NA values, integer sequences and
+    range functions.
+
+    Attributes:
+        R_MIN:
+            Minimum integer value in R, used for handling NA values.
+
+        rds_object:
+            Internal representation of the RDS file.
+
+        root_object:
+            Root object of the parsed RDS file.
+    """
 
     R_MIN: int = -2147483648
 
     def __init__(self, file_path: str):
+        """Initialize the class.
+
+        Args:
+            file_path:
+                Path to the RDS file to be read.
+        """
         try:
             self.rds_object = RdsObject(file_path)
             robject = self.rds_object.get_robject()
+
             if not isinstance(robject, RdsReader):
                 raise TypeError(f"Expected 'RdsReader' object, got {type(robject)}")
+
             self.root_object = robject
         except Exception as e:
             raise PyRdsParserError(f"Error initializing 'PyRdsParser': {str(e)}")
 
     def parse(self) -> Dict[str, Any]:
-        """Parse the RDS File (recursively).
+        """Parse the entire RDS file into a dictionary structure.
 
         Returns:
-            A Dictionary with object attributes as keys and the value representing the data from the RDS file.
+            A dictionary containing the parsed data with keys:
+            - 'type': The R object type
+            - 'data': The actual data (if applicable)
+            - 'attributes': R object attributes (if any)
+            - 'class_name': The R class name
+            - Additional keys depending on the object type
+
+        Raises:
+            PyRdsParserError: If there's an error during parsing.
         """
         try:
             return self._process_object(self.root_object)
@@ -94,6 +135,7 @@ class PyRdsParser:
             data = obj.get_numeric_data()
             if rtype == "boolean":
                 return data.astype(bool)
+
             return data
         except Exception as e:
             raise PyRdsParserError(f"Error getting numeric data: {str(e)}")
@@ -107,6 +149,7 @@ class PyRdsParser:
             for name in obj.get_attribute_names():
                 attr_obj = obj.load_attribute_by_name(name)
                 attributes[name] = self._process_object(attr_obj)
+
             return attributes
         except Exception as e:
             raise PyRdsParserError(f"Error processing attributes: {str(e)}")

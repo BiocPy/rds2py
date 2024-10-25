@@ -1,3 +1,9 @@
+"""Utility functions for RDS file parsing and class inference.
+
+This module provides helper functions for parsing RDS files and inferring
+the appropriate R class information from parsed objects.
+"""
+
 from .PyRdsReader import PyRdsParser
 
 __author__ = "jkanche"
@@ -6,14 +12,15 @@ __license__ = "MIT"
 
 
 def parse_rds(path: str) -> dict:
-    """Parse an RDS file as a :py:class:`~dict`.
+    """Parse an RDS file into a dictionary representation.
 
     Args:
         path:
-            Path to RDS file.
+            Path to the RDS file to be parsed.
 
     Returns:
-        A dictionary with the contents of the RDS file.
+        A dictionary containing the parsed contents of the RDS file.
+        The structure depends on the type of R object stored in the file.
     """
     parsed_obj = PyRdsParser(path)
     realized = parsed_obj.parse()
@@ -22,15 +29,20 @@ def parse_rds(path: str) -> dict:
 
 
 def get_class(robj: dict) -> str:
-    """Guess class information of the R object.
+    """Infer the R class name from a parsed RDS object.
+
+    Notes:
+        - Handles both S4 and non-S4 R objects
+        - Special handling for vectors and matrices
+        - Checks for class information in object attributes
 
     Args:
         robj:
-            Object parsed from the `RDS` file.
-            Usually the result of :py:func:`~rds2py.parser.load_rds`.
+            Dictionary containing parsed RDS data, typically
+            the output of :py:func:`~.parse_rds`.
 
     Returns:
-        A string representing the class name from R.
+        The inferred R class name, or None if no class can be determined.
     """
     _inferred_cls_name = None
     if robj["type"] != "S4":

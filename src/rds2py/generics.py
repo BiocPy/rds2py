@@ -1,4 +1,20 @@
-# from functools import singledispatch
+"""Core functionality for reading RDS files in Python.
+
+This module provides the main interface for reading RDS files and converting them
+to appropriate Python objects. It maintains a registry of supported R object types
+and their corresponding Python parser functions.
+
+The module supports various R object types including vectors, matrices, data frames,
+and specialized Bioconductor objects like GenomicRanges and SummarizedExperiment.
+
+Example:
+
+    .. code-block:: python
+
+        data = read_rds("example.rds")
+        print(type(data))
+"""
+
 from importlib import import_module
 from warnings import warn
 
@@ -62,23 +78,38 @@ REGISTRY = {
 
 
 def read_rds(path: str, **kwargs):
-    """Read an RDS file as Python object.
+    """Read an RDS file and convert it to an appropriate Python object.
 
     Args:
         path:
-            Path to the RDS file.
+            Path to the RDS file to be read.
 
-        kwargs:
-            Further arguments, passed to individual methods.
+        **kwargs:
+            Additional arguments passed to specific parser functions.
 
     Returns:
-        Some kind of object.
+        A Python object representing the data in the RDS file. The exact type
+        depends on the contents of the RDS file and the available parsers.
     """
     _robj = parse_rds(path=path)
     return _dispatcher(_robj, **kwargs)
 
 
 def _dispatcher(robject: dict, **kwargs):
+    """
+    Internal function to dispatch R objects to appropriate parser functions.
+
+    Args:
+        robject:
+            Dictionary containing parsed R object data.
+
+        **kwargs:
+            Additional arguments passed to specific parser functions.
+
+    Returns:
+        Parsed Python object corresponding to the R data structure.
+        Returns the original dictionary if no appropriate parser is found.
+    """
     _class_name = get_class(robject)
 
     if _class_name is None:

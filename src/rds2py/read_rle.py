@@ -1,3 +1,9 @@
+"""Functions for parsing R's Rle (Run-length encoding) objects.
+
+This module provides functionality to convert R's Rle (Run-length encoding) objects
+into Python lists, expanding the compressed representation into its full form.
+"""
+
 from .generics import _dispatcher
 from .rdsutils import get_class
 
@@ -6,26 +12,34 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_rle(robject: dict):
-    """Parse an Rle class as list.
+def parse_rle(robject: dict, **kwargs) -> list:
+    """Convert an R Rle object to a Python list.
 
     Args:
         robject:
-            Object parsed from the `RDS` file.
-            Usually the result of :py:func:`~rds2py.generics.read_rds`.
+            Dictionary containing parsed Rle data.
+
+        **kwargs:
+            Additional arguments.
 
     Returns:
-        List containing the Rle object.
+        Expanded list where each value is repeated according to its run length.
+
+    Example:
+        >>> # For Rle with values=[1,2] and lengths=[3,2]
+        >>> result = parse_rle(robject)
+        >>> print(result)
+        [1, 1, 1, 2, 2]
     """
     _cls = get_class(robject)
 
     if _cls != "Rle":
         raise RuntimeError(f"`robject` does not contain a 'Rle' object, contains `{_cls}`.")
 
-    data = list(_dispatcher(robject["attributes"]["values"]))
+    data = list(_dispatcher(robject["attributes"]["values"], **kwargs))
 
     if "lengths" in robject["attributes"]:
-        lengths = _dispatcher(robject["attributes"]["lengths"])
+        lengths = _dispatcher(robject["attributes"]["lengths"], **kwargs)
     else:
         lengths = [1] * len(data)
 

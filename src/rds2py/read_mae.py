@@ -1,17 +1,34 @@
+"""Functions for parsing Bioconductor MultiAssayExperiment objects.
+
+This module handles the conversion of Bioconductor's MultiAssayExperiment
+container format into its Python equivalent, preserving the complex
+relationships between multiple experimental assays and sample metadata.
+"""
+
+from multiassayexperiment import MultiAssayExperiment
+
 from .generics import _dispatcher
 from .rdsutils import get_class
-
 from .read_matrix import MatrixWrapper
-
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def _sanitize_expts(expts):
-    from summarizedexperiment import SummarizedExperiment
+def _sanitize_expts(expts, **kwargs):
+    """Convert raw experiment objects into SummarizedExperiment format.
+
+    Args:
+        expts:
+            Dictionary of experiment objects.
+
+    Returns:
+        Dictionary of converted experiments, with matrix-like objects
+        wrapped in SummarizedExperiment containers.
+    """
     from biocframe import BiocFrame
+    from summarizedexperiment import SummarizedExperiment
 
     res = {}
     for k, v in expts.items():
@@ -27,19 +44,21 @@ def _sanitize_expts(expts):
     return res
 
 
-def parse_multi_assay_experiment(robject: dict):
-    """Parse an R object as :py:class:`~multiassayexperiment.MultiAssayExperiment.MultiAssayExperiment`.
+def parse_multi_assay_experiment(robject: dict, **kwargs) -> MultiAssayExperiment:
+    """Convert an R `MultiAssayExperiment` to a Python 
+    :py:class:`~multiassayexperiment.MultiAssayExperiment` object.
 
     Args:
         robject:
-            Object parsed from the `RDS` file.
+            Dictionary containing parsed MultiAssayExperiment data.
 
-            Usually the result of :py:func:`~rds2py.generics.read_rds`.
+        **kwargs:
+            Additional arguments.
 
     Returns:
-        A `MultiAssayExperiment` from the R object.
+        A Python `MultiAssayExperiment` object containing
+        multiple experimental assays with associated metadata.
     """
-    from multiassayexperiment import MultiAssayExperiment
 
     _cls = get_class(robject)
 
@@ -48,13 +67,13 @@ def parse_multi_assay_experiment(robject: dict):
 
     # parse experiment  names
     _expt_obj = robject["attributes"]["ExperimentList"]["attributes"]["listData"]
-    robj_expts = _dispatcher(_expt_obj)
+    robj_expts = _dispatcher(_expt_obj, **kwargs)
 
     # parse sample_map
-    robj_samplemap = _dispatcher(robject["attributes"]["sampleMap"])
+    robj_samplemap = _dispatcher(robject["attributes"]["sampleMap"], **kwargs)
 
     # parse coldata
-    robj_coldata = _dispatcher(robject["attributes"]["colData"])
+    robj_coldata = _dispatcher(robject["attributes"]["colData"], **kwargs)
 
     return MultiAssayExperiment(
         experiments=_sanitize_expts(robj_expts),

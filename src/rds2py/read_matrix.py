@@ -1,9 +1,17 @@
+"""Functions and classes for parsing R matrix objects.
+
+This module provides functionality to convert R matrix objects (both dense and sparse)
+into their Python equivalents using NumPy and SciPy sparse matrix formats. It handles
+various R matrix types including dgCMatrix, dgRMatrix, and dgTMatrix.
+"""
+
 from typing import Literal
 
 from numpy import ndarray
+from scipy.sparse import csc_matrix, csr_matrix, spmatrix
 
-from .rdsutils import get_class
 from .generics import _dispatcher
+from .rdsutils import get_class
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -11,26 +19,43 @@ __license__ = "MIT"
 
 
 class MatrixWrapper:
+    """A simple wrapper class for matrices that preserves dimension names.
+
+    This class bundles a matrix (dense or sparse) with its dimension names,
+    maintaining the R-style naming of rows and columns.
+
+    Attributes:
+        matrix:
+            The underlying matrix object (numpy.ndarray or scipy.sparse matrix).
+
+        dimnames:
+            A tuple of (row_names, column_names), each being a list of strings or None.
+    """
+
     def __init__(self, matrix, dimnames=None) -> None:
         self.matrix = matrix
         self.dimnames = dimnames
 
 
-def _as_sparse_matrix(robject: dict):
-    """Parse an R object as a sparse matrix.
+def _as_sparse_matrix(robject: dict, **kwargs) -> spmatrix:
+    """Convert an R sparse matrix to a SciPy sparse matrix.
 
-    Only supports reading of `dgCMatrix`, `dgRMatrix`, `dgTMatrix` marices.
+    Notes:
+        - Supports dgCMatrix (column-sparse)
+        - Supports dgRMatrix (row-sparse)
+        - Supports dgTMatrix (triplet format)
+        - Preserves dimension names if present
 
     Args:
         robject:
-            Object parsed from the `RDS` file.
+            Dictionary containing parsed R sparse matrix data.
 
-            Usually the result of :py:func:`~rds2py.generics.read_rds`.
+        **kwargs:
+            Additional arguments.
 
     Returns:
-        A sparse matrix of the R object.
+        A SciPy sparse matrix or wrapped matrix if dimension names exist.
     """
-    from scipy.sparse import csc_matrix, csr_matrix
 
     _cls = get_class(robject)
 
@@ -69,30 +94,29 @@ def _as_sparse_matrix(robject: dict):
 
     names = None
     if "dimnames" in robject["attributes"]:
-        names = _dispatcher(robject["attributes"]["dimnames"])
+        names = _dispatcher(robject["attributes"]["dimnames"], **kwargs)
         if names is not None and len(names) > 0:
             return MatrixWrapper(mat, names)
 
     return mat
 
 
-def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
-    """Parse an R object as a :py:class:`~numpy.ndarray`.
+def _as_dense_matrix(robject, order: Literal["C", "F"] = "F", **kwargs) -> ndarray:
+    """Convert an R matrix to a `NumPy` array.
 
     Args:
         robject:
-            Object parsed from the `RDS` file.
-
-            Usually the result of :py:func:`~rds2py.generics.read_rds`.
+            Dictionary containing parsed R matrix data.
 
         order:
-            Row-major (**C**-style) or Column-major (**F**ortran-style)
-            order.
+            Memory layout for the array.
+            'C' for row-major, 'F' for column-major (default).
 
-            Defaults to "F".
+        **kwargs:
+            Additional arguments.
 
     Returns:
-        An ``ndarray`` of the R object.
+        A NumPy array or wrapped array if dimension names exist.
     """
     _cls = get_class(robject)
 
@@ -111,24 +135,75 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
 
     names = None
     if "dimnames" in robject["attributes"]:
-        names = _dispatcher(robject["attributes"]["dimnames"])
+        names = _dispatcher(robject["attributes"]["dimnames"], **kwargs)
         if names is not None and len(names) > 0:
             return MatrixWrapper(mat, names)
 
     return mat
 
 
-def parse_dgcmatrix(robject: dict):
-    return _as_sparse_matrix(robject)
+def parse_dgcmatrix(robject: dict, **kwargs) -> spmatrix:
+    """Parse an R dgCMatrix (sparse column matrix).
+
+    Args:
+        robject:
+            Dictionary containing parsed dgCMatrix data.
+
+        **kwargs:
+            Additional arguments.
+
+    Returns:
+        Parsed sparse column matrix.
+    """
+    return _as_sparse_matrix(robject, **kwargs)
 
 
-def parse_dgrmatrix(robject: dict):
-    return _as_sparse_matrix(robject)
+def parse_dgrmatrix(robject: dict, **kwargs) -> spmatrix:
+    """Parse an R dgRMatrix (sparse row matrix).
+
+    Args:
+        robject:
+            Dictionary containing parsed dgRMatrix data.
+
+        **kwargs:
+            Additional arguments.
+
+    Returns:
+        Parsed sparse row matrix.
+    """
+    return _as_sparse_matrix(robject, **kwargs)
 
 
-def parse_dgtmatrix(robject: dict):
-    return _as_sparse_matrix(robject)
+def parse_dgtmatrix(robject: dict, **kwargs) -> spmatrix:
+    """Parse an R dgTMatrix (sparse triplet matrix)..
+
+    Args:
+        robject:
+            Dictionary containing parsed dgTMatrix data.
+
+        **kwargs:
+            Additional arguments.
+
+    Returns:
+        Parsed sparse matrix.
+    """
+    return _as_sparse_matrix(robject, **kwargs)
 
 
-def parse_ndarray(robject: dict, order: Literal["C", "F"] = "F"):
-    return _as_dense_matrix(robject, order=order)
+def parse_ndarray(robject: dict, order: Literal["C", "F"] = "F", **kwargs) -> ndarray:
+    """Parse an R matrix as a NumPy array.
+
+    Args:
+        robject:
+            Dictionary containing parsed dgCMatrix data.
+
+        order:
+            Memory layout for the array.
+
+        **kwargs:
+            Additional arguments.
+
+    Returns:
+        Parsed dense array.
+    """
+    return _as_dense_matrix(robject, order=order, **kwargs)

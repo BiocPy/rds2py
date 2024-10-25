@@ -1,6 +1,7 @@
+from summarizedexperiment import RangedSummarizedExperiment, SummarizedExperiment
+
 from .generics import _dispatcher
 from .rdsutils import get_class
-
 from .read_matrix import MatrixWrapper
 
 __author__ = "jkanche"
@@ -26,19 +27,19 @@ def _sanitize_assays(assays):
     return res
 
 
-def parse_summarized_experiment(robject: dict):
-    """Parse an R object as :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
+def parse_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
+    """Convert an R SummarizedExperiment to Python :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
     Args:
         robject:
-            Object parsed from the `RDS` file.
+            Dictionary containing parsed SummarizedExperiment data.
 
-            Usually the result of :py:func:`~rds2py.generics.read_rds`.
+        **kwargs:
+            Additional arguments.
 
     Returns:
         A `SummarizedExperiment` from the R object.
     """
-    from summarizedexperiment import SummarizedExperiment
 
     _cls = get_class(robject)
 
@@ -49,21 +50,22 @@ def parse_summarized_experiment(robject: dict):
     assay_dims = None
     asy_names = list(
         _dispatcher(
-            robject["attributes"]["assays"]["attributes"]["data"]["attributes"]["listData"]["attributes"]["names"]
+            robject["attributes"]["assays"]["attributes"]["data"]["attributes"]["listData"]["attributes"]["names"],
+            **kwargs,
         )
     )
     for idx, asyname in enumerate(asy_names):
         idx_asy = robject["attributes"]["assays"]["attributes"]["data"]["attributes"]["listData"]["data"][idx]
 
-        robj_asys[asyname] = _dispatcher(idx_asy)
+        robj_asys[asyname] = _dispatcher(idx_asy, **kwargs)
         if assay_dims is None:
             assay_dims = robj_asys[asyname].shape
 
     # parse coldata
-    robj_coldata = _sanitize_empty_frame(_dispatcher(robject["attributes"]["colData"]), assay_dims[1])
+    robj_coldata = _sanitize_empty_frame(_dispatcher(robject["attributes"]["colData"], **kwargs), assay_dims[1])
 
     # parse rowdata
-    robj_rowdata = _sanitize_empty_frame(_dispatcher(robject["attributes"]["elementMetadata"]), assay_dims[0])
+    robj_rowdata = _sanitize_empty_frame(_dispatcher(robject["attributes"]["elementMetadata"], **kwargs), assay_dims[0])
 
     return SummarizedExperiment(
         assays=_sanitize_assays(robj_asys),
@@ -72,19 +74,19 @@ def parse_summarized_experiment(robject: dict):
     )
 
 
-def parse_ranged_summarized_experiment(robject: dict):
-    """Parse an R object as :py:class:`~summarizedexperiment.SummarizedExperiment.RangedSummarizedExperiment`.
+def parse_ranged_summarized_experiment(robject: dict, **kwargs) -> RangedSummarizedExperiment:
+    """Convert an R RangedSummarizedExperiment to its Python equivalent.
 
     Args:
         robject:
-            Object parsed from the `RDS` file.
+            Dictionary containing parsed SummarizedExperiment data.
 
-            Usually the result of :py:func:`~rds2py.generics.read_rds`.
+        **kwargs:
+            Additional arguments.
 
     Returns:
-        A `RangedSummarizedExperiment` from the R object.
+        A Python RangedSummarizedExperiment object.
     """
-    from summarizedexperiment import RangedSummarizedExperiment
 
     _cls = get_class(robject)
 
@@ -92,12 +94,12 @@ def parse_ranged_summarized_experiment(robject: dict):
         raise RuntimeError(f"`robject` does not contain a 'RangedSummarizedExperiment' object, contains `{_cls}`.")
 
     robject["class_name"] = "SummarizedExperiment"
-    _se = _dispatcher(robject)
+    _se = _dispatcher(robject, **kwargs)
 
     # parse rowRanges
     row_ranges_data = None
     if "rowRanges" in robject["attributes"]:
-        row_ranges_data = _dispatcher(robject["attributes"]["rowRanges"])
+        row_ranges_data = _dispatcher(robject["attributes"]["rowRanges"], **kwargs)
 
     return RangedSummarizedExperiment(
         assays=_se.assays,
