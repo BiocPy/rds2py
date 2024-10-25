@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
-        <title>rds2py.pdf - rds2py 0.4.6 documentation</title>
+        <title>rds2py.generics - rds2py 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -165,7 +165,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.4.6 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.5.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -189,7 +189,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.4.6 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.5.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -242,85 +242,150 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for rds2py.pdf</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.parser</span> <span class="kn">import</span> <span class="n">get_class</span>
+          <h1>Source code for rds2py.generics</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Core functionality for reading RDS files in Python.</span>
+
+<span class="sd">This module provides the main interface for reading RDS files and converting them</span>
+<span class="sd">to appropriate Python objects. It maintains a registry of supported R object types</span>
+<span class="sd">and their corresponding Python parser functions.</span>
+
+<span class="sd">The module supports various R object types including vectors, matrices, data frames,</span>
+<span class="sd">and specialized Bioconductor objects like GenomicRanges and SummarizedExperiment.</span>
+
+<span class="sd">Example:</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        data = read_rds(&quot;example.rds&quot;)</span>
+<span class="sd">        print(type(data))</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
+<span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">from</span> <span class="nn">.rdsutils</span> <span class="kn">import</span> <span class="n">get_class</span><span class="p">,</span> <span class="n">parse_rds</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
+<span class="n">REGISTRY</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1"># typed vectors</span>
+    <span class="s2">&quot;integer_vector&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_atomic.read_integer_vector&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;boolean_vector&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_atomic.read_boolean_vector&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;string_vector&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_atomic.read_string_vector&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;double_vector&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_atomic.read_double_vector&quot;</span><span class="p">,</span>
+    <span class="c1"># dictionary</span>
+    <span class="s2">&quot;vector&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_dict.read_dict&quot;</span><span class="p">,</span>
+    <span class="c1"># factors</span>
+    <span class="s2">&quot;factor&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_factor.read_factor&quot;</span><span class="p">,</span>
+    <span class="c1"># Rle</span>
+    <span class="s2">&quot;Rle&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_rle.read_rle&quot;</span><span class="p">,</span>
+    <span class="c1"># matrices</span>
+    <span class="s2">&quot;dgCMatrix&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_matrix.read_dgcmatrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dgRMatrix&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_matrix.read_dgrmatrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dgTMatrix&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_matrix.read_dgtmatrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ndarray&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_matrix.read_ndarray&quot;</span><span class="p">,</span>
+    <span class="c1"># data frames</span>
+    <span class="s2">&quot;data.frame&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_frame.read_data_frame&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DFrame&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_frame.read_dframe&quot;</span><span class="p">,</span>
+    <span class="c1"># genomic ranges</span>
+    <span class="s2">&quot;GRanges&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_granges.read_genomic_ranges&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GenomicRanges&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_granges.read_genomic_ranges&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;CompressedGRangesList&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_granges.read_granges_list&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;GRangesList&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_granges.read_granges_list&quot;</span><span class="p">,</span>
+    <span class="c1"># summarized experiment</span>
+    <span class="s2">&quot;SummarizedExperiment&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_se.read_summarized_experiment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RangedSummarizedExperiment&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_se.read_ranged_summarized_experiment&quot;</span><span class="p">,</span>
+    <span class="c1"># single-cell experiment</span>
+    <span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_sce.read_single_cell_experiment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SummarizedExperimentByColumn&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_sce.read_alts_summarized_experiment_by_column&quot;</span><span class="p">,</span>
+    <span class="c1"># multi assay experiment</span>
+    <span class="s2">&quot;MultiAssayExperiment&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_mae.read_multi_assay_experiment&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;ExperimentList&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_dict.read_dict&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 
-<div class="viewcode-block" id="as_pandas_from_data_frame">
-<a class="viewcode-back" href="../../api/rds2py.html#rds2py.pdf.as_pandas_from_data_frame">[docs]</a>
-<span class="k">def</span> <span class="nf">as_pandas_from_data_frame</span><span class="p">(</span><span class="n">robj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an R object to a :py:class:`~pandas.DataFrame`.</span>
+
+<span class="c1"># @singledispatch</span>
+<span class="c1"># def save_rds(x, path: str):</span>
+<span class="c1">#     &quot;&quot;&quot;Save a Python object as RDS file.</span>
+
+<span class="c1">#     Args:</span>
+<span class="c1">#         x:</span>
+<span class="c1">#             Object to save.</span>
+
+<span class="c1">#         path:</span>
+<span class="c1">#             Path to save the object.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     raise NotImplementedError(</span>
+<span class="c1">#         f&quot;No `save_rds` method implemented for &#39;{type(x).__name__}&#39; objects.&quot;</span>
+<span class="c1">#     )</span>
+
+
+<div class="viewcode-block" id="read_rds">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.generics.read_rds">[docs]</a>
+<span class="k">def</span> <span class="nf">read_rds</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Read an RDS file and convert it to an appropriate Python object.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        robj:</span>
-<span class="sd">            Object parsed from the `RDS` file.</span>
+<span class="sd">        path:</span>
+<span class="sd">            Path to the RDS file to be read.</span>
 
-<span class="sd">            Usually the result of :py:func:`~rds2py.parser.read_rds`.</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Additional arguments passed to specific parser functions.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A `DataFrame` from the R Object.</span>
+<span class="sd">        A Python object representing the data in the RDS file. The exact type</span>
+<span class="sd">        depends on the contents of the RDS file and the available parsers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
-
-    <span class="bp">cls</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robj</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="bp">cls</span> <span class="o">!=</span> <span class="s2">&quot;data.frame&quot;</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;`robj` does not contain a &#39;data.frame&#39;.&quot;</span><span class="p">)</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span>
-        <span class="n">robj</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
-        <span class="n">columns</span><span class="o">=</span><span class="n">robj</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;names&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
-        <span class="n">index</span><span class="o">=</span><span class="n">robj</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;row.names&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">],</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">df</span></div>
+    <span class="n">_robj</span> <span class="o">=</span> <span class="n">parse_rds</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">_robj</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 
-<div class="viewcode-block" id="as_pandas_from_dframe">
-<a class="viewcode-back" href="../../api/rds2py.html#rds2py.pdf.as_pandas_from_dframe">[docs]</a>
-<span class="k">def</span> <span class="nf">as_pandas_from_dframe</span><span class="p">(</span><span class="n">robj</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a realized R object to a pandas data frame representation.</span>
+<span class="k">def</span> <span class="nf">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Internal function to dispatch R objects to appropriate parser functions.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        robj:</span>
-<span class="sd">            Object parsed from the `RDS` file.</span>
+<span class="sd">        robject:</span>
+<span class="sd">            Dictionary containing parsed R object data.</span>
 
-<span class="sd">            Usually the result of :py:func:`~rds2py.parser.read_rds`.</span>
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Additional arguments passed to specific parser functions.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A `DataFrame` from the R Object.</span>
+<span class="sd">        Parsed Python object corresponding to the R data structure.</span>
+<span class="sd">        Returns the original dictionary if no appropriate parser is found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+    <span class="n">_class_name</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
 
-    <span class="bp">cls</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robj</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">_class_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
-    <span class="k">if</span> <span class="bp">cls</span> <span class="o">!=</span> <span class="s2">&quot;DFrame&quot;</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;`robj` does not contain a &#39;DFrame&#39;.&quot;</span><span class="p">)</span>
+    <span class="c1"># if a class is registered, coerce the object</span>
+    <span class="c1"># to the representation.</span>
+    <span class="k">if</span> <span class="n">_class_name</span> <span class="ow">in</span> <span class="n">REGISTRY</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="n">REGISTRY</span><span class="p">[</span><span class="n">_class_name</span><span class="p">]</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">last_period</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">rfind</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+                <span class="n">mod</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="n">command</span><span class="p">[:</span><span class="n">last_period</span><span class="p">])</span>
+                <span class="n">command</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mod</span><span class="p">,</span> <span class="n">command</span><span class="p">[</span><span class="n">last_period</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">:])</span>
+                <span class="n">REGISTRY</span><span class="p">[</span><span class="n">_class_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">command</span>
 
-    <span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="n">col_names</span> <span class="o">=</span> <span class="n">robj</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;listData&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;names&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col_names</span><span class="p">)):</span>
-        <span class="n">idx_asy</span> <span class="o">=</span> <span class="n">robj</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;listData&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">command</span><span class="p">(</span><span class="n">robject</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">warn</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Failed to coerce RDS object to class: &#39;</span><span class="si">{</span><span class="n">_class_name</span><span class="si">}</span><span class="s2">&#39;, returning the dictionary, </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+                <span class="ne">RuntimeWarning</span><span class="p">,</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;RDS file contains an unknown class: &#39;</span><span class="si">{</span><span class="n">_class_name</span><span class="si">}</span><span class="s2">&#39;, returning the dictionary&quot;</span><span class="p">,</span>
+            <span class="ne">RuntimeWarning</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="n">data</span><span class="p">[</span><span class="n">col_names</span><span class="p">[</span><span class="n">idx</span><span class="p">]]</span> <span class="o">=</span> <span class="n">idx_asy</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-
-    <span class="n">index</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="n">robj</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;rownames&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]:</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="n">robj</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;rownames&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
-
-    <span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span>
-        <span class="n">data</span><span class="p">,</span>
-        <span class="n">columns</span><span class="o">=</span><span class="n">col_names</span><span class="p">,</span>
-        <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">,</span>
-    <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">df</span></div>
-
+    <span class="k">return</span> <span class="n">robject</span>
 </pre></div>
         </article>
       </div>
@@ -353,7 +418,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=03f3338f"></script>
+</div><script src="../../_static/documentation_options.js?v=1dd76d02"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

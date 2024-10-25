@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
-        <title>rds2py.PyRdsReader - rds2py 0.4.6 documentation</title>
+        <title>rds2py.PyRdsReader - rds2py 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
@@ -165,7 +165,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.4.6 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.5.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -189,7 +189,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.4.6 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.5.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -243,15 +243,25 @@
         </div>
         <article role="main" id="furo-main-content">
           <h1>Source code for rds2py.PyRdsReader</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">.rds_parser</span> <span class="kn">import</span> <span class="n">RdsObject</span><span class="p">,</span> <span class="n">RdsReader</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
+<span></span><span class="sd">&quot;&quot;&quot;Low-level interface for reading RDS file format.</span>
+
+<span class="sd">This module provides the core functionality for parsing RDS files at a binary level and converting them into a</span>
+<span class="sd">dictionary representation that can be further processed by higher-level functions.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span> <span class="nn">warnings</span> <span class="kn">import</span> <span class="n">warn</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.lib_rds_parser</span> <span class="kn">import</span> <span class="n">RdsObject</span><span class="p">,</span> <span class="n">RdsReader</span>
 
 
 <div class="viewcode-block" id="PyRdsParserError">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdsReader.PyRdsParserError">[docs]</a>
 <span class="k">class</span> <span class="nc">PyRdsParserError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised for errors during RDS parsing.&quot;&quot;&quot;</span>
+
     <span class="k">pass</span></div>
 
 
@@ -259,14 +269,40 @@
 <div class="viewcode-block" id="PyRdsParser">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdsReader.PyRdsParser">[docs]</a>
 <span class="k">class</span> <span class="nc">PyRdsParser</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Python bindings to the rds2cpp interface.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parser for reading RDS files.</span>
+
+<span class="sd">    This class provides low-level access to RDS file contents, handling the binary</span>
+<span class="sd">    format and converting it into Python data structures. It supports various R</span>
+<span class="sd">    data types and handles special R cases like NA values, integer sequences and</span>
+<span class="sd">    range functions.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        R_MIN:</span>
+<span class="sd">            Minimum integer value in R, used for handling NA values.</span>
+
+<span class="sd">        rds_object:</span>
+<span class="sd">            Internal representation of the RDS file.</span>
+
+<span class="sd">        root_object:</span>
+<span class="sd">            Root object of the parsed RDS file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">R_MIN</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2147483648</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            file_path:</span>
+<span class="sd">                Path to the RDS file to be read.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">rds_object</span> <span class="o">=</span> <span class="n">RdsObject</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
             <span class="n">robject</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rds_object</span><span class="o">.</span><span class="n">get_robject</span><span class="p">()</span>
+
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">robject</span><span class="p">,</span> <span class="n">RdsReader</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected &#39;RdsReader&#39; object, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">root_object</span> <span class="o">=</span> <span class="n">robject</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyRdsParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error initializing &#39;PyRdsParser&#39;: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -274,10 +310,18 @@
 <div class="viewcode-block" id="PyRdsParser.parse">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.parse">[docs]</a>
     <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the RDS File (recursively).</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse the entire RDS file into a dictionary structure.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            A Dictionary with object attributes as keys and the value representing the data from the RDS file.</span>
+<span class="sd">            A dictionary containing the parsed data with keys:</span>
+<span class="sd">            - &#39;type&#39;: The R object type</span>
+<span class="sd">            - &#39;data&#39;: The actual data (if applicable)</span>
+<span class="sd">            - &#39;attributes&#39;: R object attributes (if any)</span>
+<span class="sd">            - &#39;class_name&#39;: The R class name</span>
+<span class="sd">            - Additional keys depending on the object type</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            PyRdsParserError: If there&#39;s an error during parsing.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">root_object</span><span class="p">)</span>
@@ -290,44 +334,66 @@
             <span class="n">rtype</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_rtype</span><span class="p">()</span>
             <span class="n">result</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="n">rtype</span><span class="p">}</span>
 
-            <span class="k">if</span> <span class="n">rtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">]:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_numeric_data</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">rtype</span><span class="p">)</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_string_arr</span><span class="p">()</span>
-            <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;vector&quot;</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_vector</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;S4&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;S4&quot;</span><span class="p">:</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;package_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_package_name</span><span class="p">()</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;class_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_class_name</span><span class="p">()</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">rtype</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;integer&quot;</span><span class="p">,</span> <span class="s2">&quot;boolean&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">]:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_r_special_cases</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_get_numeric_data</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">rtype</span><span class="p">),</span> <span class="n">rtype</span><span class="p">,</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_rsize</span><span class="p">()</span>
+                <span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;class_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">rtype</span><span class="si">}</span><span class="s2">_vector&quot;</span>
+            <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;string&quot;</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_string_arr</span><span class="p">()</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;class_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;string_vector&quot;</span>
+            <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;vector&quot;</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_vector</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_attributes</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;class_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;vector&quot;</span>
             <span class="k">elif</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;null&quot;</span><span class="p">:</span>
                 <span class="k">pass</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="c1"># raise ValueError</span>
-                <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported R object type: </span><span class="si">{</span><span class="n">rtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unsupported R object type: </span><span class="si">{</span><span class="n">rtype</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="ne">RuntimeWarning</span><span class="p">)</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;class_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="k">return</span> <span class="n">result</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyRdsParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing object: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_handle_r_special_cases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">rtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="nb">range</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Handle special R data representations.&quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c1"># Special handling for R integer containing NA</span>
+            <span class="k">if</span> <span class="n">size</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">data</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_MIN</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_MIN</span> <span class="k">else</span> <span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">data</span><span class="p">])</span>
+
+            <span class="c1"># Special handling for R integer sequences</span>
+            <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;integer&quot;</span> <span class="ow">and</span> <span class="n">size</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_MIN</span> <span class="ow">and</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">R_MIN</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="k">return</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">data</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyRdsParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error handling R special cases: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_get_numeric_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">RdsReader</span><span class="p">,</span> <span class="n">rtype</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_numeric_data</span><span class="p">()</span>
             <span class="k">if</span> <span class="n">rtype</span> <span class="o">==</span> <span class="s2">&quot;boolean&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+
             <span class="k">return</span> <span class="n">data</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyRdsParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error getting numeric data: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_process_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">RdsReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
-        <span class="k">return</span> <span class="p">[</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">load_vec_element</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_rsize</span><span class="p">())</span>
-        <span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">load_vec_element</span><span class="p">(</span><span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_rsize</span><span class="p">())]</span>
 
     <span class="k">def</span> <span class="nf">_process_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">RdsReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
         <span class="k">try</span><span class="p">:</span>
@@ -335,6 +401,7 @@
             <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_attribute_names</span><span class="p">():</span>
                 <span class="n">attr_obj</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">load_attribute_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
                 <span class="n">attributes</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="n">attr_obj</span><span class="p">)</span>
+
             <span class="k">return</span> <span class="n">attributes</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">PyRdsParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error processing attributes: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -380,7 +447,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=03f3338f"></script>
+</div><script src="../../_static/documentation_options.js?v=1dd76d02"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

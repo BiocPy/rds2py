@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial.html" /><link rel="prev" title="rds2py" href="index.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
-        <title>rds2py - rds2py 0.4.6 documentation</title>
+        <title>rds2py - rds2py 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.4.6 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.5.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.4.6 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.5.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -254,57 +254,135 @@
 <img alt="Unit tests" src="https://github.com/BiocPy/rds2py/actions/workflows/pypi-test.yml/badge.svg" /></p>
 <section class="tex2jax_ignore mathjax_ignore" id="rds2py">
 <h1>rds2py<a class="headerlink" href="#rds2py" title="Link to this heading">¶</a></h1>
-<p>Parse and construct Python representations for datasets stored in RDS files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports a few base classes from R and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <strong><em>This is possible because of <a class="reference external" href="https://github.com/LTLA/rds2cpp">Aaron’s rds2cpp library</a>.</em></strong></p>
-<p>The package uses memory views (except for strings) to access the same memory from C++ in Python (through Cython of course). This is especially useful for large datasets so we don’t make multiple copies of data.</p>
-<section id="install">
-<h2>Install<a class="headerlink" href="#install" title="Link to this heading">¶</a></h2>
+<p>Parse and construct Python representations for datasets stored in RDS files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports various base classes from R, and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <em><strong>For more details, check out <a class="reference external" href="https://github.com/LTLA/rds2cpp">rds2cpp library</a>.</strong></em></p>
+<blockquote>
+<div><p><strong>Important Version Notice</strong></p>
+<p>Version 0.5.0 brings major changes to the package:</p>
+<ul class="simple">
+<li><p>Complete overhaul of the codebase using pybind11</p></li>
+<li><p>Streamlined readers for R data types</p></li>
+<li><p>Updated API for all classes and methods</p></li>
+</ul>
+<p>Please refer to the <a class="reference external" href="https://biocpy.github.io/rds2py/">documentation</a> for the latest usage guidelines. Previous versions may have incompatible APIs.</p>
+</div></blockquote>
+<p>The package provides:</p>
+<ul class="simple">
+<li><p>Efficient parsing of RDS files with <em>minimal</em> memory overhead</p></li>
+<li><p>Support for R’s basic data types and complex S4 objects</p>
+<ul>
+<li><p>Vectors (numeric, character, logical)</p></li>
+<li><p>Factors</p></li>
+<li><p>Data frames</p></li>
+<li><p>Matrices (dense and sparse)</p></li>
+<li><p>Run-length encoded vectors (Rle)</p></li>
+</ul>
+</li>
+<li><p>Conversion to appropriate Python/NumPy/SciPy data structures</p>
+<ul>
+<li><p>dgCMatrix (sparse column matrix)</p></li>
+<li><p>dgRMatrix (sparse row matrix)</p></li>
+<li><p>dgTMatrix (sparse triplet matrix)</p></li>
+</ul>
+</li>
+<li><p>Preservation of metadata and attributes from R objects</p></li>
+<li><p>Integration with BiocPy ecosystem for Bioconductor classes</p>
+<ul>
+<li><p>SummarizedExperiment</p></li>
+<li><p>RangedSummarizedExperiment</p></li>
+<li><p>SingleCellExperiment</p></li>
+<li><p>GenomicRanges</p></li>
+<li><p>MultiAssayExperiment</p></li>
+</ul>
+</li>
+</ul>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p>Package is published to <a class="reference external" href="https://pypi.org/project/rds2py/">PyPI</a></p>
 <div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>rds2py
+</pre></div>
+</div>
+</section>
+<section id="quick-start">
+<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">read_rds</span>
+
+<span class="c1"># Read any RDS file</span>
+<span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">¶</a></h2>
 <p>If you do not have an RDS object handy, feel free to download one from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_summarized_experiment</span><span class="p">,</span> <span class="n">read_rds</span>
-
-<span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="o">&lt;</span><span class="n">path_to_file</span><span class="o">&gt;</span><span class="p">)</span>
+<section id="basic-usage">
+<h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">read_rds</span>
+<span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This <code class="docutils literal notranslate"><span class="pre">r_obj</span></code> holds a dictionary representation of the RDS file, we can now transform this object into Python representations.</p>
-<p><code class="docutils literal notranslate"><span class="pre">rObj</span></code> always contains two keys</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: If atomic entities, contains the NumPy view of the array.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">attributes</span></code>: Additional properties available for the object.</p></li>
-</ul>
-<p>In addition, the package provides functions to convert parsed R objects into Python representations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">as_spase_matrix</span><span class="p">,</span> <span class="n">as_summarized_experiment</span>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">r_obj</span></code> either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.</p>
+</section>
+</section>
+<section id="write-your-own-reader">
+<h2>Write-your-own-reader<a class="headerlink" href="#write-your-own-reader" title="Link to this heading">¶</a></h2>
+<p>In addition, the package provides the dictionary representation of the RDS file, allowing users to write their own custom readers into appropriate Python representations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">parse_rds</span>
 
-<span class="c1"># to convert an robject to a sparse matrix</span>
-<span class="n">sp_mat</span> <span class="o">=</span> <span class="n">as_sparse</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
-
-<span class="c1"># to convert an robject to SCE</span>
-<span class="n">sce</span> <span class="o">=</span> <span class="n">as_summarized_experiment</span><span class="p">(</span><span class="n">rObj</span><span class="p">)</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">parse_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>For more examples converting <code class="docutils literal notranslate"><span class="pre">data.frame</span></code>, <code class="docutils literal notranslate"><span class="pre">dgCMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgRMatrix</span></code>, <code class="docutils literal notranslate"><span class="pre">dgTMatrix</span></code> to Python, checkout the <a class="reference external" href="https://biocpy.github.io/rds2py/">documentation</a>.</p>
+<p>if you know this RDS file contains an <code class="docutils literal notranslate"><span class="pre">GenomicRanges</span></code> object, you can use or modify the provided list reader, or write your own parser to convert this dictionary.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py.read_granges</span> <span class="kn">import</span> <span class="n">read_genomic_ranges</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">read_genomic_ranges</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="type-conversion-reference">
+<h2>Type Conversion Reference<a class="headerlink" href="#type-conversion-reference" title="Link to this heading">¶</a></h2>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>R Type</p></th>
+<th class="head"><p>Python/NumPy Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>numeric</p></td>
+<td><p>numpy.ndarray (float64)</p></td>
+</tr>
+<tr class="row-odd"><td><p>integer</p></td>
+<td><p>numpy.ndarray (int32)</p></td>
+</tr>
+<tr class="row-even"><td><p>character</p></td>
+<td><p>list of str</p></td>
+</tr>
+<tr class="row-odd"><td><p>logical</p></td>
+<td><p>numpy.ndarray (bool)</p></td>
+</tr>
+<tr class="row-even"><td><p>factor</p></td>
+<td><p>list</p></td>
+</tr>
+<tr class="row-odd"><td><p>data.frame</p></td>
+<td><p>BiocFrame</p></td>
+</tr>
+<tr class="row-even"><td><p>matrix</p></td>
+<td><p>numpy.ndarray or scipy.sparse matrix</p></td>
+</tr>
+<tr class="row-odd"><td><p>dgCMatrix</p></td>
+<td><p>scipy.sparse.csc_matrix</p></td>
+</tr>
+<tr class="row-even"><td><p>dgRMatrix</p></td>
+<td><p>scipy.sparse.csr_matrix</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 <section id="developer-notes">
 <h2>Developer Notes<a class="headerlink" href="#developer-notes" title="Link to this heading">¶</a></h2>
-<p>This project uses Cython to provide bindings from C++ to Python.</p>
-<p>Steps to setup dependencies -</p>
-<ul class="simple">
-<li><p>git submodules is initialized in <code class="docutils literal notranslate"><span class="pre">extern/rds2cpp</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">cmake</span> <span class="pre">.</span></code> in <code class="docutils literal notranslate"><span class="pre">extern/rds2cpp</span></code> directory to download dependencies, especially the <code class="docutils literal notranslate"><span class="pre">byteme</span></code> library</p></li>
-</ul>
-<p>First one needs to build the extern library, this would generate a shared object file to <code class="docutils literal notranslate"><span class="pre">src/rds2py/core-[*].so</span></code></p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace
-</pre></div>
-</div>
-<p>For typical development workflows, run</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>setup.py<span class="w"> </span>build_ext<span class="w"> </span>--inplace<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>tox
-</pre></div>
-</div>
+<p>This project uses pybind11 to provide bindings to the rds2cpp library. Please make sure necessary C++ compiler is installed on your system.</p>
 <!-- pyscaffold-notes -->
 </section>
 <section id="note">
@@ -370,8 +448,14 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">rds2py</a><ul>
-<li><a class="reference internal" href="#install">Install</a></li>
-<li><a class="reference internal" href="#usage">Usage</a></li>
+<li><a class="reference internal" href="#installation">Installation</a></li>
+<li><a class="reference internal" href="#quick-start">Quick Start</a></li>
+<li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#write-your-own-reader">Write-your-own-reader</a></li>
+<li><a class="reference internal" href="#type-conversion-reference">Type Conversion Reference</a></li>
 <li><a class="reference internal" href="#developer-notes">Developer Notes</a></li>
 <li><a class="reference internal" href="#note">Note</a></li>
 </ul>
@@ -385,7 +469,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=03f3338f"></script>
+</div><script src="_static/documentation_options.js?v=1dd76d02"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>

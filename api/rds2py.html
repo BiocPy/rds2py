@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="prev" title="rds2py" href="modules.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
-        <title>rds2py package - rds2py 0.4.6 documentation</title>
+        <title>rds2py package - rds2py 0.5.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">rds2py 0.4.6 documentation</div></a>
+      <a href="../index.html"><div class="brand">rds2py 0.5.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.4.6 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.5.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -256,11 +256,51 @@
 </section>
 <section id="module-rds2py.PyRdsReader">
 <span id="rds2py-pyrdsreader-module"></span><h2>rds2py.PyRdsReader module<a class="headerlink" href="#module-rds2py.PyRdsReader" title="Link to this heading">¶</a></h2>
+<p>Low-level interface for reading RDS file format.</p>
+<p>This module provides the core functionality for parsing RDS files at a binary level and converting them into a
+dictionary representation that can be further processed by higher-level functions.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.PyRdsReader.</span></span><span class="sig-name descname"><span class="pre">PyRdsParser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/PyRdsReader.html#PyRdsParser"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
-<p>Python bindings to the rds2cpp interface.</p>
+<p>Parser for reading RDS files.</p>
+<p>This class provides low-level access to RDS file contents, handling the binary
+format and converting it into Python data structures. It supports various R
+data types and handles special R cases like NA values, integer sequences and
+range functions.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser.R_MIN">
+<span class="sig-name descname"><span class="pre">R_MIN</span></span><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser.R_MIN" title="Link to this definition">¶</a></dt>
+<dd><p>Minimum integer value in R, used for handling NA values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)">int</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser.rds_object">
+<span class="sig-name descname"><span class="pre">rds_object</span></span><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser.rds_object" title="Link to this definition">¶</a></dt>
+<dd><p>Internal representation of the RDS file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser.root_object">
+<span class="sig-name descname"><span class="pre">root_object</span></span><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser.root_object" title="Link to this definition">¶</a></dt>
+<dd><p>Root object of the parsed RDS file.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">R_MIN</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-2147483648</span></em><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser.__annotations__">
+<span class="sig-name descname"><span class="pre">__annotations__</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'R_MIN':</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span></em><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser.__annotations__" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser.get_dimensions">
 <span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><span class="pre">tuple</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/constants.html#None" title="(in Python v3.9)"><span class="pre">None</span></a></span></span><a class="reference internal" href="../_modules/rds2py/PyRdsReader.html#PyRdsParser.get_dimensions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser.get_dimensions" title="Link to this definition">¶</a></dt>
@@ -269,10 +309,23 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParser.parse">
 <span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Dict" title="(in Python v3.9)"><span class="pre">Dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Any" title="(in Python v3.9)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/rds2py/PyRdsReader.html#PyRdsParser.parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParser.parse" title="Link to this definition">¶</a></dt>
-<dd><p>Parse the RDS File (recursively).</p>
+<dd><p>Parse the entire RDS file into a dictionary structure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A Dictionary with object attributes as keys and the value representing the data from the RDS file.</p>
+<dd class="field-odd"><p><ul class="simple">
+<li><p>‘type’: The R object type</p></li>
+<li><p>’data’: The actual data (if applicable)</p></li>
+<li><p>’attributes’: R object attributes (if any)</p></li>
+<li><p>’class_name’: The R class name</p></li>
+<li><p>Additional keys depending on the object type</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the parsed data with keys</p>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParserError" title="rds2py.PyRdsReader.PyRdsParserError"><strong>PyRdsParserError</strong></a> – If there’s an error during parsing.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -283,275 +336,595 @@
 <dt class="sig sig-object py" id="rds2py.PyRdsReader.PyRdsParserError">
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.PyRdsReader.</span></span><span class="sig-name descname"><span class="pre">PyRdsParserError</span></span><a class="reference internal" href="../_modules/rds2py/PyRdsReader.html#PyRdsParserError"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.PyRdsReader.PyRdsParserError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
+<p>Exception raised for errors during RDS parsing.</p>
 </dd></dl>
 
 </section>
-<section id="module-rds2py.granges">
-<span id="rds2py-granges-module"></span><h2>rds2py.granges module<a class="headerlink" href="#module-rds2py.granges" title="Link to this heading">¶</a></h2>
+<section id="module-rds2py.generics">
+<span id="rds2py-generics-module"></span><h2>rds2py.generics module<a class="headerlink" href="#module-rds2py.generics" title="Link to this heading">¶</a></h2>
+<p>Core functionality for reading RDS files in Python.</p>
+<p>This module provides the main interface for reading RDS files and converting them
+to appropriate Python objects. It maintains a registry of supported R object types
+and their corresponding Python parser functions.</p>
+<p>The module supports various R object types including vectors, matrices, data frames,
+and specialized Bioconductor objects like GenomicRanges and SummarizedExperiment.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="s2">&quot;example.rds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+</pre></div>
+</div>
 <dl class="py function">
-<dt class="sig sig-object py" id="rds2py.granges.as_granges">
-<span class="sig-prename descclassname"><span class="pre">rds2py.granges.</span></span><span class="sig-name descname"><span class="pre">as_granges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/granges.html#as_granges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.granges.as_granges" title="Link to this definition">¶</a></dt>
-<dd><p>Parse an R object as a <code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRanges</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">GenomicRanges</span></code> object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.granges.as_granges_list">
-<span class="sig-prename descclassname"><span class="pre">rds2py.granges.</span></span><span class="sig-name descname"><span class="pre">as_granges_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/granges.html#as_granges_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.granges.as_granges_list" title="Link to this definition">¶</a></dt>
-<dd><p>Parse an R object as a <code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRangesList</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">GenomicRangesList</span></code> object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-rds2py.interface">
-<span id="rds2py-interface-module"></span><h2>rds2py.interface module<a class="headerlink" href="#module-rds2py.interface" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.interface.as_dense_matrix">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_dense_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Literal" title="(in Python v3.9)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'C'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/rds2py/interface.html#as_dense_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_dense_matrix" title="Link to this definition">¶</a></dt>
-<dd><p>Parse an R object as a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>.</p>
+<dt class="sig sig-object py" id="rds2py.generics.read_rds">
+<span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">read_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/generics.html#read_rds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.generics.read_rds" title="Link to this definition">¶</a></dt>
+<dd><p>Read an RDS file and convert it to an appropriate Python object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p></li>
-<li><p><strong>order</strong> – <p>Row-major (<strong>C</strong>-style) or Column-major (<a href="#id1"><span class="problematic" id="id2">**</span></a>F**ortran-style)
-order.</p>
-<p>Defaults to “F”.</p>
-</p></li>
+<li><p><strong>path</strong> – Path to the RDS file to be read.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments passed to specific parser functions.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An <code class="docutils literal notranslate"><span class="pre">ndarray</span></code> of the R object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.interface.as_pandas">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/interface.html#as_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_pandas" title="Link to this definition">¶</a></dt>
-<dd><p>Parse an R object as a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p>
-<p>Currently supports <code class="docutils literal notranslate"><span class="pre">DFrame</span></code> or <code class="docutils literal notranslate"><span class="pre">data.frame</span></code> class objects from R.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a> containing the data from the R Object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.interface.as_sparse_matrix">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_sparse_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/interface.html#as_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_sparse_matrix" title="Link to this definition">¶</a></dt>
-<dd><p>Parse an R object as a sparse matrix.</p>
-<p>Only supports reading of <cite>dgCMatrix</cite>, <cite>dgRMatrix</cite>, <cite>dgTMatrix</cite> marices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A sparse matrix of the R object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.interface.as_summarized_experiment">
-<span class="sig-prename descclassname"><span class="pre">rds2py.interface.</span></span><span class="sig-name descname"><span class="pre">as_summarized_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/interface.html#as_summarized_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.interface.as_summarized_experiment" title="Link to this definition">¶</a></dt>
-<dd><p>Parse an R object as a <a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="(in SingleCellExperiment v0.4.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code></a> or
-<a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.SummarizedExperiment.SummarizedExperiment" title="(in SummarizedExperiment v0.4.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code></a>.</p>
-<p>Note: This function demonstrates how to parse a complex RDS objects in Python and may not work for all
-scenarios.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p></li>
-<li><p><strong>order</strong> – <p>Row-major (<strong>C</strong>-style) or Column-major (<a href="#id3"><span class="problematic" id="id4">**</span></a>F**ortran-style)
-order. Only used if the <code class="docutils literal notranslate"><span class="pre">robj</span></code> contains a <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>.</p>
-<p>Defaults to “F”.</p>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <cite>SummarizedExperiment</cite> or
-<cite>SingleCellExperiment</cite> from the R object.</p>
+<dd class="field-even"><p>A Python object representing the data in the RDS file. The exact type
+depends on the contents of the RDS file and the available parsers.</p>
 </dd>
 </dl>
 </dd></dl>
 
 </section>
-<section id="module-rds2py.parser">
-<span id="rds2py-parser-module"></span><h2>rds2py.parser module<a class="headerlink" href="#module-rds2py.parser" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.parser.get_class">
-<span class="sig-prename descclassname"><span class="pre">rds2py.parser.</span></span><span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.MutableMapping" title="(in Python v3.9)"><span class="pre">MutableMapping</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/rds2py/parser.html#get_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.parser.get_class" title="Link to this definition">¶</a></dt>
-<dd><p>Generic method to get the class information of the R object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> (<em>MutableMapping</em>) – Object parsed from the <cite>RDS</cite> file.
-Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Class name.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)">str</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.parser.read_rds">
-<span class="sig-prename descclassname"><span class="pre">rds2py.parser.</span></span><span class="sig-name descname"><span class="pre">read_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Dict" title="(in Python v3.9)"><span class="pre">Dict</span></a></span></span><a class="reference internal" href="../_modules/rds2py/parser.html#read_rds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.parser.read_rds" title="Link to this definition">¶</a></dt>
-<dd><p>Read an RDS file as a <a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>file</strong> (<a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Path to RDS file.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>R object as a python dictionary.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>MutableMapping</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-rds2py.pdf">
-<span id="rds2py-pdf-module"></span><h2>rds2py.pdf module<a class="headerlink" href="#module-rds2py.pdf" title="Link to this heading">¶</a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.pdf.as_pandas_from_data_frame">
-<span class="sig-prename descclassname"><span class="pre">rds2py.pdf.</span></span><span class="sig-name descname"><span class="pre">as_pandas_from_data_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/pdf.html#as_pandas_from_data_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.pdf.as_pandas_from_data_frame" title="Link to this definition">¶</a></dt>
-<dd><p>Read an R object to a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v2.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataFrame</span></code></a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <cite>DataFrame</cite> from the R Object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="rds2py.pdf.as_pandas_from_dframe">
-<span class="sig-prename descclassname"><span class="pre">rds2py.pdf.</span></span><span class="sig-name descname"><span class="pre">as_pandas_from_dframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/pdf.html#as_pandas_from_dframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.pdf.as_pandas_from_dframe" title="Link to this definition">¶</a></dt>
-<dd><p>Convert a realized R object to a pandas data frame representation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>robj</strong> – <p>Object parsed from the <cite>RDS</cite> file.</p>
-<p>Usually the result of <a class="reference internal" href="#rds2py.parser.read_rds" title="rds2py.parser.read_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_rds()</span></code></a>.</p>
-</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A <cite>DataFrame</cite> from the R Object.</p>
-</dd>
-</dl>
-</dd></dl>
-
-</section>
-<section id="module-rds2py.rds_parser">
-<span id="rds2py-rds-parser-module"></span><h2>rds2py.rds_parser module<a class="headerlink" href="#module-rds2py.rds_parser" title="Link to this heading">¶</a></h2>
+<section id="module-rds2py.lib_rds_parser">
+<span id="rds2py-lib-rds-parser-module"></span><h2>rds2py.lib_rds_parser module<a class="headerlink" href="#module-rds2py.lib_rds_parser" title="Link to this heading">¶</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.rds_parser.</span></span><span class="sig-name descname"><span class="pre">RdsObject</span></span><a class="headerlink" href="#rds2py.rds_parser.RdsObject" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.lib_rds_parser.</span></span><span class="sig-name descname"><span class="pre">RdsObject</span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsObject" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsObject.get_robject">
-<span class="sig-name descname"><span class="pre">get_robject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsObject" title="rds2py.rds_parser.RdsObject"><span class="pre">rds2py.rds_parser.RdsObject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">RdsReader</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsObject.get_robject" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsObject.get_robject">
+<span class="sig-name descname"><span class="pre">get_robject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsObject" title="rds2py.lib_rds_parser.RdsObject"><span class="pre">rds2py.lib_rds_parser.RdsObject</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">RdsReader</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsObject.get_robject" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsParserError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.rds_parser.</span></span><span class="sig-name descname"><span class="pre">RdsParserError</span></span><a class="headerlink" href="#rds2py.rds_parser.RdsParserError" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsParserError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.lib_rds_parser.</span></span><span class="sig-name descname"><span class="pre">RdsParserError</span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsParserError" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/exceptions.html#Exception" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></a></p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.rds_parser.</span></span><span class="sig-name descname"><span class="pre">RdsReader</span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.lib_rds_parser.</span></span><span class="sig-name descname"><span class="pre">RdsReader</span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pybind11_object</span></code></p>
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_attribute_names">
-<span class="sig-name descname"><span class="pre">get_attribute_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_attribute_names" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_attribute_names">
+<span class="sig-name descname"><span class="pre">get_attribute_names</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_attribute_names" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_class_name">
-<span class="sig-name descname"><span class="pre">get_class_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_class_name" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_class_name">
+<span class="sig-name descname"><span class="pre">get_class_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_class_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_dimensions">
-<span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_dimensions" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_dimensions">
+<span class="sig-name descname"><span class="pre">get_dimensions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#tuple" title="(in Python v3.9)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_dimensions" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_numeric_data">
-<span class="sig-name descname"><span class="pre">get_numeric_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">numpy.ndarray</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_numeric_data" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_numeric_data">
+<span class="sig-name descname"><span class="pre">get_numeric_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">numpy.ndarray</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_numeric_data" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_package_name">
-<span class="sig-name descname"><span class="pre">get_package_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_package_name" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_package_name">
+<span class="sig-name descname"><span class="pre">get_package_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_package_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_rsize">
-<span class="sig-name descname"><span class="pre">get_rsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_rsize" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_rsize">
+<span class="sig-name descname"><span class="pre">get_rsize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_rsize" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_rtype">
-<span class="sig-name descname"><span class="pre">get_rtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_rtype" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_rtype">
+<span class="sig-name descname"><span class="pre">get_rtype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_rtype" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.get_string_arr">
-<span class="sig-name descname"><span class="pre">get_string_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.get_string_arr" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_string_arr">
+<span class="sig-name descname"><span class="pre">get_string_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_string_arr" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.load_attribute_by_name">
-<span class="sig-name descname"><span class="pre">load_attribute_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><span class="pre">object</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.load_attribute_by_name" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.load_attribute_by_name">
+<span class="sig-name descname"><span class="pre">load_attribute_by_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><span class="pre">object</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.load_attribute_by_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="rds2py.rds_parser.RdsReader.load_vec_element">
-<span class="sig-name descname"><span class="pre">load_vec_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.rds_parser.RdsReader" title="rds2py.rds_parser.RdsReader"><span class="pre">rds2py.rds_parser.RdsReader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><span class="pre">object</span></a></span></span><a class="headerlink" href="#rds2py.rds_parser.RdsReader.load_vec_element" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.load_vec_element">
+<span class="sig-name descname"><span class="pre">load_vec_element</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">arg0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#int" title="(in Python v3.9)"><span class="pre">int</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><span class="pre">object</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.load_vec_element" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
+</dd></dl>
+
+</section>
+<section id="module-rds2py.rdsutils">
+<span id="rds2py-rdsutils-module"></span><h2>rds2py.rdsutils module<a class="headerlink" href="#module-rds2py.rdsutils" title="Link to this heading">¶</a></h2>
+<p>Utility functions for RDS file parsing and class inference.</p>
+<p>This module provides helper functions for parsing RDS files and inferring the appropriate R class information from
+parsed objects.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.rdsutils.get_class">
+<span class="sig-prename descclassname"><span class="pre">rds2py.rdsutils.</span></span><span class="sig-name descname"><span class="pre">get_class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></span><a class="reference internal" href="../_modules/rds2py/rdsutils.html#get_class"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.rdsutils.get_class" title="Link to this definition">¶</a></dt>
+<dd><p>Infer the R class name from a parsed RDS object.</p>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Handles both S4 and non-S4 R objects</p></li>
+<li><p>Special handling for vectors and matrices</p></li>
+<li><p>Checks for class information in object attributes</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>robj</strong> – Dictionary containing parsed RDS data, typically
+the output of <a class="reference internal" href="#rds2py.rdsutils.parse_rds" title="rds2py.rdsutils.parse_rds"><code class="xref py py-func docutils literal notranslate"><span class="pre">parse_rds()</span></code></a>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The inferred R class name, or None if no class can be determined.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.rdsutils.parse_rds">
+<span class="sig-prename descclassname"><span class="pre">rds2py.rdsutils.</span></span><span class="sig-name descname"><span class="pre">parse_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#str" title="(in Python v3.9)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rds2py/rdsutils.html#parse_rds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.rdsutils.parse_rds" title="Link to this definition">¶</a></dt>
+<dd><p>Parse an RDS file into a dictionary representation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> – Path to the RDS file to be parsed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the parsed contents of the RDS file.
+The structure depends on the type of R object stored in the file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_atomic">
+<span id="rds2py-read-atomic-module"></span><h2>rds2py.read_atomic module<a class="headerlink" href="#module-rds2py.read_atomic" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing atomic R vector types into Python objects.</p>
+<p>This module provides parser functions for converting R’s atomic vector types (boolean, integer, string, and double) into
+appropriate Python objects using the biocutils package’s specialized list classes.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_atomic.read_boolean_vector">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_atomic.</span></span><span class="sig-name descname"><span class="pre">read_boolean_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">BooleanList</span></span></span><a class="reference internal" href="../_modules/rds2py/read_atomic.html#read_boolean_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_atomic.read_boolean_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R boolean vector to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanList</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R boolean vector data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>BooleanList</cite> object containing the vector data
+and any associated names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_atomic.read_double_vector">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_atomic.</span></span><span class="sig-name descname"><span class="pre">read_double_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">FloatList</span></span></span><a class="reference internal" href="../_modules/rds2py/read_atomic.html#read_double_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_atomic.read_double_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R double vector to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">FloatList</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R double vector data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>FloatList</cite> object containing the vector data
+and any associated names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_atomic.read_integer_vector">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_atomic.</span></span><span class="sig-name descname"><span class="pre">read_integer_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">IntegerList</span></span></span><a class="reference internal" href="../_modules/rds2py/read_atomic.html#read_integer_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_atomic.read_integer_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R integer vector to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">IntegerList</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R integer vector data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>IntegerList</cite> object containing the vector data
+and any associated names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_atomic.read_string_vector">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_atomic.</span></span><span class="sig-name descname"><span class="pre">read_string_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">StringList</span></span></span><a class="reference internal" href="../_modules/rds2py/read_atomic.html#read_string_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_atomic.read_string_vector" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R string vector to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">StringList</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R string vector data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>StringList</cite> object containing the vector data
+and any associated names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_dict">
+<span id="rds2py-read-dict-module"></span><h2>rds2py.read_dict module<a class="headerlink" href="#module-rds2py.read_dict" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing R vector and dictionary-like objects.</p>
+<p>This module provides functionality to convert R named vectors and list objects into Python dictionaries or lists,
+maintaining the structure and names of the original R objects.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_dict.read_dict">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_dict.</span></span><span class="sig-name descname"><span class="pre">read_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_dict.html#read_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_dict.read_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R named vector or list to a Python dictionary or list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R vector/list data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>If the R object has names, returns a dictionary mapping
+names to values. Otherwise, returns a list of parsed values.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># For a named R vector c(a=1, b=2)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">read_dict</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">{&#39;a&#39;: 1, &#39;b&#39;: 2}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_factor">
+<span id="rds2py-read-factor-module"></span><h2>rds2py.read_factor module<a class="headerlink" href="#module-rds2py.read_factor" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing R factor objects.</p>
+<p>This module handles the conversion of R factors (categorical variables) into Python lists, preserving the levels and
+maintaining the order of the factor levels.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_factor.read_factor">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_factor.</span></span><span class="sig-name descname"><span class="pre">read_factor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_factor.html#read_factor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_factor.read_factor" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R factor to a Python list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R factor data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the factor values, with each value repeated
+according to its length if specified.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_frame">
+<span id="rds2py-read-frame-module"></span><h2>rds2py.read_frame module<a class="headerlink" href="#module-rds2py.read_frame" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing R data frame objects.</p>
+<p>This module provides parsers for converting both base R <cite>data.frame</cite> objects
+and Bioconductor <cite>DataFrame</cite> objects into Python <cite>BiocFrame</cite> objects, preserving
+row names, column names, and data types.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_frame.read_data_frame">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_frame.</span></span><span class="sig-name descname"><span class="pre">read_data_frame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/read_frame.html#read_data_frame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_frame.read_data_frame" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R data.frame to a <code class="xref py py-class docutils literal notranslate"><span class="pre">BiocFrame</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R <cite>data.frame</cite> object.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A BiocFrame object containing the data frame’s contents,
+with preserved column and row names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_frame.read_dframe">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_frame.</span></span><span class="sig-name descname"><span class="pre">read_dframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/read_frame.html#read_dframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_frame.read_dframe" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R DFrame (Bioconductor’s <cite>DataFrame</cite>) to a <cite>BiocFrame</cite> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed R <cite>DFrame</cite> object.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A BiocFrame object containing the DataFrame’s contents,
+with preserved metadata and structure.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_granges">
+<span id="rds2py-read-granges-module"></span><h2>rds2py.read_granges module<a class="headerlink" href="#module-rds2py.read_granges" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing Bioconductor GenomicRanges objects.</p>
+<p>This module provides parsers for converting Bioconductor’s GenomicRanges and GenomicRangesList objects into their Python
+equivalents, preserving all genomic coordinates and associated metadata.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_granges.read_genomic_ranges">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_granges.</span></span><span class="sig-name descname"><span class="pre">read_genomic_ranges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">GenomicRanges</span></span></span><a class="reference internal" href="../_modules/rds2py/read_granges.html#read_genomic_ranges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_granges.read_genomic_ranges" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R <cite>GenomicRanges</cite> object to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRanges</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed <cite>GenomicRanges</cite> data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Python <cite>GenomicRanges</cite> object containing genomic intervals
+with associated annotations.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_granges.read_granges_list">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_granges.</span></span><span class="sig-name descname"><span class="pre">read_granges_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">GenomicRangesList</span></span></span><a class="reference internal" href="../_modules/rds2py/read_granges.html#read_granges_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_granges.read_granges_list" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R <cite>GenomicRangesList</cite> object to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">GenomicRangesList</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed GenomicRangesList data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Python <cite>GenomicRangesList</cite> object containing containing multiple
+<cite>GenomicRanges</cite> objects.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_mae">
+<span id="rds2py-read-mae-module"></span><h2>rds2py.read_mae module<a class="headerlink" href="#module-rds2py.read_mae" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing Bioconductor MultiAssayExperiment objects.</p>
+<p>This module handles the conversion of Bioconductor’s MultiAssayExperiment container format into its Python equivalent,
+preserving the complex relationships between multiple experimental assays and sample metadata.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_mae.read_multi_assay_experiment">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_mae.</span></span><span class="sig-name descname"><span class="pre">read_multi_assay_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">MultiAssayExperiment</span></span></span><a class="reference internal" href="../_modules/rds2py/read_mae.html#read_multi_assay_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_mae.read_multi_assay_experiment" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R <cite>MultiAssayExperiment</cite> to a Python <code class="xref py py-class docutils literal notranslate"><span class="pre">MultiAssayExperiment</span></code> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed MultiAssayExperiment data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Python <cite>MultiAssayExperiment</cite> object containing
+multiple experimental assays with associated metadata.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_matrix">
+<span id="rds2py-read-matrix-module"></span><h2>rds2py.read_matrix module<a class="headerlink" href="#module-rds2py.read_matrix" title="Link to this heading">¶</a></h2>
+<p>Functions and classes for parsing R matrix objects.</p>
+<p>This module provides functionality to convert R matrix objects (both dense and sparse) into their Python equivalents
+using NumPy and SciPy sparse matrix formats. It handles various R matrix types including dgCMatrix, dgRMatrix, and
+dgTMatrix.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="rds2py.read_matrix.MatrixWrapper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">rds2py.read_matrix.</span></span><span class="sig-name descname"><span class="pre">MatrixWrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimnames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/read_matrix.html#MatrixWrapper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_matrix.MatrixWrapper" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.9/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>A simple wrapper class for matrices that preserves dimension names.</p>
+<p>This class bundles a matrix (dense or sparse) with its dimension names,
+maintaining the R-style naming of rows and columns.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rds2py.read_matrix.MatrixWrapper.matrix">
+<span class="sig-name descname"><span class="pre">matrix</span></span><a class="headerlink" href="#rds2py.read_matrix.MatrixWrapper.matrix" title="Link to this definition">¶</a></dt>
+<dd><p>The underlying matrix object (numpy.ndarray or scipy.sparse matrix).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="rds2py.read_matrix.MatrixWrapper.dimnames">
+<span class="sig-name descname"><span class="pre">dimnames</span></span><a class="headerlink" href="#rds2py.read_matrix.MatrixWrapper.dimnames" title="Link to this definition">¶</a></dt>
+<dd><p>A tuple of (row_names, column_names), each being a list of strings or None.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_matrix.read_dgcmatrix">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_matrix.</span></span><span class="sig-name descname"><span class="pre">read_dgcmatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html#scipy.sparse.spmatrix" title="(in SciPy v1.14.1)"><span class="pre">spmatrix</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_matrix.html#read_dgcmatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_matrix.read_dgcmatrix" title="Link to this definition">¶</a></dt>
+<dd><p>Parse an R dgCMatrix (sparse column matrix).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed dgCMatrix data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed sparse column matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_matrix.read_dgrmatrix">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_matrix.</span></span><span class="sig-name descname"><span class="pre">read_dgrmatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html#scipy.sparse.spmatrix" title="(in SciPy v1.14.1)"><span class="pre">spmatrix</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_matrix.html#read_dgrmatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_matrix.read_dgrmatrix" title="Link to this definition">¶</a></dt>
+<dd><p>Parse an R dgRMatrix (sparse row matrix).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed dgRMatrix data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed sparse row matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_matrix.read_dgtmatrix">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_matrix.</span></span><span class="sig-name descname"><span class="pre">read_dgtmatrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html#scipy.sparse.spmatrix" title="(in SciPy v1.14.1)"><span class="pre">spmatrix</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_matrix.html#read_dgtmatrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_matrix.read_dgtmatrix" title="Link to this definition">¶</a></dt>
+<dd><p>Parse an R dgTMatrix (sparse triplet matrix)..</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed dgTMatrix data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed sparse matrix.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_matrix.read_ndarray">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_matrix.</span></span><span class="sig-name descname"><span class="pre">read_ndarray</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/typing.html#typing.Literal" title="(in Python v3.9)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'C'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'F'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'F'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_matrix.html#read_ndarray"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_matrix.read_ndarray" title="Link to this definition">¶</a></dt>
+<dd><p>Parse an R matrix as a NumPy array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed dgCMatrix data.</p></li>
+<li><p><strong>order</strong> – Memory layout for the array.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Parsed dense array.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_rle">
+<span id="rds2py-read-rle-module"></span><h2>rds2py.read_rle module<a class="headerlink" href="#module-rds2py.read_rle" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing R’s Rle (Run-length encoding) objects.</p>
+<p>This module provides functionality to convert R’s Rle (Run-length encoding) objects into Python lists, expanding the
+compressed representation into its full form.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_rle.read_rle">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_rle.</span></span><span class="sig-name descname"><span class="pre">read_rle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#list" title="(in Python v3.9)"><span class="pre">list</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_rle.html#read_rle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_rle.read_rle" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R Rle object to a Python list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed Rle data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Expanded list where each value is repeated according to its run length.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># For Rle with values=[1,2] and lengths=[3,2]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">read_rle</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="go">[1, 1, 1, 2, 2]</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_sce">
+<span id="rds2py-read-sce-module"></span><h2>rds2py.read_sce module<a class="headerlink" href="#module-rds2py.read_sce" title="Link to this heading">¶</a></h2>
+<p>Functions for parsing Bioconductor <cite>SingleCellExperiment</cite> objects.</p>
+<p>This module provides parsers for converting Bioconductor’s <cite>SingleCellExperiment</cite>
+objects into their Python equivalents, handling the complex structure of single-cell
+data including multiple assays, reduced dimensions, and alternative experiments.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_sce.read_alts_summarized_experiment_by_column">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_sce.</span></span><span class="sig-name descname"><span class="pre">read_alts_summarized_experiment_by_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/read_sce.html#read_alts_summarized_experiment_by_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_sce.read_alts_summarized_experiment_by_column" title="Link to this definition">¶</a></dt>
+<dd><p>Parse alternative experiments in a SingleCellExperiment.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_sce.read_single_cell_experiment">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_sce.</span></span><span class="sig-name descname"><span class="pre">read_single_cell_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://biocpy.github.io/SingleCellExperiment/api/singlecellexperiment.html#singlecellexperiment.SingleCellExperiment.SingleCellExperiment" title="(in SingleCellExperiment v0.4.7)"><span class="pre">SingleCellExperiment</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_sce.html#read_single_cell_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_sce.read_single_cell_experiment" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R SingleCellExperiment to Python SingleCellExperiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed SingleCellExperiment data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Python SingleCellExperiment object containing
+the assay data and associated metadata.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-rds2py.read_se">
+<span id="rds2py-read-se-module"></span><h2>rds2py.read_se module<a class="headerlink" href="#module-rds2py.read_se" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_se.read_ranged_summarized_experiment">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_se.</span></span><span class="sig-name descname"><span class="pre">read_ranged_summarized_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.RangedSummarizedExperiment.RangedSummarizedExperiment" title="(in SummarizedExperiment v0.4.5)"><span class="pre">RangedSummarizedExperiment</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_se.html#read_ranged_summarized_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_se.read_ranged_summarized_experiment" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R RangedSummarizedExperiment to its Python equivalent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed SummarizedExperiment data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Python RangedSummarizedExperiment object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_se.read_summarized_experiment">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_se.</span></span><span class="sig-name descname"><span class="pre">read_summarized_experiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.SummarizedExperiment.SummarizedExperiment" title="(in SummarizedExperiment v0.4.5)"><span class="pre">SummarizedExperiment</span></a></span></span><a class="reference internal" href="../_modules/rds2py/read_se.html#read_summarized_experiment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_se.read_summarized_experiment" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R SummarizedExperiment to Python
+<a class="reference external" href="https://biocpy.github.io/SummarizedExperiment/api/summarizedexperiment.html#summarizedexperiment.SummarizedExperiment.SummarizedExperiment" title="(in SummarizedExperiment v0.4.5)"><code class="xref py py-class docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed SummarizedExperiment data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <cite>SummarizedExperiment</cite> from the R object.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -611,6 +984,11 @@ Usually the result of <a class="reference internal" href="#rds2py.parser.read_rd
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
 <li><a class="reference internal" href="#module-rds2py.PyRdsReader">rds2py.PyRdsReader module</a><ul>
 <li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser"><code class="docutils literal notranslate"><span class="pre">PyRdsParser</span></code></a><ul>
+<li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser.R_MIN"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.R_MIN</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser.rds_object"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.rds_object</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser.root_object"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.root_object</span></code></a></li>
+<li><a class="reference internal" href="#id0"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.R_MIN</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser.__annotations__"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.__annotations__</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser.get_dimensions"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.get_dimensions()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParser.parse"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.parse()</span></code></a></li>
 </ul>
@@ -618,47 +996,89 @@ Usually the result of <a class="reference internal" href="#rds2py.parser.read_rd
 <li><a class="reference internal" href="#rds2py.PyRdsReader.PyRdsParserError"><code class="docutils literal notranslate"><span class="pre">PyRdsParserError</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.granges">rds2py.granges module</a><ul>
-<li><a class="reference internal" href="#rds2py.granges.as_granges"><code class="docutils literal notranslate"><span class="pre">as_granges()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.granges.as_granges_list"><code class="docutils literal notranslate"><span class="pre">as_granges_list()</span></code></a></li>
+<li><a class="reference internal" href="#module-rds2py.generics">rds2py.generics module</a><ul>
+<li><a class="reference internal" href="#rds2py.generics.read_rds"><code class="docutils literal notranslate"><span class="pre">read_rds()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.interface">rds2py.interface module</a><ul>
-<li><a class="reference internal" href="#rds2py.interface.as_dense_matrix"><code class="docutils literal notranslate"><span class="pre">as_dense_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.interface.as_pandas"><code class="docutils literal notranslate"><span class="pre">as_pandas()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.interface.as_sparse_matrix"><code class="docutils literal notranslate"><span class="pre">as_sparse_matrix()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.interface.as_summarized_experiment"><code class="docutils literal notranslate"><span class="pre">as_summarized_experiment()</span></code></a></li>
+<li><a class="reference internal" href="#module-rds2py.lib_rds_parser">rds2py.lib_rds_parser module</a><ul>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsObject"><code class="docutils literal notranslate"><span class="pre">RdsObject</span></code></a><ul>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsObject.get_robject"><code class="docutils literal notranslate"><span class="pre">RdsObject.get_robject()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.parser">rds2py.parser module</a><ul>
-<li><a class="reference internal" href="#rds2py.parser.get_class"><code class="docutils literal notranslate"><span class="pre">get_class()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.parser.read_rds"><code class="docutils literal notranslate"><span class="pre">read_rds()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsParserError"><code class="docutils literal notranslate"><span class="pre">RdsParserError</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader"><code class="docutils literal notranslate"><span class="pre">RdsReader</span></code></a><ul>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_attribute_names"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_attribute_names()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_class_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_class_name()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_dimensions"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_dimensions()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_numeric_data"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_numeric_data()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_package_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_package_name()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_rsize"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_rsize()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_rtype"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_rtype()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_string_arr"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_string_arr()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.load_attribute_by_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.load_attribute_by_name()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.load_vec_element"><code class="docutils literal notranslate"><span class="pre">RdsReader.load_vec_element()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.pdf">rds2py.pdf module</a><ul>
-<li><a class="reference internal" href="#rds2py.pdf.as_pandas_from_data_frame"><code class="docutils literal notranslate"><span class="pre">as_pandas_from_data_frame()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.pdf.as_pandas_from_dframe"><code class="docutils literal notranslate"><span class="pre">as_pandas_from_dframe()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-rds2py.rds_parser">rds2py.rds_parser module</a><ul>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsObject"><code class="docutils literal notranslate"><span class="pre">RdsObject</span></code></a><ul>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsObject.get_robject"><code class="docutils literal notranslate"><span class="pre">RdsObject.get_robject()</span></code></a></li>
+<li><a class="reference internal" href="#module-rds2py.rdsutils">rds2py.rdsutils module</a><ul>
+<li><a class="reference internal" href="#rds2py.rdsutils.get_class"><code class="docutils literal notranslate"><span class="pre">get_class()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.rdsutils.parse_rds"><code class="docutils literal notranslate"><span class="pre">parse_rds()</span></code></a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsParserError"><code class="docutils literal notranslate"><span class="pre">RdsParserError</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader"><code class="docutils literal notranslate"><span class="pre">RdsReader</span></code></a><ul>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_attribute_names"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_attribute_names()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_class_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_class_name()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_dimensions"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_dimensions()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_numeric_data"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_numeric_data()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_package_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_package_name()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_rsize"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_rsize()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_rtype"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_rtype()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.get_string_arr"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_string_arr()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.load_attribute_by_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.load_attribute_by_name()</span></code></a></li>
-<li><a class="reference internal" href="#rds2py.rds_parser.RdsReader.load_vec_element"><code class="docutils literal notranslate"><span class="pre">RdsReader.load_vec_element()</span></code></a></li>
+<li><a class="reference internal" href="#module-rds2py.read_atomic">rds2py.read_atomic module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_atomic.read_boolean_vector"><code class="docutils literal notranslate"><span class="pre">read_boolean_vector()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_atomic.read_double_vector"><code class="docutils literal notranslate"><span class="pre">read_double_vector()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_atomic.read_integer_vector"><code class="docutils literal notranslate"><span class="pre">read_integer_vector()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_atomic.read_string_vector"><code class="docutils literal notranslate"><span class="pre">read_string_vector()</span></code></a></li>
 </ul>
 </li>
+<li><a class="reference internal" href="#module-rds2py.read_dict">rds2py.read_dict module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_dict.read_dict"><code class="docutils literal notranslate"><span class="pre">read_dict()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_factor">rds2py.read_factor module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_factor.read_factor"><code class="docutils literal notranslate"><span class="pre">read_factor()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_frame">rds2py.read_frame module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_frame.read_data_frame"><code class="docutils literal notranslate"><span class="pre">read_data_frame()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_frame.read_dframe"><code class="docutils literal notranslate"><span class="pre">read_dframe()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_granges">rds2py.read_granges module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_granges.read_genomic_ranges"><code class="docutils literal notranslate"><span class="pre">read_genomic_ranges()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_granges.read_granges_list"><code class="docutils literal notranslate"><span class="pre">read_granges_list()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_mae">rds2py.read_mae module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_mae.read_multi_assay_experiment"><code class="docutils literal notranslate"><span class="pre">read_multi_assay_experiment()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_matrix">rds2py.read_matrix module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_matrix.MatrixWrapper"><code class="docutils literal notranslate"><span class="pre">MatrixWrapper</span></code></a><ul>
+<li><a class="reference internal" href="#rds2py.read_matrix.MatrixWrapper.matrix"><code class="docutils literal notranslate"><span class="pre">MatrixWrapper.matrix</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_matrix.MatrixWrapper.dimnames"><code class="docutils literal notranslate"><span class="pre">MatrixWrapper.dimnames</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#rds2py.read_matrix.read_dgcmatrix"><code class="docutils literal notranslate"><span class="pre">read_dgcmatrix()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_matrix.read_dgrmatrix"><code class="docutils literal notranslate"><span class="pre">read_dgrmatrix()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_matrix.read_dgtmatrix"><code class="docutils literal notranslate"><span class="pre">read_dgtmatrix()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_matrix.read_ndarray"><code class="docutils literal notranslate"><span class="pre">read_ndarray()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_rle">rds2py.read_rle module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_rle.read_rle"><code class="docutils literal notranslate"><span class="pre">read_rle()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_sce">rds2py.read_sce module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_sce.read_alts_summarized_experiment_by_column"><code class="docutils literal notranslate"><span class="pre">read_alts_summarized_experiment_by_column()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_sce.read_single_cell_experiment"><code class="docutils literal notranslate"><span class="pre">read_single_cell_experiment()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_se">rds2py.read_se module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_se.read_ranged_summarized_experiment"><code class="docutils literal notranslate"><span class="pre">read_ranged_summarized_experiment()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_se.read_summarized_experiment"><code class="docutils literal notranslate"><span class="pre">read_summarized_experiment()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-rds2py">Module contents</a></li>
@@ -673,7 +1093,7 @@ Usually the result of <a class="reference internal" href="#rds2py.parser.read_rd
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=03f3338f"></script>
+</div><script src="../_static/documentation_options.js?v=1dd76d02"></script>
     <script src="../_static/doctools.js?v=9a2dae69"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/scripts/furo.js?v=5fa4622c"></script>
