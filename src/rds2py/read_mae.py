@@ -1,8 +1,7 @@
 """Functions for parsing Bioconductor MultiAssayExperiment objects.
 
-This module handles the conversion of Bioconductor's MultiAssayExperiment
-container format into its Python equivalent, preserving the complex
-relationships between multiple experimental assays and sample metadata.
+This module handles the conversion of Bioconductor's MultiAssayExperiment container format into its Python equivalent,
+preserving the complex relationships between multiple experimental assays and sample metadata.
 """
 
 from multiassayexperiment import MultiAssayExperiment
@@ -45,8 +44,7 @@ def _sanitize_expts(expts, **kwargs):
 
 
 def parse_multi_assay_experiment(robject: dict, **kwargs) -> MultiAssayExperiment:
-    """Convert an R `MultiAssayExperiment` to a Python 
-    :py:class:`~multiassayexperiment.MultiAssayExperiment` object.
+    """Convert an R `MultiAssayExperiment` to a Python :py:class:`~multiassayexperiment.MultiAssayExperiment` object.
 
     Args:
         robject:

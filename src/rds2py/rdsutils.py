@@ -1,7 +1,7 @@
 """Utility functions for RDS file parsing and class inference.
 
-This module provides helper functions for parsing RDS files and inferring
-the appropriate R class information from parsed objects.
+This module provides helper functions for parsing RDS files and inferring the appropriate R class information from
+parsed objects.
 """
 
 from .PyRdsReader import PyRdsParser

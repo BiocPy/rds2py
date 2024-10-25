@@ -1,8 +1,7 @@
 """Functions for parsing R vector and dictionary-like objects.
 
-This module provides functionality to convert R named vectors and list objects
-into Python dictionaries or lists, maintaining the structure and names of
-the original R objects.
+This module provides functionality to convert R named vectors and list objects into Python dictionaries or lists,
+maintaining the structure and names of the original R objects.
 """
 
 from .generics import _dispatcher

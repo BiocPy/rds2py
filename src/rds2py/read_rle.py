@@ -1,7 +1,7 @@
 """Functions for parsing R's Rle (Run-length encoding) objects.
 
-This module provides functionality to convert R's Rle (Run-length encoding) objects
-into Python lists, expanding the compressed representation into its full form.
+This module provides functionality to convert R's Rle (Run-length encoding) objects into Python lists, expanding the
+compressed representation into its full form.
 """
 
 from .generics import _dispatcher
