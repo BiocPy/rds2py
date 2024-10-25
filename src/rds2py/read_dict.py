@@ -6,7 +6,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def parse_vector(robject: dict):
+def parse_dict(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["vector"]:

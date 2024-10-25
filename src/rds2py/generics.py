@@ -10,38 +10,38 @@ __license__ = "MIT"
 
 REGISTRY = {
     # typed vectors
-    "integer_vector": "rds2py.parse_integer_vector",
-    "boolean_vector": "rds2py.parse_boolean_vector",
-    "string_vector": "rds2py.parse_string_vector",
-    "double_vector": "rds2py.parse_double_vector",
+    "integer_vector": "rds2py.read_atomic.parse_integer_vector",
+    "boolean_vector": "rds2py.read_atomic.parse_boolean_vector",
+    "string_vector": "rds2py.read_atomic.parse_string_vector",
+    "double_vector": "rds2py.read_atomic.parse_double_vector",
     # dictionary
-    "vector": "rds2py.parse_vector",
+    "vector": "rds2py.read_dict.parse_dict",
     # factors
-    "factor": "rds2py.parse_factor",
+    "factor": "rds2py.read_factor.parse_factor",
     # Rle
-    "Rle": "rds2py.parse_rle",
+    "Rle": "rds2py.read_rle.parse_rle",
     # matrices
-    "dgCMatrix": "rds2py.parse_dgcmatrix",
-    "dgRMatrix": "rds2py.parse_dgrmatrix",
-    "dgTMatrix": "rds2py.parse_dgtmatrix",
-    "ndarray": "rds2py.parse_ndarray",
+    "dgCMatrix": "rds2py.read_matrix.parse_dgcmatrix",
+    "dgRMatrix": "rds2py.read_matrix.parse_dgrmatrix",
+    "dgTMatrix": "rds2py.read_matrix.parse_dgtmatrix",
+    "ndarray": "rds2py.read_matrix.parse_ndarray",
     # data frames
-    "data.frame": "rds2py.parse_data_frame",
-    "DFrame": "rds2py.parse_dframe",
+    "data.frame": "rds2py.read_frame.parse_data_frame",
+    "DFrame": "rds2py.read_frame.parse_dframe",
     # genomic ranges
-    "GRanges": "rds2py.parse_genomic_ranges",
-    "GenomicRanges": "rds2py.parse_genomic_ranges",
-    "CompressedGRangesList": "rds2py.parse_granges_list",
-    "GRangesList": "rds2py.parse_granges_list",
+    "GRanges": "rds2py.read_granges.parse_genomic_ranges",
+    "GenomicRanges": "rds2py.read_granges.parse_genomic_ranges",
+    "CompressedGRangesList": "rds2py.read_granges.parse_granges_list",
+    "GRangesList": "rds2py.read_granges.parse_granges_list",
     # summarized experiment
-    "SummarizedExperiment": "rds2py.parse_summarized_experiment",
-    "RangedSummarizedExperiment": "rds2py.parse_ranged_summarized_experiment",
+    "SummarizedExperiment": "rds2py.read_se.parse_summarized_experiment",
+    "RangedSummarizedExperiment": "rds2py.read_se.parse_ranged_summarized_experiment",
     # single-cell experiment
-    "SingleCellExperiment": "rds2py.parse_single_cell_experiment",
-    "SummarizedExperimentByColumn": "rds2py.parse_alts_summarized_experiment_by_column",
+    "SingleCellExperiment": "rds2py.read_sce.parse_single_cell_experiment",
+    "SummarizedExperimentByColumn": "rds2py.read_sce.parse_alts_summarized_experiment_by_column",
     # multi assay experiment
-    "MultiAssayExperiment": "rds2py.parse_multi_assay_experiment",
-    "ExperimentList": "rds2py.parse_vector",
+    "MultiAssayExperiment": "rds2py.read_mae.parse_multi_assay_experiment",
+    "ExperimentList": "rds2py.read_dict.parse_dict",
 }
 
 
@@ -90,9 +90,9 @@ def _dispatcher(robject: dict, **kwargs):
         try:
             command = REGISTRY[_class_name]
             if isinstance(command, str):
-                first_period = command.find(".")
-                mod = import_module(command[:first_period])
-                command = getattr(mod, command[first_period + 1 :])
+                last_period = command.rfind(".")
+                mod = import_module(command[:last_period])
+                command = getattr(mod, command[last_period + 1 :])
                 REGISTRY[_class_name] = command
 
             return command(robject, **kwargs)
