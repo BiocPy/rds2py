@@ -6,14 +6,15 @@
 
 Parse and construct Python representations for datasets stored in RDS files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. ***For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp).***
 
-> **Important Version Notice**
->
-> Version 0.5.0 brings major changes to the package:
-> - Complete overhaul of the codebase using pybind11
-> - Streamlined readers for R data types
-> - Updated API for all classes and methods
->
-> Please refer to the [documentation](https://biocpy.github.io/rds2py/) for the latest usage guidelines. Previous versions may have incompatible APIs.
+---
+**Version 0.5.0** brings major changes to the package,
+- Complete overhaul of the codebase using pybind11
+- Streamlined readers for R data types
+- Updated API for all classes and methods
+
+Please refer to the [documentation](https://biocpy.github.io/rds2py/) for the latest usage guidelines. Previous versions may have incompatible APIs.
+
+---
 
 The package provides:
 
@@ -77,7 +78,7 @@ data = parse_rds("path/to/file.rds")
 print(data)
 ```
 
-if you know this RDS file contains an `GenomicRanges` object, you can use or modify the provided list reader, or write your own parser to convert this dictionary.
+if you know this RDS file contains an `GenomicRanges` object, you can use the built-in reader or write your own reader to convert this dictionary.
 
 ```python
 from rds2py.read_granges import read_genomic_ranges
