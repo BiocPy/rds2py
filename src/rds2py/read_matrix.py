@@ -1,7 +1,6 @@
-from typing import Any, Literal
+from typing import Literal
 
 from numpy import ndarray
-from scipy.sparse import spmatrix
 
 from .rdsutils import get_class
 from .generics import _dispatcher
@@ -36,7 +35,9 @@ def _as_sparse_matrix(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
-        raise RuntimeError(f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`.")
+        raise RuntimeError(
+            f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`."
+        )
 
     if _cls == "dgCMatrix":
         mat = csc_matrix(
@@ -97,7 +98,6 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
     """
     _cls = get_class(robject)
 
-    from numpy import ndarray
 
     if order not in ["C", "F"]:
         raise ValueError("order must be either 'C' or 'F'.")
