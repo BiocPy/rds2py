@@ -9,11 +9,12 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 REGISTRY = {
-    # vectors
+    # typed vectors
     "integer_vector": "rds2py.parse_integer_vector",
     "boolean_vector": "rds2py.parse_boolean_vector",
     "string_vector": "rds2py.parse_string_vector",
     "double_vector": "rds2py.parse_double_vector",
+    # dictionary
     "vector": "rds2py.parse_vector",
     # factors
     "factor": "rds2py.parse_factor",
@@ -38,6 +39,9 @@ REGISTRY = {
     # single-cell experiment
     "SingleCellExperiment": "rds2py.parse_single_cell_experiment",
     "SummarizedExperimentByColumn": "rds2py.parse_alts_summarized_experiment_by_column",
+    # multi assay experiment
+    "MultiAssayExperiment": "rds2py.parse_multi_assay_experiment",
+    "ExperimentList": "rds2py.parse_vector",
 }
 
 
@@ -71,42 +75,36 @@ def read_rds(path: str, **kwargs):
         Some kind of object.
     """
     _robj = parse_rds(path=path)
-    # print("FULL OBJECT", _robj)
     return _dispatcher(_robj, **kwargs)
 
 
 def _dispatcher(robject: dict, **kwargs):
-    # print("in dispatcher", robject)
     _class_name = get_class(robject)
-
-    print("in dispatcher ", _class_name)
 
     if _class_name is None:
         return None
 
-    print("in READ_RDS")
-    print(_class_name)
     # if a class is registered, coerce the object
     # to the representation.
     if _class_name in REGISTRY:
-        # try:
-        command = REGISTRY[_class_name]
-        if isinstance(command, str):
-            first_period = command.find(".")
-            mod = import_module(command[:first_period])
-            command = getattr(mod, command[first_period + 1 :])
-            REGISTRY[_class_name] = command
+        try:
+            command = REGISTRY[_class_name]
+            if isinstance(command, str):
+                first_period = command.find(".")
+                mod = import_module(command[:first_period])
+                command = getattr(mod, command[first_period + 1 :])
+                REGISTRY[_class_name] = command
 
-        return command(robject, **kwargs)
-        # except Exception as e:
-        #     warn(
-        #         f"Failed to coerce RDS object to class: '{_class_name}', returning the dictionary, {str(e)}",
-        #         RuntimeWarning,
-        #     )
+            return command(robject, **kwargs)
+        except Exception as e:
+            warn(
+                f"Failed to coerce RDS object to class: '{_class_name}', returning the dictionary, {str(e)}",
+                RuntimeWarning,
+            )
     else:
         warn(
             f"RDS file contains an unknown class: '{_class_name}', returning the dictionary",
-            UserWarning,
+            RuntimeWarning,
         )
 
     return robject

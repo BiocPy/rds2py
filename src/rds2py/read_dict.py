@@ -7,7 +7,6 @@ __license__ = "MIT"
 
 
 def parse_vector(robject: dict):
-    print("in parse vector")
     _cls = get_class(robject)
 
     if _cls not in ["vector"]:
@@ -20,8 +19,6 @@ def parse_vector(robject: dict):
 
     dict_keys = list(_dispatcher(robject["attributes"]["names"]))
 
-    print(dict_keys)
-    print("final_vec")
     final_vec = {}
     for idx, dkey in enumerate(dict_keys):
         final_vec[dkey] = _dispatcher(robject["data"][idx])

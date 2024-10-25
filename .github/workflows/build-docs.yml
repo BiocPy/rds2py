@@ -29,7 +29,7 @@ jobs:
       - name: Build docs
         run: |
           python setup.py build_ext --inplace
-          cp build/lib*/rds2py/rds_parser* src/rds2py/
+          cp build/lib*/rds2py/lib_rds_parser* src/rds2py/
           tox -e docs
           touch ./docs/_build/html/.nojekyll
 

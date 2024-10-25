@@ -1,10 +1,20 @@
-from typing import Literal
+from typing import Any, Literal
+
+from numpy import ndarray
+from scipy.sparse import spmatrix
 
 from .rdsutils import get_class
+from .generics import _dispatcher
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
+
+
+class MatrixWrapper:
+    def __init__(self, matrix, dimnames=None) -> None:
+        self.matrix = matrix
+        self.dimnames = dimnames
 
 
 def _as_sparse_matrix(robject: dict):
@@ -26,12 +36,10 @@ def _as_sparse_matrix(robject: dict):
     _cls = get_class(robject)
 
     if _cls not in ["dgCMatrix", "dgRMatrix", "dgTMatrix"]:
-        raise RuntimeError(
-            f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`."
-        )
+        raise RuntimeError(f"`robject` does not contain not a supported sparse matrix format, contains `{_cls}`.")
 
     if _cls == "dgCMatrix":
-        return csc_matrix(
+        mat = csc_matrix(
             (
                 robject["attributes"]["x"]["data"],
                 robject["attributes"]["i"]["data"],
@@ -39,9 +47,8 @@ def _as_sparse_matrix(robject: dict):
             ),
             shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),
         )
-
-    if _cls == "dgRMatrix":
-        return csr_matrix(
+    elif _cls == "dgRMatrix":
+        mat = csr_matrix(
             (
                 robject["attributes"]["x"]["data"],
                 robject["attributes"]["i"]["data"],
@@ -49,9 +56,8 @@ def _as_sparse_matrix(robject: dict):
             ),
             shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),
         )
-
-    if _cls == "dgTMatrix":
-        return csr_matrix(
+    elif _cls == "dgTMatrix":
+        mat = csr_matrix(
             (
                 robject["attributes"]["x"]["data"],
                 (
@@ -61,6 +67,14 @@ def _as_sparse_matrix(robject: dict):
             ),
             shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),
         )
+
+    names = None
+    if "dimnames" in robject["attributes"]:
+        names = _dispatcher(robject["attributes"]["dimnames"])
+        if names is not None and len(names) > 0:
+            return MatrixWrapper(mat, names)
+
+    return mat
 
 
 def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
@@ -91,25 +105,33 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F"):
     if _cls not in ["ndarray"]:
         raise TypeError(f"obj is not a supported dense matrix format, but is `{_cls}`.")
 
-    return ndarray(
+    mat = ndarray(
         shape=tuple(robject["attributes"]["dim"]["data"].tolist()),
         dtype=robject["data"].dtype,
         buffer=robject["data"],
         order=order,
     )
 
+    names = None
+    if "dimnames" in robject["attributes"]:
+        names = _dispatcher(robject["attributes"]["dimnames"])
+        if names is not None and len(names) > 0:
+            return MatrixWrapper(mat, names)
 
-def parse_dgcmatrix(robjectect: dict):
-    return _as_sparse_matrix(robjectect)
-
-
-def parse_dgrmatrix(robjectect: dict):
-    return _as_sparse_matrix(robjectect)
-
-
-def parse_dgtmatrix(robjectect: dict):
-    return _as_sparse_matrix(robjectect)
+    return mat
 
 
-def parse_ndarray(robjectect: dict, order: Literal["C", "F"] = "F"):
-    return _as_dense_matrix(robjectect, order=order)
+def parse_dgcmatrix(robject: dict):
+    return _as_sparse_matrix(robject)
+
+
+def parse_dgrmatrix(robject: dict):
+    return _as_sparse_matrix(robject)
+
+
+def parse_dgtmatrix(robject: dict):
+    return _as_sparse_matrix(robject)
+
+
+def parse_ndarray(robject: dict, order: Literal["C", "F"] = "F"):
+    return _as_dense_matrix(robject, order=order)

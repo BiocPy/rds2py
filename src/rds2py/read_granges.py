@@ -45,7 +45,6 @@ def parse_genomic_ranges(robject):
     _seqinfo_seqlengths = _dispatcher(
         robject["attributes"]["seqinfo"]["attributes"]["seqlengths"]
     )
-    print("SEQLENGTHS", _seqinfo_seqlengths)
     _seqinfo_is_circular = _dispatcher(
         robject["attributes"]["seqinfo"]["attributes"]["is_circular"]
     )

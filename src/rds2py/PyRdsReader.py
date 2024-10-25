@@ -3,7 +3,7 @@ from warnings import warn
 
 import numpy as np
 
-from .rds_parser import RdsObject, RdsReader
+from .lib_rds_parser import RdsObject, RdsReader
 
 
 class PyRdsParserError(Exception):

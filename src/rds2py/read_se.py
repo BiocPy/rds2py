@@ -1,6 +1,8 @@
 from .generics import _dispatcher
 from .rdsutils import get_class
 
+from .read_matrix import MatrixWrapper
+
 __author__ = "jkanche"
 __copyright__ = "jkanche"
 __license__ = "MIT"
@@ -12,6 +14,15 @@ def _sanitize_empty_frame(frame, nrows):
 
         return BiocFrame(number_of_rows=nrows)
 
+def _sanitize_assays(assays):
+    res = {}
+    for k, v in assays.items():
+        if isinstance(v, MatrixWrapper):
+            res[k] = v.matrix
+        else:
+                res[k] = v
+
+    return res
 
 def parse_summarized_experiment(robject: dict):
     """Parse an R object as :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
@@ -63,7 +74,7 @@ def parse_summarized_experiment(robject: dict):
     )
 
     return SummarizedExperiment(
-        assays=robj_asys, row_data=robj_rowdata, column_data=robj_coldata
+        assays=_sanitize_assays(robj_asys), row_data=robj_rowdata, column_data=robj_coldata
     )
 
 

@@ -159,3 +159,21 @@ saveRDS(x, "simple_list.rds")
 # frames
 dframe <- as.data.frame(lists_df)
 saveRDS(dframe, "data.frame.rds")
+
+# MAE
+library(MultiAssayExperiment)
+patient.data <- data.frame(sex=c("M", "F", "M", "F"),
+                           age=38:41,
+                           row.names=c("Jack", "Jill", "Bob", "Barbara"))
+
+exprss1 <- matrix(rnorm(16), ncol = 4,
+                  dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+                                  c("Jack", "Jill", "Bob", "Bobby")))
+exprss2 <- matrix(rnorm(12), ncol = 3,
+                  dimnames = list(sprintf("ENST00000%i", sample(288754:290000, 4)),
+                                  c("Jack", "Jane", "Bob")))
+doubleExp <- list("methyl 2k"  = exprss1, "methyl 3k" = exprss2)
+simpleMultiAssay <- MultiAssayExperiment(experiments=doubleExp)
+simpleMultiAssay2 <- MultiAssayExperiment(experiments=doubleExp,
+                                          colData=patient.data)
+saveRDS(simpleMultiAssay2, "simple_mae.rds")

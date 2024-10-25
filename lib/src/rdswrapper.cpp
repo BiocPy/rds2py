@@ -164,7 +164,7 @@ public:
     }
 };
 
-PYBIND11_MODULE(rds_parser, m) {
+PYBIND11_MODULE(lib_rds_parser, m) {
     py::register_exception<std::runtime_error>(m, "RdsParserError");
 
     py::class_<RdsObject>(m, "RdsObject")
