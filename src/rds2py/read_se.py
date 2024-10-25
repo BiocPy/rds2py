@@ -28,7 +28,7 @@ def _sanitize_assays(assays):
 
 
 def read_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
-    """Convert an R SummarizedExperiment to Python 
+    """Convert an R SummarizedExperiment to Python
     :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
     Args:

@@ -4,15 +4,15 @@
 
 # rds2py
 
-Parse and construct Python representations for datasets stored in RDS files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. ***For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp).*** 
+Parse and construct Python representations for datasets stored in RDS files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. ***For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp).***
 
 > **Important Version Notice**
-> 
+>
 > Version 0.5.0 brings major changes to the package:
 > - Complete overhaul of the codebase using pybind11
 > - Streamlined readers for R data types
 > - Updated API for all classes and methods
-> 
+>
 > Please refer to the [documentation](https://biocpy.github.io/rds2py/) for the latest usage guidelines. Previous versions may have incompatible APIs.
 
 The package provides:
