@@ -1,8 +1,7 @@
 """Functions for parsing atomic R vector types into Python objects.
 
-This module provides parser functions for converting R's atomic vector types
-(boolean, integer, string, and double) into appropriate Python objects using
-the biocutils package's specialized list classes.
+This module provides parser functions for converting R's atomic vector types (boolean, integer, string, and double) into
+appropriate Python objects using the biocutils package's specialized list classes.
 """
 
 from biocutils import BooleanList, FloatList, IntegerList, StringList

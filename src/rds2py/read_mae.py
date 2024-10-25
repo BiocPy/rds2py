@@ -1,8 +1,7 @@
 """Functions for parsing Bioconductor MultiAssayExperiment objects.
 
-This module handles the conversion of Bioconductor's MultiAssayExperiment
-container format into its Python equivalent, preserving the complex
-relationships between multiple experimental assays and sample metadata.
+This module handles the conversion of Bioconductor's MultiAssayExperiment container format into its Python equivalent,
+preserving the complex relationships between multiple experimental assays and sample metadata.
 """
 
 from multiassayexperiment import MultiAssayExperiment

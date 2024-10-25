@@ -96,8 +96,7 @@ def read_rds(path: str, **kwargs):
 
 
 def _dispatcher(robject: dict, **kwargs):
-    """
-    Internal function to dispatch R objects to appropriate parser functions.
+    """Internal function to dispatch R objects to appropriate parser functions.
 
     Args:
         robject:

@@ -1,8 +1,7 @@
 """Functions for parsing Bioconductor GenomicRanges objects.
 
-This module provides parsers for converting Bioconductor's GenomicRanges and
-GenomicRangesList objects into their Python equivalents, preserving all genomic
-coordinates and associated metadata.
+This module provides parsers for converting Bioconductor's GenomicRanges and GenomicRangesList objects into their Python
+equivalents, preserving all genomic coordinates and associated metadata.
 """
 
 from genomicranges import GenomicRanges, GenomicRangesList, SeqInfo

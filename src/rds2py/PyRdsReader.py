@@ -1,8 +1,7 @@
 """Low-level interface for reading RDS file format.
 
-This module provides the core functionality for parsing RDS files at a binary level
-and converting them into a dictionary representation that can be further processed
-by higher-level functions.
+This module provides the core functionality for parsing RDS files at a binary level and converting them into a
+dictionary representation that can be further processed by higher-level functions.
 """
 
 from typing import Any, Dict, List, Union

@@ -1,8 +1,8 @@
 """Functions and classes for parsing R matrix objects.
 
-This module provides functionality to convert R matrix objects (both dense and sparse)
-into their Python equivalents using NumPy and SciPy sparse matrix formats. It handles
-various R matrix types including dgCMatrix, dgRMatrix, and dgTMatrix.
+This module provides functionality to convert R matrix objects (both dense and sparse) into their Python equivalents
+using NumPy and SciPy sparse matrix formats. It handles various R matrix types including dgCMatrix, dgRMatrix, and
+dgTMatrix.
 """
 
 from typing import Literal
