@@ -177,3 +177,13 @@ simpleMultiAssay <- MultiAssayExperiment(experiments=doubleExp)
 simpleMultiAssay2 <- MultiAssayExperiment(experiments=doubleExp,
                                           colData=patient.data)
 saveRDS(simpleMultiAssay2, "simple_mae.rds")
+
+## Delayed Arrays
+
+library(zellkonverter)
+h5ad_file <- system.file("extdata", "example_anndata.h5ad",
+                         package="zellkonverter")
+h5ls(h5ad_file)
+
+M <- H5SparseMatrix(h5ad_file, "/obsp/connectivities")
+saveRDS(M, "h5sparse.rds")

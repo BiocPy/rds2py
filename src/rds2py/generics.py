@@ -58,6 +58,8 @@ REGISTRY = {
     # multi assay experiment
     "MultiAssayExperiment": "rds2py.read_mae.read_multi_assay_experiment",
     "ExperimentList": "rds2py.read_dict.read_dict",
+    # delayed matrices
+    "H5SparseMatrix": "rds2py.read_delayed_matrix.read_hdf5_sparse",
 }
 
 

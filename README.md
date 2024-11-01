@@ -43,15 +43,9 @@ Package is published to [PyPI](https://pypi.org/project/rds2py/)
 
 ```shell
 pip install rds2py
-```
 
-## Quick Start
-
-```python
-from rds2py import read_rds
-
-# Read any RDS file
-r_obj = read_rds("path/to/file.rds")
+# or install optional dependencies
+pip install rds2py[optional]
 ```
 
 ## Usage
