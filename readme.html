@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial.html" /><link rel="prev" title="rds2py" href="index.html" />
 
     <!-- Generated with Sphinx 7.4.7 and Furo 2024.08.06 -->
-        <title>rds2py - rds2py 0.5.0 documentation</title>
+        <title>rds2py - rds2py 0.5.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.5.0 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.5.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.5.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.5.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -251,20 +251,19 @@
         <article role="main" id="furo-main-content">
           <p><a class="reference external" href="https://pyscaffold.org/"><img alt="Project generated with PyScaffold" src="https://img.shields.io/badge/-PyScaffold-005CA0?logo=pyscaffold" /></a>
 <a class="reference external" href="https://pypi.org/project/rds2py/"><img alt="PyPI-Server" src="https://img.shields.io/pypi/v/rds2py.svg" /></a>
-<img alt="Unit tests" src="https://github.com/BiocPy/rds2py/actions/workflows/pypi-test.yml/badge.svg" /></p>
+<img alt="Unit tests" src="https://github.com/BiocPy/rds2py/actions/workflows/run-tests.yml/badge.svg" /></p>
 <section class="tex2jax_ignore mathjax_ignore" id="rds2py">
 <h1>rds2py<a class="headerlink" href="#rds2py" title="Link to this heading">¶</a></h1>
 <p>Parse and construct Python representations for datasets stored in RDS files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports various base classes from R, and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <em><strong>For more details, check out <a class="reference external" href="https://github.com/LTLA/rds2cpp">rds2cpp library</a>.</strong></em></p>
-<blockquote>
-<div><p><strong>Important Version Notice</strong></p>
-<p>Version 0.5.0 brings major changes to the package:</p>
+<hr class="docutils" />
+<p><strong>Version 0.5.0</strong> brings major changes to the package,</p>
 <ul class="simple">
 <li><p>Complete overhaul of the codebase using pybind11</p></li>
 <li><p>Streamlined readers for R data types</p></li>
 <li><p>Updated API for all classes and methods</p></li>
 </ul>
 <p>Please refer to the <a class="reference external" href="https://biocpy.github.io/rds2py/">documentation</a> for the latest usage guidelines. Previous versions may have incompatible APIs.</p>
-</div></blockquote>
+<hr class="docutils" />
 <p>The package provides:</p>
 <ul class="simple">
 <li><p>Efficient parsing of RDS files with <em>minimal</em> memory overhead</p></li>
@@ -332,7 +331,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>if you know this RDS file contains an <code class="docutils literal notranslate"><span class="pre">GenomicRanges</span></code> object, you can use or modify the provided list reader, or write your own parser to convert this dictionary.</p>
+<p>if you know this RDS file contains an <code class="docutils literal notranslate"><span class="pre">GenomicRanges</span></code> object, you can use the built-in reader or write your own reader to convert this dictionary.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py.read_granges</span> <span class="kn">import</span> <span class="n">read_genomic_ranges</span>
 
 <span class="n">gr</span> <span class="o">=</span> <span class="n">read_genomic_ranges</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -469,7 +468,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=1dd76d02"></script>
+</div><script src="_static/documentation_options.js?v=b9afe91b"></script>
     <script src="_static/doctools.js?v=9a2dae69"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>
