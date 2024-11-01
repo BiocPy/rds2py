@@ -568,6 +568,27 @@ and any associated names.</p>
 </dd></dl>
 
 </section>
+<section id="module-rds2py.read_delayed_matrix">
+<span id="rds2py-read-delayed-matrix-module"></span><h2>rds2py.read_delayed_matrix module<a class="headerlink" href="#module-rds2py.read_delayed_matrix" title="Link to this heading">¶</a></h2>
+<p>Functions and classes for parsing R delayed matrix objects from HDF5Array.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_delayed_matrix.read_hdf5_sparse">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_delayed_matrix.</span></span><span class="sig-name descname"><span class="pre">read_hdf5_sparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.9/library/stdtypes.html#dict" title="(in Python v3.9)"><span class="pre">dict</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Hdf5CompressedSparseMatrix</span></span></span><a class="reference internal" href="../_modules/rds2py/read_delayed_matrix.html#read_hdf5_sparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_delayed_matrix.read_hdf5_sparse" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R delayed sparse array (H5-backed).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> – Dictionary containing parsed delayed sparse array.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Hdf5CompressedSparseMatrix from the ‘hdf5array’ package.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
 <section id="module-rds2py.read_dict">
 <span id="rds2py-read-dict-module"></span><h2>rds2py.read_dict module<a class="headerlink" href="#module-rds2py.read_dict" title="Link to this heading">¶</a></h2>
 <p>Functions for parsing R vector and dictionary-like objects.</p>
@@ -1031,6 +1052,10 @@ the assay data and associated metadata.</p>
 <li><a class="reference internal" href="#rds2py.read_atomic.read_double_vector"><code class="docutils literal notranslate"><span class="pre">read_double_vector()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.read_atomic.read_integer_vector"><code class="docutils literal notranslate"><span class="pre">read_integer_vector()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.read_atomic.read_string_vector"><code class="docutils literal notranslate"><span class="pre">read_string_vector()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-rds2py.read_delayed_matrix">rds2py.read_delayed_matrix module</a><ul>
+<li><a class="reference internal" href="#rds2py.read_delayed_matrix.read_hdf5_sparse"><code class="docutils literal notranslate"><span class="pre">read_hdf5_sparse()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-rds2py.read_dict">rds2py.read_dict module</a><ul>

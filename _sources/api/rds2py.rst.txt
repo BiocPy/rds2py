@@ -44,6 +44,14 @@ rds2py.read\_atomic module
    :undoc-members:
    :show-inheritance:
 
+rds2py.read\_delayed\_matrix module
+-----------------------------------
+
+.. automodule:: rds2py.read_delayed_matrix
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 rds2py.read\_dict module
 ------------------------
 
