@@ -1,7 +1,5 @@
 """Functions and classes for parsing R delayed matrix objects from HDF5Array."""
 
-from typing import Literal
-
 from hdf5array import Hdf5CompressedSparseMatrix
 
 from .generics import _dispatcher
