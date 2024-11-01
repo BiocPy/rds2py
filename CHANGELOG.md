@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.5.1
+
+- Added parser for delayed sparse objects backed by H5
+
 ## Version 0.5.0
 
 - Complete overhaul of the codebase using pybind11
