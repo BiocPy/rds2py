@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: x86_64
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/artifactdb/prebuilt-hdf5/manylinux_x86_64:0.0.4
           CIBW_MUSLLINUX_X86_64_IMAGE: ghcr.io/artifactdb/prebuilt-hdf5/musllinux_x86_64:0.0.4
           CIBW_SKIP: pp*
@@ -31,7 +31,7 @@ jobs:
     runs-on: macos-13
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Grab prebuilt dependencies
         run: |
@@ -42,7 +42,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: x86_64
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ENVIRONMENT: "MORE_CMAKE_OPTIONS=\"-DCMAKE_INSTALL_PREFIX=$(pwd)/installed -DCMAKE_OSX_ARCHITECTURES=x86_64\""
           CIBW_BUILD_VERBOSITY: 3
           CIBW_SKIP: pp*
@@ -57,7 +57,7 @@ jobs:
     runs-on: macos-13
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Grab prebuilt dependencies
         run: |
@@ -68,7 +68,7 @@ jobs:
         uses: pypa/cibuildwheel@v2.16.2
         env:
           CIBW_ARCHS: arm64
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
+          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
           CIBW_ENVIRONMENT: "MORE_CMAKE_OPTIONS=\"-DCMAKE_INSTALL_PREFIX=$(pwd)/installed -DCMAKE_OSX_ARCHITECTURES=arm64\""
           CIBW_BUILD_VERBOSITY: 3
           MACOSX_DEPLOYMENT_TARGET: 13.0
@@ -82,7 +82,7 @@ jobs:
 #    runs-on: windows-2019
 #    steps:
 #      - name: Check out repository
-#        uses: actions/checkout@v3
+#        uses: actions/checkout@v4
 #
 #      - name: Grab prebuilt dependencies
 #        run: |
@@ -100,7 +100,7 @@ jobs:
 #        uses: pypa/cibuildwheel@v2.16.2
 #        env:
 #          CIBW_ARCHS: AMD64
-#          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.8"
+#          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
 #          CIBW_ENVIRONMENT: "MORE_CMAKE_OPTIONS=\"-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}\" VERBOSE=1"
 #          CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
 #          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
