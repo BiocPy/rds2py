@@ -2,7 +2,7 @@ exclude: '^docs/conf.py'
 
 repos:
 - repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v4.6.0
+  rev: v5.0.0
   hooks:
   - id: trailing-whitespace
   - id: check-added-large-files
@@ -18,7 +18,7 @@ repos:
     args: ['--fix=auto']  # replace 'auto' with 'lf' to enforce Linux/Mac line endings or 'crlf' for Windows
 
 - repo: https://github.com/PyCQA/docformatter
-  rev: "master"
+  rev: "v1.7.5"
   hooks:
     - id: docformatter
       additional_dependencies: [tomli]
@@ -33,7 +33,7 @@ repos:
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
   # Ruff version.
-  rev: v0.6.8
+  rev: v0.8.2
   hooks:
     - id: ruff
       args: [--fix, --exit-non-zero-on-fix]
