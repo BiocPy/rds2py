@@ -4,123 +4,33 @@ on:
   push:
     tags:
       - "*"
-  pull_request:
 
 jobs:
-  build_linux_x86_64:
-    name: Build wheels for linux x86_64
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
-        env:
-          CIBW_ARCHS: x86_64
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
-          CIBW_MANYLINUX_X86_64_IMAGE: ghcr.io/artifactdb/prebuilt-hdf5/manylinux_x86_64:0.0.4
-          CIBW_MUSLLINUX_X86_64_IMAGE: ghcr.io/artifactdb/prebuilt-hdf5/musllinux_x86_64:0.0.4
-          CIBW_SKIP: pp*
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-linux-x86_64
-          path: ./wheelhouse/*.whl
-
-  build_macosx_x86_64:
+  build_wheels:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-13, macos-14]
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+        # macos-13 is an intel runner, higher macos's are apple silicon
+        # At some point, maybe get this to work on windows-latest
+        os: [ubuntu-latest, macos-13, macos-latest]
 
-      - name: Grab prebuilt dependencies
-        run: |
-            curl -L https://github.com/ArtifactDB/prebuilt-hdf5/releases/download/0.0.4/macosx_x86_64.tar.gz > bundle.tar.gz
-            tar -xvf bundle.tar.gz
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
         env:
-          CIBW_ARCHS: x86_64
+          CIBW_ARCHS_LINUX: x86_64 # remove this later so we build for all linux archs
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
-          CIBW_ENVIRONMENT: "MORE_CMAKE_OPTIONS=\"-DCMAKE_INSTALL_PREFIX=$(pwd)/installed -DCMAKE_OSX_ARCHITECTURES=x86_64\""
-          CIBW_BUILD_VERBOSITY: 3
           CIBW_SKIP: pp*
-          MACOSX_DEPLOYMENT_TARGET: 11.7
 
       - uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}-x84_64
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
-
-  build_macosx_arm64:
-    name: Build wheels on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-13, macos-14]
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Grab prebuilt dependencies
-        run: |
-            curl -L https://github.com/ArtifactDB/prebuilt-hdf5/releases/download/0.0.4-manual/macosx_arm64.tar.gz > bundle.tar.gz
-            tar -xvf bundle.tar.gz
-
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v2.22.0
-        env:
-          CIBW_ARCHS: arm64
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
-          CIBW_ENVIRONMENT: "MORE_CMAKE_OPTIONS=\"-DCMAKE_INSTALL_PREFIX=$(pwd)/installed -DCMAKE_OSX_ARCHITECTURES=arm64\""
-          CIBW_BUILD_VERBOSITY: 3
-          MACOSX_DEPLOYMENT_TARGET: 13.0
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}-arm64
-          path: ./wheelhouse/*.whl
-
-#  build_windows_x86_64:
-#    name: Build wheels for windows x86_64
-#    runs-on: windows-2019
-#    steps:
-#      - name: Check out repository
-#        uses: actions/checkout@v4
-#
-#      - name: Grab prebuilt dependencies
-#        run: |
-#            curl -L https://github.com/ArtifactDB/prebuilt-hdf5/releases/download/0.0.4/windows_x86_64.tar.gz > bundle.tar.gz
-#            tar -xvf bundle.tar.gz
-#        shell: bash
-#
-#      - name: Store path
-#        run: |
-#            $wd = pwd
-#            echo "INSTALL_DIR=$wd\\installed" >> $env:GITHUB_ENV
-#        shell: powershell
-#
-#      - name: Build wheels
-#        uses: pypa/cibuildwheel@v2.22.0
-#        env:
-#          CIBW_ARCHS: AMD64
-#          CIBW_PROJECT_REQUIRES_PYTHON: ">=3.9"
-#          CIBW_ENVIRONMENT: "MORE_CMAKE_OPTIONS=\"-DCMAKE_INSTALL_PREFIX=${INSTALL_DIR}\" VERBOSE=1"
-#          CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
-#          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
-#          CIBW_TEST_EXTRAS: "testing"
-#          CIBW_TEST_COMMAND: "pytest {package}/tests"
-#          CIBW_BUILD_VERBOSITY: 3
-
-      # - uses: actions/upload-artifact@v3
-      #   with:
-      #     path: ./wheelhouse/*.whl
 
   build_sdist:
     name: Build source distribution
@@ -137,10 +47,8 @@ jobs:
           path: dist/*.tar.gz
 
   upload_pypi:
-    needs: [build_linux_x86_64, build_macosx_x86_64, build_macosx_arm64, build_sdist]
+    needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
-    # upload to PyPI on every tag starting with 'v'
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/download-artifact@v4
         with:
