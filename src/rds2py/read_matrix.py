@@ -93,10 +93,13 @@ def _as_sparse_matrix(robject: dict, **kwargs) -> spmatrix:
         )
 
     names = None
-    if "dimnames" in robject["attributes"]:
-        names = _dispatcher(robject["attributes"]["dimnames"], **kwargs)
+    if "Dimnames" in robject["attributes"]:
+        names = _dispatcher(robject["attributes"]["Dimnames"], **kwargs)
         if names is not None and len(names) > 0:
-            return MatrixWrapper(mat, names)
+            # Use the wrapper class onyly if names are available
+            # for atleast one dimension
+            if not all(x is None for x in names):
+                return MatrixWrapper(mat, names)
 
     return mat
 
