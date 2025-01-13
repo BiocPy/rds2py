@@ -22,7 +22,7 @@ def test_read_s4_matrix_dgc_with_rownames():
 
     assert array is not None
     assert isinstance(array, MatrixWrapper)
-    assert len(array.dimnames[0]) = 100
+    assert len(array.dimnames[0]) == 100
 
 
 def test_read_s4_matrix_dgc_with_bothnames():
@@ -30,8 +30,8 @@ def test_read_s4_matrix_dgc_with_bothnames():
 
     assert array is not None
     assert isinstance(array, MatrixWrapper)
-    assert len(array.dimnames[0]) = 100
-    assert len(array.dimnames[0]) = 10
+    assert len(array.dimnames[0]) == 100
+    assert len(array.dimnames[0]) == 10
 
 def test_read_s4_matrix_dgt():
     array = read_rds("tests/data/s4_matrix_dgt.rds")
