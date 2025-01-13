@@ -23,6 +23,7 @@ def test_read_s4_matrix_dgc_with_rownames():
     assert array is not None
     assert isinstance(array, MatrixWrapper)
     assert len(array.dimnames[0]) == 100
+    assert array.dimnames[1] is None
 
 
 def test_read_s4_matrix_dgc_with_bothnames():
