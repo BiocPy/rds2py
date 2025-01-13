@@ -5,8 +5,8 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>rds2py.read_matrix - rds2py 0.6.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
+        <title>rds2py.read_matrix - rds2py 0.6.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=302659d7" />
     
@@ -165,7 +165,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.6.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.6.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -189,7 +189,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.6.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.6.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -250,13 +250,13 @@
 <span class="sd">dgTMatrix.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
 
-<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">ndarray</span>
-<span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csc_matrix</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">spmatrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="kn">import</span> <span class="n">ndarray</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">csc_matrix</span><span class="p">,</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">spmatrix</span>
 
-<span class="kn">from</span> <span class="nn">.generics</span> <span class="kn">import</span> <span class="n">_dispatcher</span>
-<span class="kn">from</span> <span class="nn">.rdsutils</span> <span class="kn">import</span> <span class="n">get_class</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.generics</span><span class="w"> </span><span class="kn">import</span> <span class="n">_dispatcher</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.rdsutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_class</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
@@ -265,7 +265,7 @@
 
 <div class="viewcode-block" id="MatrixWrapper">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_matrix.MatrixWrapper">[docs]</a>
-<span class="k">class</span> <span class="nc">MatrixWrapper</span><span class="p">:</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">MatrixWrapper</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple wrapper class for matrices that preserves dimension names.</span>
 
 <span class="sd">    This class bundles a matrix (dense or sparse) with its dimension names,</span>
@@ -279,13 +279,13 @@
 <span class="sd">            A tuple of (row_names, column_names), each being a list of strings or None.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">dimnames</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">dimnames</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dimnames</span> <span class="o">=</span> <span class="n">dimnames</span></div>
 
 
 
-<span class="k">def</span> <span class="nf">_as_sparse_matrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_sparse_matrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an R sparse matrix to a SciPy sparse matrix.</span>
 
 <span class="sd">    Notes:</span>
@@ -341,15 +341,18 @@
         <span class="p">)</span>
 
     <span class="n">names</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="s2">&quot;dimnames&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
-        <span class="n">names</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;dimnames&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;Dimnames&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;Dimnames&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">MatrixWrapper</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
+            <span class="c1"># Use the wrapper class onyly if names are available</span>
+            <span class="c1"># for atleast one dimension</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">names</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">MatrixWrapper</span><span class="p">(</span><span class="n">mat</span><span class="p">,</span> <span class="n">names</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">mat</span>
 
 
-<span class="k">def</span> <span class="nf">_as_dense_matrix</span><span class="p">(</span><span class="n">robject</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_dense_matrix</span><span class="p">(</span><span class="n">robject</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an R matrix to a `NumPy` array.</span>
 
 <span class="sd">    Args:</span>
@@ -392,7 +395,7 @@
 
 <div class="viewcode-block" id="read_dgcmatrix">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_matrix.read_dgcmatrix">[docs]</a>
-<span class="k">def</span> <span class="nf">read_dgcmatrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_dgcmatrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an R dgCMatrix (sparse column matrix).</span>
 
 <span class="sd">    Args:</span>
@@ -411,7 +414,7 @@
 
 <div class="viewcode-block" id="read_dgrmatrix">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_matrix.read_dgrmatrix">[docs]</a>
-<span class="k">def</span> <span class="nf">read_dgrmatrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_dgrmatrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an R dgRMatrix (sparse row matrix).</span>
 
 <span class="sd">    Args:</span>
@@ -430,7 +433,7 @@
 
 <div class="viewcode-block" id="read_dgtmatrix">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_matrix.read_dgtmatrix">[docs]</a>
-<span class="k">def</span> <span class="nf">read_dgtmatrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_dgtmatrix</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">spmatrix</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an R dgTMatrix (sparse triplet matrix)..</span>
 
 <span class="sd">    Args:</span>
@@ -449,7 +452,7 @@
 
 <div class="viewcode-block" id="read_ndarray">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_matrix.read_ndarray">[docs]</a>
-<span class="k">def</span> <span class="nf">read_ndarray</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_ndarray</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">order</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;F&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ndarray</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse an R matrix as a NumPy array.</span>
 
 <span class="sd">    Args:</span>
@@ -499,7 +502,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=8fa8b3e9"></script>
+</div><script src="../../_static/documentation_options.js?v=2bd037f0"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=5fa4622c"></script>

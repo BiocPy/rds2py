@@ -6,8 +6,8 @@
 <link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Tutorial" href="tutorial.html" /><link rel="prev" title="rds2py" href="index.html" />
 
     <!-- Generated with Sphinx 8.1.3 and Furo 2024.08.06 -->
-        <title>rds2py - rds2py 0.6.0 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+        <title>rds2py - rds2py 0.6.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=354aac6f" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=302659d7" />
     
@@ -166,7 +166,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.6.0 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.6.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -190,7 +190,7 @@
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
   
-  <span class="sidebar-brand-text">rds2py 0.6.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.6.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -309,7 +309,7 @@ pip<span class="w"> </span>install<span class="w"> </span>rds2py<span class="o">
 <p>If you do not have an RDS object handy, feel free to download one from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
 <section id="basic-usage">
 <h3>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">read_rds</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_rds</span>
 <span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -319,14 +319,14 @@ pip<span class="w"> </span>install<span class="w"> </span>rds2py<span class="o">
 <section id="write-your-own-reader">
 <h2>Write-your-own-reader<a class="headerlink" href="#write-your-own-reader" title="Link to this heading">¶</a></h2>
 <p>In addition, the package provides the dictionary representation of the RDS file, allowing users to write their own custom readers into appropriate Python representations.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py</span> <span class="kn">import</span> <span class="n">parse_rds</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_rds</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">parse_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>if you know this RDS file contains an <code class="docutils literal notranslate"><span class="pre">GenomicRanges</span></code> object, you can use the built-in reader or write your own reader to convert this dictionary.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">rds2py.read_granges</span> <span class="kn">import</span> <span class="n">read_genomic_ranges</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py.read_granges</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_genomic_ranges</span>
 
 <span class="n">gr</span> <span class="o">=</span> <span class="n">read_genomic_ranges</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
@@ -461,7 +461,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=8fa8b3e9"></script>
+</div><script src="_static/documentation_options.js?v=2bd037f0"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=5fa4622c"></script>
