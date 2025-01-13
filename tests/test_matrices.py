@@ -17,6 +17,21 @@ def test_read_s4_matrix_dgc():
     assert array is not None
     assert isinstance(array, sp.spmatrix)
 
+def test_read_s4_matrix_dgc_with_rownames():
+    array = read_rds("tests/data/matrix_with_row_names.rds")
+
+    assert array is not None
+    assert isinstance(array, MatrixWrapper)
+    assert len(array.dimnames[0]) = 100
+
+
+def test_read_s4_matrix_dgc_with_bothnames():
+    array = read_rds("tests/data/matrix_with_dim_names.rds")
+
+    assert array is not None
+    assert isinstance(array, MatrixWrapper)
+    assert len(array.dimnames[0]) = 100
+    assert len(array.dimnames[0]) = 10
 
 def test_read_s4_matrix_dgt():
     array = read_rds("tests/data/s4_matrix_dgt.rds")
