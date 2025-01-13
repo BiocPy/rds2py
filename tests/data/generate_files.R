@@ -98,7 +98,7 @@ y <- Matrix::rsparsematrix(100, 10, 0.05)
 saveRDS(y, file="s4_matrix.rds")
 
 rownames(y) <- paste("row", 1:nrow(y), sep="_")
-  
+
 setClass("FOO", slots=c(bar="integer"))
 y <- new("FOO", bar=2L)
 saveRDS(y, file="s4_class.rds")
