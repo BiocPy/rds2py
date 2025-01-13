@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.6.1
+
+- Fix name of the attribute that contains names of dimensions in matrices.
+- Update relevant tests and generate new rds files to test matrix behavior. 
+
 ## Version 0.6.0
 
 - chore: Remove Python 3.8 (EOL).
