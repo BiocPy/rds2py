@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.7.0
+
+- All dependencies are now listed under optional, except for numpy and biocutils.
+
 ## Version 0.6.1
 
 - Fix name of the attribute that contains names of dimensions in matrices.

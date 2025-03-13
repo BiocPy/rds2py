@@ -4,8 +4,6 @@ This module handles the conversion of Bioconductor's MultiAssayExperiment contai
 preserving the complex relationships between multiple experimental assays and sample metadata.
 """
 
-from multiassayexperiment import MultiAssayExperiment
-
 from .generics import _dispatcher
 from .rdsutils import get_class
 from .read_matrix import MatrixWrapper
@@ -43,7 +41,7 @@ def _sanitize_expts(expts, **kwargs):
     return res
 
 
-def read_multi_assay_experiment(robject: dict, **kwargs) -> MultiAssayExperiment:
+def read_multi_assay_experiment(robject: dict, **kwargs):
     """Convert an R `MultiAssayExperiment` to a Python :py:class:`~multiassayexperiment.MultiAssayExperiment` object.
 
     Args:
@@ -72,6 +70,8 @@ def read_multi_assay_experiment(robject: dict, **kwargs) -> MultiAssayExperiment
 
     # parse coldata
     robj_coldata = _dispatcher(robject["attributes"]["colData"], **kwargs)
+
+    from multiassayexperiment import MultiAssayExperiment
 
     return MultiAssayExperiment(
         experiments=_sanitize_expts(robj_expts),

@@ -8,7 +8,6 @@ dgTMatrix.
 from typing import Literal
 
 from numpy import ndarray
-from scipy.sparse import csc_matrix, csr_matrix, spmatrix
 
 from .generics import _dispatcher
 from .rdsutils import get_class
@@ -37,7 +36,7 @@ class MatrixWrapper:
         self.dimnames = dimnames
 
 
-def _as_sparse_matrix(robject: dict, **kwargs) -> spmatrix:
+def _as_sparse_matrix(robject: dict, **kwargs):
     """Convert an R sparse matrix to a SciPy sparse matrix.
 
     Notes:
@@ -56,6 +55,8 @@ def _as_sparse_matrix(robject: dict, **kwargs) -> spmatrix:
     Returns:
         A SciPy sparse matrix or wrapped matrix if dimension names exist.
     """
+
+    from scipy.sparse import csc_matrix, csr_matrix
 
     _cls = get_class(robject)
 
@@ -145,7 +146,7 @@ def _as_dense_matrix(robject, order: Literal["C", "F"] = "F", **kwargs) -> ndarr
     return mat
 
 
-def read_dgcmatrix(robject: dict, **kwargs) -> spmatrix:
+def read_dgcmatrix(robject: dict, **kwargs):
     """Parse an R dgCMatrix (sparse column matrix).
 
     Args:
@@ -161,7 +162,7 @@ def read_dgcmatrix(robject: dict, **kwargs) -> spmatrix:
     return _as_sparse_matrix(robject, **kwargs)
 
 
-def read_dgrmatrix(robject: dict, **kwargs) -> spmatrix:
+def read_dgrmatrix(robject: dict, **kwargs):
     """Parse an R dgRMatrix (sparse row matrix).
 
     Args:
@@ -177,7 +178,7 @@ def read_dgrmatrix(robject: dict, **kwargs) -> spmatrix:
     return _as_sparse_matrix(robject, **kwargs)
 
 
-def read_dgtmatrix(robject: dict, **kwargs) -> spmatrix:
+def read_dgtmatrix(robject: dict, **kwargs):
     """Parse an R dgTMatrix (sparse triplet matrix)..
 
     Args:
