@@ -9,125 +9,125 @@ rds2py.PyRdsReader module
 
 .. automodule:: rds2py.PyRdsReader
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.generics module
 ----------------------
 
 .. automodule:: rds2py.generics
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.lib\_rds\_parser module
 ------------------------------
 
 .. automodule:: rds2py.lib_rds_parser
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.rdsutils module
 ----------------------
 
 .. automodule:: rds2py.rdsutils
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_atomic module
 --------------------------
 
 .. automodule:: rds2py.read_atomic
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_delayed\_matrix module
 -----------------------------------
 
 .. automodule:: rds2py.read_delayed_matrix
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_dict module
 ------------------------
 
 .. automodule:: rds2py.read_dict
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_factor module
 --------------------------
 
 .. automodule:: rds2py.read_factor
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_frame module
 -------------------------
 
 .. automodule:: rds2py.read_frame
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_granges module
 ---------------------------
 
 .. automodule:: rds2py.read_granges
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_mae module
 -----------------------
 
 .. automodule:: rds2py.read_mae
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_matrix module
 --------------------------
 
 .. automodule:: rds2py.read_matrix
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_rle module
 -----------------------
 
 .. automodule:: rds2py.read_rle
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_sce module
 -----------------------
 
 .. automodule:: rds2py.read_sce
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 rds2py.read\_se module
 ----------------------
 
 .. automodule:: rds2py.read_se
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Module contents
 ---------------
 
 .. automodule:: rds2py
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
