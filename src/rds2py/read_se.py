@@ -1,4 +1,8 @@
-from summarizedexperiment import RangedSummarizedExperiment, SummarizedExperiment
+"""Functions for parsing Bioconductor `SummarizedExperiment` objects.
+
+This module provides parsers for converting Bioconductor's `SummarizedExperiment`
+objects into their Python equivalents.
+"""
 
 from .generics import _dispatcher
 from .rdsutils import get_class
@@ -27,7 +31,7 @@ def _sanitize_assays(assays):
     return res
 
 
-def read_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
+def read_summarized_experiment(robject: dict, **kwargs):
     """Convert an R SummarizedExperiment to Python
     :py:class:`~summarizedexperiment.SummarizedExperiment.SummarizedExperiment`.
 
@@ -68,6 +72,8 @@ def read_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
     # parse rowdata
     robj_rowdata = _sanitize_empty_frame(_dispatcher(robject["attributes"]["elementMetadata"], **kwargs), assay_dims[0])
 
+    from summarizedexperiment import SummarizedExperiment
+
     return SummarizedExperiment(
         assays=_sanitize_assays(robj_asys),
         row_data=robj_rowdata,
@@ -75,7 +81,7 @@ def read_summarized_experiment(robject: dict, **kwargs) -> SummarizedExperiment:
     )
 
 
-def read_ranged_summarized_experiment(robject: dict, **kwargs) -> RangedSummarizedExperiment:
+def read_ranged_summarized_experiment(robject: dict, **kwargs):
     """Convert an R RangedSummarizedExperiment to its Python equivalent.
 
     Args:
@@ -101,6 +107,8 @@ def read_ranged_summarized_experiment(robject: dict, **kwargs) -> RangedSummariz
     row_ranges_data = None
     if "rowRanges" in robject["attributes"]:
         row_ranges_data = _dispatcher(robject["attributes"]["rowRanges"], **kwargs)
+
+    from summarizedexperiment import RangedSummarizedExperiment
 
     return RangedSummarizedExperiment(
         assays=_se.assays,

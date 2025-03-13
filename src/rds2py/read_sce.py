@@ -5,8 +5,6 @@ objects into their Python equivalents, handling the complex structure of single-
 data including multiple assays, reduced dimensions, and alternative experiments.
 """
 
-from singlecellexperiment import SingleCellExperiment
-
 from .generics import _dispatcher
 from .rdsutils import get_class
 
@@ -30,7 +28,7 @@ def read_alts_summarized_experiment_by_column(robject: dict, **kwargs):
     return objs
 
 
-def read_single_cell_experiment(robject: dict, **kwargs) -> SingleCellExperiment:
+def read_single_cell_experiment(robject: dict, **kwargs):
     """Convert an R SingleCellExperiment to Python SingleCellExperiment.
 
     Args:
@@ -75,6 +73,8 @@ def read_single_cell_experiment(robject: dict, **kwargs) -> SingleCellExperiment
 
         # ignore colpairs for now, does anyone even use this ?
         # if col == "colPairs":
+
+    from singlecellexperiment import SingleCellExperiment
 
     return SingleCellExperiment(
         assays=_rse.assays,

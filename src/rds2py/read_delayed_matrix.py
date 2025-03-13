@@ -1,7 +1,5 @@
 """Functions and classes for parsing R delayed matrix objects from HDF5Array."""
 
-from hdf5array import Hdf5CompressedSparseMatrix
-
 from .generics import _dispatcher
 from .rdsutils import get_class
 
@@ -10,7 +8,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def read_hdf5_sparse(robject: dict, **kwargs) -> Hdf5CompressedSparseMatrix:
+def read_hdf5_sparse(robject: dict, **kwargs):
     """Convert an R delayed sparse array (H5-backed).
 
     Args:
@@ -37,5 +35,7 @@ def read_hdf5_sparse(robject: dict, **kwargs) -> Hdf5CompressedSparseMatrix:
     shape = tuple(_dispatcher(_seed_obj["attributes"]["dim"], **kwargs))
     fpath = list(_dispatcher(_seed_obj["attributes"]["filepath"], **kwargs))[0]
     group_name = list(_dispatcher(_seed_obj["attributes"]["group"], **kwargs))[0]
+
+    from hdf5array import Hdf5CompressedSparseMatrix
 
     return Hdf5CompressedSparseMatrix(path=fpath, group_name=group_name, shape=shape, by_column=by_column)

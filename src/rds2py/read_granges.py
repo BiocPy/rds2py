@@ -4,9 +4,6 @@ This module provides parsers for converting Bioconductor's GenomicRanges and Gen
 equivalents, preserving all genomic coordinates and associated metadata.
 """
 
-from genomicranges import GenomicRanges, GenomicRangesList, SeqInfo
-from iranges import IRanges
-
 from .generics import _dispatcher
 from .rdsutils import get_class
 
@@ -15,7 +12,7 @@ __copyright__ = "jkanche"
 __license__ = "MIT"
 
 
-def read_genomic_ranges(robject: dict, **kwargs) -> GenomicRanges:
+def read_genomic_ranges(robject: dict, **kwargs):
     """Convert an R `GenomicRanges` object to a Python :py:class:`~genomicranges.GenomicRanges` object.
 
     Args:
@@ -29,6 +26,10 @@ def read_genomic_ranges(robject: dict, **kwargs) -> GenomicRanges:
         A Python `GenomicRanges` object containing genomic intervals
         with associated annotations.
     """
+
+    from genomicranges import GenomicRanges, SeqInfo
+    from iranges import IRanges
+
     _cls = get_class(robject)
 
     if _cls not in ["GenomicRanges", "GRanges"]:
@@ -74,7 +75,7 @@ def read_genomic_ranges(robject: dict, **kwargs) -> GenomicRanges:
     )
 
 
-def read_granges_list(robject: dict, **kwargs) -> GenomicRangesList:
+def read_granges_list(robject: dict, **kwargs):
     """Convert an R `GenomicRangesList` object to a Python :py:class:`~genomicranges.GenomicRangesList`.
 
     Args:
@@ -88,6 +89,8 @@ def read_granges_list(robject: dict, **kwargs) -> GenomicRangesList:
         A Python `GenomicRangesList` object containing containing multiple
         `GenomicRanges` objects.
     """
+
+    from genomicranges import GenomicRangesList
 
     _cls = get_class(robject)
 
