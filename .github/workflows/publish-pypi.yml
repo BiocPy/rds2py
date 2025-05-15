@@ -8,15 +8,15 @@ on:
 jobs:
   build_wheels:
     name: Build wheels on ${{ matrix.os }}
-    
+
     runs-on: ${{ matrix.os }}
-    
+
     permissions:
       id-token: write
       repository-projects: write
       contents: write
       pages: write
-    
+
     strategy:
       matrix:
         # macos-13 is an intel runner, higher macos's are apple silicon
