@@ -1,8 +1,9 @@
 # Changelog
 
-## Version 0.7.0
+## Version 0.7.0 - 0.7.1
 
 - All dependencies are now listed under optional, except for numpy and biocutils.
+- Pin the version of byteme.
 
 ## Version 0.6.1
 

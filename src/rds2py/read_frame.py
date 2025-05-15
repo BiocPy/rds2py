@@ -5,8 +5,6 @@ and Bioconductor `DataFrame` objects into Python `BiocFrame` objects, preserving
 row names, column names, and data types.
 """
 
-from biocframe import BiocFrame
-
 from .generics import _dispatcher
 from .rdsutils import get_class
 
@@ -39,6 +37,8 @@ def read_data_frame(robject: dict, **kwargs):
     bframe_obj = {}
     for idx, rd in enumerate(robject["data"]):
         bframe_obj[col_names[idx]] = _dispatcher(rd, **kwargs)
+
+    from biocframe import BiocFrame
 
     df = BiocFrame(
         bframe_obj,

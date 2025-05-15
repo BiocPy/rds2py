@@ -14,6 +14,13 @@ FetchContent_Declare(
   GIT_TAG v1.1.0
 )
 
+FetchContent_Declare(
+  byteme
+  GIT_REPOSITORY https://github.com/LTLA/byteme
+  GIT_TAG v1.2.2
+)
+
+FetchContent_MakeAvailable(byteme)
 FetchContent_MakeAvailable(rds2cpp)
 
 # Defining the targets.
