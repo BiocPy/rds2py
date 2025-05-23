@@ -19,6 +19,8 @@ def _sanitize_empty_frame(frame, nrows):
 
         return BiocFrame(number_of_rows=nrows)
 
+    return frame
+
 
 def _sanitize_assays(assays):
     res = {}
