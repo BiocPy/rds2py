@@ -1,9 +1,10 @@
 # Changelog
 
-## Version 0.7.0 - 0.7.1
+## Version 0.7.0 - 0.7.2
 
 - All dependencies are now listed under optional, except for numpy and biocutils.
 - Pin the version of byteme.
+- Fix an issue when trying to access shape of the `MatrixWrapper` objects.
 
 ## Version 0.6.1
 
