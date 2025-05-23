@@ -35,6 +35,10 @@ class MatrixWrapper:
         self.matrix = matrix
         self.dimnames = dimnames
 
+    @property
+    def shape(self):
+        return self.matrix.shape
+
 
 def _as_sparse_matrix(robject: dict, **kwargs):
     """Convert an R sparse matrix to a SciPy sparse matrix.
