@@ -16,28 +16,6 @@ Parse and construct Python representations for datasets stored in RDS files. `rd
 
 Please refer to the [documentation](https://biocpy.github.io/rds2py/) for the latest usage guidelines. Previous versions may have incompatible APIs.
 
----
-
-The package provides:
-
-- Efficient parsing of RDS files with _minimal_ memory overhead
-- Support for R's basic data types and complex S4 objects
-  - Vectors (numeric, character, logical)
-  - Factors
-  - Data frames
-  - Matrices (dense and sparse)
-  - Run-length encoded vectors (Rle)
-- Conversion to appropriate Python/NumPy/SciPy data structures
-  - dgCMatrix (sparse column matrix)
-  - dgRMatrix (sparse row matrix)
-  - dgTMatrix (sparse triplet matrix)
-- Preservation of metadata and attributes from R objects
-- Integration with BiocPy ecosystem for Bioconductor classes
-  - SummarizedExperiment
-  - RangedSummarizedExperiment
-  - SingleCellExperiment
-  - GenomicRanges
-  - MultiAssayExperiment
 
 ## Installation
 
@@ -63,7 +41,7 @@ r_obj = read_rds("path/to/file.rds")
 
 The returned `r_obj` either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.
 
-In addition, the package provides the dictionary representation of the RDS file.
+To just get the parsed dictionary representation of the RDS file,
 
 ```python
 from rds2py import parse_rds
@@ -105,6 +83,13 @@ print(gr)
 | matrix     | numpy.ndarray or scipy.sparse matrix |
 | dgCMatrix  | scipy.sparse.csc_matrix              |
 | dgRMatrix  | scipy.sparse.csr_matrix              |
+
+and integration with BiocPy ecosystem for Bioconductor classes
+  - SummarizedExperiment
+  - RangedSummarizedExperiment
+  - SingleCellExperiment
+  - GenomicRanges
+  - MultiAssayExperiment
 
 ## Developer Notes
 
