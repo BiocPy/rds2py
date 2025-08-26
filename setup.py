@@ -28,9 +28,11 @@ class build_ext(build_ext_orig):
 
     def build_cmake(self, ext):
         build_temp = pathlib.Path(self.build_temp)
+        build_temp.mkdir(parents=True, exist_ok=True)
         build_lib = pathlib.Path(self.build_lib)
         outpath = os.path.join(build_lib.absolute(), ext.name)
 
+        build_temp = os.path.join(build_temp, "build")
         if not os.path.exists(build_temp):
             cmd = [
                 "cmake",
