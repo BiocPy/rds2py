@@ -17,4 +17,3 @@ def test_compressed_lists_int():
     assert len(obj) > 0
 
     assert isinstance(obj, CompressedIntegerList)
-
