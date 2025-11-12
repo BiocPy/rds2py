@@ -1,5 +1,3 @@
-import biocutils as ut
-import pytest
 from compressed_lists import CompressedIntegerList
 
 from rds2py import read_rds

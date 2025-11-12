@@ -1,5 +1,3 @@
-import pytest
-
 from rds2py import read_rds
 import numpy as np
 from scipy import sparse as sp
@@ -17,6 +15,7 @@ def test_read_s4_matrix_dgc():
     assert array is not None
     assert isinstance(array, sp.spmatrix)
 
+
 def test_read_s4_matrix_dgc_with_rownames():
     array = read_rds("tests/data/matrix_with_row_names.rds")
 
@@ -33,6 +32,7 @@ def test_read_s4_matrix_dgc_with_bothnames():
     assert isinstance(array, MatrixWrapper)
     assert len(array.dimnames[0]) == 100
     assert len(array.dimnames[1]) == 10
+
 
 def test_read_s4_matrix_dgt():
     array = read_rds("tests/data/s4_matrix_dgt.rds")
