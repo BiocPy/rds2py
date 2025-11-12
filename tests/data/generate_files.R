@@ -193,3 +193,12 @@ h5ls(h5ad_file)
 
 M <- H5SparseMatrix(h5ad_file, "/obsp/connectivities")
 saveRDS(M, "h5sparse.rds")
+
+## Compressed lists
+
+library(IRanges)
+x <- IntegerList(11:12, integer(0), 3:-2, compress=TRUE)
+saveRDS(x, "compressedlist_int.rds")
+
+clist <- CharacterList(LETTERS[1:5], LETTERS[20:24], compress=TRUE)
+clist

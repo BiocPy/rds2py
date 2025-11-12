@@ -10,7 +10,7 @@ version_scheme = "no-guess-dev"
 [tool.ruff]
 line-length = 120
 src = ["src"]
-exclude = ["tests"]
+# exclude = ["tests"]
 extend-ignore = ["F821"]
 
 [tool.ruff.pydocstyle]
