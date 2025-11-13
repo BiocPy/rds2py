@@ -201,4 +201,18 @@ x <- IntegerList(11:12, integer(0), 3:-2, compress=TRUE)
 saveRDS(x, "compressedlist_int.rds")
 
 clist <- CharacterList(LETTERS[1:5], LETTERS[20:24], compress=TRUE)
-clist
+saveRDS(clist, "compressedlist_char.rds")
+
+x <- NumericList(11.1, 12.2, 13.3, 14.4, 15.5, compress=TRUE)
+saveRDS(x, "compressedlist_numeric.rds")
+
+
+x <- LogicalList(TRUE, FALSE, TRUE, compress=TRUE)
+saveRDS(x, "compressedlist_logical.rds")
+
+data("airquality")
+aq <- DataFrame(airquality)
+aqsplit <-
+  SplitDataFrameList(as.list(split(aq, aq[["Ozone"]])),
+                     compress = TRUE)
+saveRDS(aqsplit, "compressedlist_splitdframe.rds")

@@ -63,6 +63,11 @@ REGISTRY = {
     # compressed lists
     "CompressedIntegerList": "rds2py.read_compressed_list.read_compressed_integer_list",
     "PartitioningByEnd": "rds2py.read_compressed_list.read_partitioning_by_end",
+    "CompressedCharacterList": "rds2py.read_compressed_list.read_compressed_string_list",
+    "CompressedLogicalList": "rds2py.read_compressed_list.read_compressed_boolean_list",
+    "CompressedNumericList": "rds2py.read_compressed_list.read_compressed_float_list",
+    "CompressedSplitDataFrameList": "rds2py.read_compressed_list.read_compressed_frame_list",
+    "CompressedSplitDFrameList": "rds2py.read_compressed_list.read_compressed_frame_list",
 }
 
 
