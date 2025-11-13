@@ -1,5 +1,3 @@
-import pytest
-
 from rds2py import read_rds
 
 from summarizedexperiment import SummarizedExperiment, RangedSummarizedExperiment
