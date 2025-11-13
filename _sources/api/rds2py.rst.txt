@@ -44,6 +44,14 @@ rds2py.read\_atomic module
    :show-inheritance:
    :undoc-members:
 
+rds2py.read\_compressed\_list module
+------------------------------------
+
+.. automodule:: rds2py.read_compressed_list
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 rds2py.read\_delayed\_matrix module
 -----------------------------------
 
