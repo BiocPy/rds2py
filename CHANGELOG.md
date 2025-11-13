@@ -1,5 +1,9 @@
 # Changelog
 
+## Version 0.8.0
+
+- Implement parsers for compressed list objects.
+
 ## Version 0.7.0 - 0.7.3
 
 - All dependencies are now listed under optional, except for numpy and biocutils.
