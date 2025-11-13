@@ -1,6 +1,4 @@
-import biocutils as ut
 import compressed_lists as clist
-import pytest
 
 from rds2py import read_rds
 
