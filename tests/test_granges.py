@@ -1,6 +1,6 @@
 from rds2py import read_rds
 
-from genomicranges import GenomicRanges, GenomicRangesList
+from genomicranges import GenomicRanges, CompressedGenomicRangesList
 import numpy as np
 
 __author__ = "jkanche"
@@ -32,5 +32,5 @@ def test_granges():
 def test_granges_list():
     gr = read_rds("tests/data/grangeslist.rds")
 
-    assert isinstance(gr, GenomicRangesList)
+    assert isinstance(gr, CompressedGenomicRangesList)
     assert len(gr) == 5

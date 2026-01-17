@@ -76,21 +76,22 @@ def read_genomic_ranges(robject: dict, **kwargs):
 
 
 def read_granges_list(robject: dict, **kwargs):
-    """Convert an R `GenomicRangesList` object to a Python :py:class:`~genomicranges.GenomicRangesList`.
+    """Convert an R `CompressedGenomicRangesList` object to a Python :py:class:`~genomicranges.grangeslist.CompressedGenomicRangesList`.
 
     Args:
         robject:
-            Dictionary containing parsed GenomicRangesList data.
+            Dictionary containing parsed CompressedGenomicRangesList data.
 
         **kwargs:
             Additional arguments.
 
     Returns:
-        A Python `GenomicRangesList` object containing containing multiple
+        A Python `CompressedGenomicRangesList` object containing containing multiple
         `GenomicRanges` objects.
     """
 
-    from genomicranges import GenomicRangesList
+    from compressed_lists import Partitioning
+    from genomicranges import CompressedGenomicRangesList
 
     _cls = get_class(robject)
 
@@ -106,11 +107,16 @@ def read_granges_list(robject: dict, **kwargs):
 
     _partitionends = _dispatcher(robject["attributes"]["partitioning"]["attributes"]["end"], **kwargs)
 
-    _grelist = []
+    _part_obj = Partitioning(ends=_partitionends, names=_groups)
 
-    current = 0
-    for _pend in _partitionends:
-        _grelist.append(_gre[current:_pend])
-        current = _pend
+    element_metadata = None
+    if "elementMetadata" in robject["attributes"]:
+        element_metadata = _dispatcher(robject["attributes"]["elementMetadata"], **kwargs)
 
-    return GenomicRangesList(ranges=_grelist, names=_groups)
+    metadata = None
+    if "metadata" in robject["attributes"]:
+        metadata = _dispatcher(robject["attributes"]["metadata"], **kwargs)
+
+    return CompressedGenomicRangesList(
+        unlist_data=_gre, partitioning=_part_obj, element_metadata=element_metadata, metadata=metadata
+    )
