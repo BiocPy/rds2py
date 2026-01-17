@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
-    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>rds2py.read_granges - rds2py 0.8.0 documentation</title>
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
+        <title>rds2py.read_granges - rds2py 0.8.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
     
     
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.8.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.8.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -181,7 +181,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.8.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.8.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -316,21 +316,22 @@
 <div class="viewcode-block" id="read_granges_list">
 <a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_granges.read_granges_list">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">read_granges_list</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an R `GenomicRangesList` object to a Python :py:class:`~genomicranges.GenomicRangesList`.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an R `CompressedGenomicRangesList` object to a Python :py:class:`~genomicranges.grangeslist.CompressedGenomicRangesList`.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        robject:</span>
-<span class="sd">            Dictionary containing parsed GenomicRangesList data.</span>
+<span class="sd">            Dictionary containing parsed CompressedGenomicRangesList data.</span>
 
 <span class="sd">        **kwargs:</span>
 <span class="sd">            Additional arguments.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        A Python `GenomicRangesList` object containing containing multiple</span>
+<span class="sd">        A Python `CompressedGenomicRangesList` object containing containing multiple</span>
 <span class="sd">        `GenomicRanges` objects.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="kn">from</span><span class="w"> </span><span class="nn">genomicranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomicRangesList</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">compressed_lists</span><span class="w"> </span><span class="kn">import</span> <span class="n">Partitioning</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">genomicranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">CompressedGenomicRangesList</span>
 
     <span class="n">_cls</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
 
@@ -346,14 +347,19 @@
 
     <span class="n">_partitionends</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;partitioning&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;end&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="n">_grelist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_part_obj</span> <span class="o">=</span> <span class="n">Partitioning</span><span class="p">(</span><span class="n">ends</span><span class="o">=</span><span class="n">_partitionends</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">_groups</span><span class="p">)</span>
 
-    <span class="n">current</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">for</span> <span class="n">_pend</span> <span class="ow">in</span> <span class="n">_partitionends</span><span class="p">:</span>
-        <span class="n">_grelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_gre</span><span class="p">[</span><span class="n">current</span><span class="p">:</span><span class="n">_pend</span><span class="p">])</span>
-        <span class="n">current</span> <span class="o">=</span> <span class="n">_pend</span>
+    <span class="n">element_metadata</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;elementMetadata&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">element_metadata</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;elementMetadata&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">GenomicRangesList</span><span class="p">(</span><span class="n">ranges</span><span class="o">=</span><span class="n">_grelist</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">_groups</span><span class="p">)</span></div>
+    <span class="n">metadata</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">CompressedGenomicRangesList</span><span class="p">(</span>
+        <span class="n">unlist_data</span><span class="o">=</span><span class="n">_gre</span><span class="p">,</span> <span class="n">partitioning</span><span class="o">=</span><span class="n">_part_obj</span><span class="p">,</span> <span class="n">element_metadata</span><span class="o">=</span><span class="n">element_metadata</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
+    <span class="p">)</span></div>
 
 </pre></div>
         </article>
@@ -387,9 +393,9 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=486e5634"></script>
-    <script src="../../_static/doctools.js?v=9bcbadda"></script>
-    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+</div><script src="../../_static/documentation_options.js?v=ec16d22d"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
     </body>
 </html>
