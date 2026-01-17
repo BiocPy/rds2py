@@ -1,8 +1,9 @@
 # Changelog
 
-## Version 0.8.0
+## Version 0.8.0 - 0.8.1
 
 - Implement parsers for compressed list objects.
+- Switch `GenomicRangesList` to the `CompressedGenomicRangesList` implementation.
 
 ## Version 0.7.0 - 0.7.3
 
