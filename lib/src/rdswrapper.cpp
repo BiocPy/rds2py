@@ -165,12 +165,45 @@ public:
     }
 };
 
+class RdaObject {
+private:
+    std::unique_ptr<rds2cpp::RdaFile> parsed;
+
+public:
+    RdaObject(const std::string& file) {
+        try {
+            rds2cpp::ParseRdaOptions options;
+            parsed = std::make_unique<rds2cpp::RdaFile>(rds2cpp::parse_rda(file, options));
+        } catch (const std::exception& e) {
+            throw std::runtime_error(std::string("Error in 'RdaObject' constructor: ") + e.what());
+        }
+    }
+
+    py::list get_object_names() const {
+        if (!parsed) throw std::runtime_error("Null parsed in 'get_object_names'");
+        const auto& pairlist = parsed->contents;
+        py::list names;
+        for (size_t i = 0; i < pairlist.tag_names.size(); ++i) {
+            if (pairlist.has_tag[i]) {
+                names.append(pairlist.tag_names[i]);
+            } else {
+                names.append(py::none());
+            }
+        }
+        return names;
+    }
+};
+
 PYBIND11_MODULE(lib_rds_parser, m) {
     py::register_exception<std::runtime_error>(m, "RdsParserError");
 
     py::class_<RdsObject>(m, "RdsObject")
         .def(py::init<const std::string&>())
         .def("get_robject", &RdsObject::get_robject, py::return_value_policy::reference_internal);
+
+    py::class_<RdaObject>(m, "RdaObject")
+        .def(py::init<const std::string&>())
+        .def("get_object_names", &RdaObject::get_object_names);
 
     py::class_<RdsReader>(m, "RdsReader")
         .def(py::init<const rds2cpp::RObject*>())
