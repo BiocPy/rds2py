@@ -148,7 +148,8 @@ private:
 public:
     RdsObject(const std::string& file) {
         try {
-            parsed = std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(file));
+            rds2cpp::ParseRdsOptions options;
+            parsed = std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(file, options));
             if (!parsed || !parsed->object) {
                 throw std::runtime_error("Failed to parse RDS file");
             }
