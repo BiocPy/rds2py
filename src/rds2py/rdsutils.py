@@ -1,9 +1,12 @@
-"""Utility functions for RDS file parsing and class inference.
+"""Utility functions for RDS/RData file parsing and class inference.
 
-This module provides helper functions for parsing RDS files and inferring the appropriate R class information from
-parsed objects.
+This module provides helper functions for parsing RDS and RData files and inferring the appropriate R class
+information from parsed objects.
 """
 
+from typing import Dict, List, Optional
+
+from .PyRdaReader import PyRdaParser
 from .PyRdsReader import PyRdsParser
 
 __author__ = "jkanche"
@@ -26,6 +29,32 @@ def parse_rds(path: str) -> dict:
     realized = parsed_obj.parse()
 
     return realized
+
+
+def parse_rda(path: str, objects: Optional[List[str]] = None) -> Dict[str, dict]:
+    """Parse an RData file into a dictionary of named objects.
+
+    Args:
+        path:
+            Path to the RData (.RData/.rda) file to be parsed.
+
+        objects:
+            Optional list of object names to parse. If ``None``,
+            all objects in the file are parsed.
+
+    Returns:
+        A dictionary mapping object names to their parsed representations.
+        Each value has the same structure as the output of :py:func:`~.parse_rds`.
+    """
+    parser = PyRdaParser(path)
+
+    if objects is None:
+        return parser.parse()
+
+    result = {}
+    for name in objects:
+        result[name] = parser.parse_object(name)
+    return result
 
 
 def get_class(robj: dict) -> str:

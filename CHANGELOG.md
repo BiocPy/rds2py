@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.9.0
+
+- Added support to parse .Rdata/.rda files.
+- Bump the version of rds2cpp library.
+
 ## Version 0.8.0 - 0.8.1
 
 - Implement parsers for compressed list objects.
