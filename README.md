@@ -4,18 +4,7 @@
 
 # rds2py
 
-Parse and construct Python representations for datasets stored in RDS files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
-
----
-
-**Version 0.5.0** brings major changes to the package,
-
-- Complete overhaul of the codebase using pybind11
-- Streamlined readers for R data types
-- Updated API for all classes and methods
-
-Please refer to the [documentation](https://biocpy.github.io/rds2py/) for the latest usage guidelines. Previous versions may have incompatible APIs.
-
+Parse and construct Python representations for datasets stored in **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
 
 ## Installation
 
@@ -32,36 +21,29 @@ By default, the package does not install packages to convert python representati
 
 ## Usage
 
-If you do not have an RDS object handy, feel free to download one from [single-cell-test-files](https://github.com/jkanche/random-test-files/releases).
+> [!NOTE]
+>
+> If you do not have an RDS object handy, feel free to download one from [single-cell-test-files](https://github.com/jkanche/random-test-files/releases).
 
 ```python
-from rds2py import read_rds
-r_obj = read_rds("path/to/file.rds")
+from rds2py import read_rds, read_rda
+r_obj = read_rds("path/to/file.rds") # or read_rda("path/to/file.rda")
 ```
 
 The returned `r_obj` either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.
 
-To just get the parsed dictionary representation of the RDS file,
-
-```python
-from rds2py import parse_rds
-
-robject_dict = parse_rds("path/to/file.rds")
-print(robject_dict)
-```
-
 ### Write-your-own-reader
 
-Reading RDS files as dictionary representations allows users to write their own custom readers into appropriate Python representations.
+Reading RDS or RData files as dictionary representations allows users to write their own custom readers into appropriate Python representations.
 
 ```python
-from rds2py import parse_rds
+from rds2py import parse_rds, parse_rda
 
-robject = parse_rds("path/to/file.rds")
+robject = parse_rds("path/to/file.rds") # or use parse_rda for rdata files
 print(robject)
 ```
 
-if you know this RDS file contains an `GenomicRanges` object, you can use the built-in reader or write your own reader to convert this dictionary.
+If you know this RDS file contains an `GenomicRanges` object, you can use the built-in reader or write your own reader to convert this dictionary.
 
 ```python
 from rds2py.read_granges import read_genomic_ranges
