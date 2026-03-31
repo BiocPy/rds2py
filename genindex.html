@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="#"><link rel="search" title="Search" href="search.html">
 
-    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - rds2py 0.8.1 documentation</title>
+    <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 --><title>Index - rds2py 0.9.0 documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -159,7 +159,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.8.1 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.9.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -180,7 +180,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.8.1 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.9.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -240,9 +240,11 @@
   <h2>_</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsReader.__annotations__">__annotations__ (rds2py.lib_rds_parser.RdsReader attribute)</a>
+        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsObject.__annotations__">__annotations__ (rds2py.lib_rds_parser.RdsObject attribute)</a>
 
         <ul>
+          <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsReader.__annotations__">(rds2py.lib_rds_parser.RdsReader attribute)</a>
+</li>
           <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.__annotations__">(rds2py.PyRdsReader.PyRdsParser attribute)</a>
 </li>
         </ul></li>
@@ -276,10 +278,26 @@
           <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.get_dimensions">(rds2py.PyRdsReader.PyRdsParser method)</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsReader.get_numeric_data">get_numeric_data() (rds2py.lib_rds_parser.RdsReader method)</a>
 </li>
+        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_by_index">get_object_by_index() (rds2py.lib_rds_parser.RdaObject method)</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_by_name">get_object_by_name() (rds2py.lib_rds_parser.RdaObject method)</a>
+</li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_count">get_object_count() (rds2py.lib_rds_parser.RdaObject method)</a>
+
+        <ul>
+          <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.get_object_count">(rds2py.PyRdaReader.PyRdaParser method)</a>
+</li>
+        </ul></li>
+        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_names">get_object_names() (rds2py.lib_rds_parser.RdaObject method)</a>
+
+        <ul>
+          <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.get_object_names">(rds2py.PyRdaReader.PyRdaParser method)</a>
+</li>
+        </ul></li>
         <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsReader.get_package_name">get_package_name() (rds2py.lib_rds_parser.RdsReader method)</a>
 </li>
         <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsObject.get_robject">get_robject() (rds2py.lib_rds_parser.RdsObject method)</a>
@@ -326,6 +344,8 @@
 </li>
           <li><a href="api/rds2py.html#module-rds2py.lib_rds_parser">rds2py.lib_rds_parser</a>
 </li>
+          <li><a href="api/rds2py.html#module-rds2py.PyRdaReader">rds2py.PyRdaReader</a>
+</li>
           <li><a href="api/rds2py.html#module-rds2py.PyRdsReader">rds2py.PyRdsReader</a>
 </li>
           <li><a href="api/rds2py.html#module-rds2py.rdsutils">rds2py.rdsutils</a>
@@ -363,12 +383,24 @@
   <h2>P</h2>
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
-        <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.parse">parse() (rds2py.PyRdsReader.PyRdsParser method)</a>
+        <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.parse">parse() (rds2py.PyRdaReader.PyRdaParser method)</a>
+
+        <ul>
+          <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.parse">(rds2py.PyRdsReader.PyRdsParser method)</a>
 </li>
-        <li><a href="api/rds2py.html#rds2py.rdsutils.parse_rds">parse_rds() (in module rds2py.rdsutils)</a>
+        </ul></li>
+        <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.parse_object">parse_object() (rds2py.PyRdaReader.PyRdaParser method)</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.rdsutils.parse_rda">parse_rda() (in module rds2py.rdsutils)</a>
 </li>
     </ul></td>
     <td style="width: 33%; vertical-align: top;"><ul>
+        <li><a href="api/rds2py.html#rds2py.rdsutils.parse_rds">parse_rds() (in module rds2py.rdsutils)</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParser">PyRdaParser (class in rds2py.PyRdaReader)</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParserError">PyRdaParserError</a>
+</li>
         <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser">PyRdsParser (class in rds2py.PyRdsReader)</a>
 </li>
         <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParserError">PyRdsParserError</a>
@@ -382,6 +414,10 @@
   <table style="width: 100%" class="indextable genindextable"><tr>
     <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/rds2py.html#id0">R_MIN (rds2py.PyRdsReader.PyRdsParser attribute)</a>, <a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.R_MIN">[1]</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.rda_object">rda_object (rds2py.PyRdaReader.PyRdaParser attribute)</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdaObject">RdaObject (class in rds2py.lib_rds_parser)</a>
 </li>
         <li>
     rds2py
@@ -402,6 +438,13 @@
 
         <ul>
           <li><a href="api/rds2py.html#module-rds2py.lib_rds_parser">module</a>
+</li>
+        </ul></li>
+        <li>
+    rds2py.PyRdaReader
+
+        <ul>
+          <li><a href="api/rds2py.html#module-rds2py.PyRdaReader">module</a>
 </li>
         </ul></li>
         <li>
@@ -495,6 +538,8 @@
           <li><a href="api/rds2py.html#module-rds2py.read_sce">module</a>
 </li>
         </ul></li>
+    </ul></td>
+    <td style="width: 33%; vertical-align: top;"><ul>
         <li>
     rds2py.read_se
 
@@ -502,8 +547,6 @@
           <li><a href="api/rds2py.html#module-rds2py.read_se">module</a>
 </li>
         </ul></li>
-    </ul></td>
-    <td style="width: 33%; vertical-align: top;"><ul>
         <li><a href="api/rds2py.html#rds2py.PyRdsReader.PyRdsParser.rds_object">rds_object (rds2py.PyRdsReader.PyRdsParser attribute)</a>
 </li>
         <li><a href="api/rds2py.html#rds2py.lib_rds_parser.RdsObject">RdsObject (class in rds2py.lib_rds_parser)</a>
@@ -559,6 +602,8 @@
         <li><a href="api/rds2py.html#rds2py.read_compressed_list.read_partitioning_by_end">read_partitioning_by_end() (in module rds2py.read_compressed_list)</a>
 </li>
         <li><a href="api/rds2py.html#rds2py.read_se.read_ranged_summarized_experiment">read_ranged_summarized_experiment() (in module rds2py.read_se)</a>
+</li>
+        <li><a href="api/rds2py.html#rds2py.generics.read_rda">read_rda() (in module rds2py.generics)</a>
 </li>
         <li><a href="api/rds2py.html#rds2py.generics.read_rds">read_rds() (in module rds2py.generics)</a>
 </li>
@@ -618,7 +663,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=ec16d22d"></script>
+</div><script src="_static/documentation_options.js?v=39bb1c6d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

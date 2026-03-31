@@ -4,6 +4,14 @@ rds2py package
 Submodules
 ----------
 
+rds2py.PyRdaReader module
+-------------------------
+
+.. automodule:: rds2py.PyRdaReader
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 rds2py.PyRdsReader module
 -------------------------
 

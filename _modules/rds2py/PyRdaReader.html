@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py.read_sce - rds2py 0.9.0 documentation</title>
+        <title>rds2py.PyRdaReader - rds2py 0.9.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -232,99 +232,136 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <h1>Source code for rds2py.read_sce</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Functions for parsing Bioconductor `SingleCellExperiment` objects.</span>
+          <h1>Source code for rds2py.PyRdaReader</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Low-level interface for reading RData files.</span>
 
-<span class="sd">This module provides parsers for converting Bioconductor&#39;s `SingleCellExperiment`</span>
-<span class="sd">objects into their Python equivalents, handling the complex structure of single-cell</span>
-<span class="sd">data including multiple assays, reduced dimensions, and alternative experiments.</span>
+<span class="sd">This module provides the core functionality for parsing RData (.RData/.rda) files</span>
+<span class="sd">and converting them into dictionary representations that can be further processed</span>
+<span class="sd">by higher-level functions.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.generics</span><span class="w"> </span><span class="kn">import</span> <span class="n">_dispatcher</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.rdsutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_class</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.lib_rds_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">RdaObject</span><span class="p">,</span> <span class="n">RdsReader</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.PyRdsReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyRdsParser</span>
 
 <span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__copyright__</span> <span class="o">=</span> <span class="s2">&quot;jkanche&quot;</span>
 <span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
 
 
-<div class="viewcode-block" id="read_alts_summarized_experiment_by_column">
-<a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_sce.read_alts_summarized_experiment_by_column">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_alts_summarized_experiment_by_column</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parse alternative experiments in a SingleCellExperiment.&quot;&quot;&quot;</span>
-    <span class="n">_cls</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
+<div class="viewcode-block" id="PyRdaParserError">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdaReader.PyRdaParserError">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyRdaParserError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised for errors during RData parsing.&quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="n">_cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SummarizedExperimentByColumn&quot;</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`robject` does not contain a &#39;SummarizedExperimentByColumn&#39; object, contains `</span><span class="si">{</span><span class="n">_cls</span><span class="si">}</span><span class="s2">`.&quot;</span><span class="p">)</span>
-
-    <span class="n">objs</span> <span class="o">=</span> <span class="p">{}</span>
-
-    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">objs</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">objs</span></div>
+    <span class="k">pass</span></div>
 
 
 
-<div class="viewcode-block" id="read_single_cell_experiment">
-<a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_sce.read_single_cell_experiment">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_single_cell_experiment</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an R SingleCellExperiment to Python SingleCellExperiment.</span>
+<div class="viewcode-block" id="PyRdaParser">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdaReader.PyRdaParser">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">PyRdaParser</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parser for reading RData files.</span>
 
-<span class="sd">    Args:</span>
-<span class="sd">        robject:</span>
-<span class="sd">            Dictionary containing parsed SingleCellExperiment data.</span>
+<span class="sd">    This class provides low-level access to RData file contents, handling the binary</span>
+<span class="sd">    format and converting it into Python data structures. It reuses the same</span>
+<span class="sd">    ``RdsReader``-based object processing from :py:class:`~.PyRdsParser`.</span>
 
-<span class="sd">        **kwargs:</span>
-<span class="sd">            Additional arguments.</span>
-
-<span class="sd">    Returns:</span>
-<span class="sd">        A Python SingleCellExperiment object containing</span>
-<span class="sd">        the assay data and associated metadata.</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        rda_object:</span>
+<span class="sd">            Internal representation of the RData file.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">_cls</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the parser.</span>
 
-    <span class="k">if</span> <span class="n">_cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;SingleCellExperiment&quot;</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;`robject` does not contain a &#39;SingleCellExperiment&#39; object, contains `</span><span class="si">{</span><span class="n">_cls</span><span class="si">}</span><span class="s2">`.&quot;</span><span class="p">)</span>
+<span class="sd">        Args:</span>
+<span class="sd">            file_path:</span>
+<span class="sd">                Path to the RData file to be read.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rda_object</span> <span class="o">=</span> <span class="n">RdaObject</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyRdaParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error initializing &#39;PyRdaParser&#39;: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;class_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;RangedSummarizedExperiment&quot;</span>
-    <span class="n">_rse</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="PyRdaParser.get_object_names">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.get_object_names">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_object_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the names of all objects stored in the RData file.</span>
 
-    <span class="c1"># check red. dims, alternative expts</span>
-    <span class="n">robj_reduced_dims</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">robj_alt_exps</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">col_attrs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
-        <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;int_colData&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;listData&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;names&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="p">)</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            A list of object names (strings).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rda_object</span><span class="o">.</span><span class="n">get_object_names</span><span class="p">())</span></div>
 
-    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">col_attrs</span><span class="p">)):</span>
-        <span class="n">idx_col</span> <span class="o">=</span> <span class="n">col_attrs</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-        <span class="n">idx_value</span> <span class="o">=</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;int_colData&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;listData&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">idx_col</span> <span class="o">==</span> <span class="s2">&quot;reducedDims&quot;</span> <span class="ow">and</span> <span class="n">idx_value</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">robj_reduced_dims</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">idx_value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="PyRdaParser.get_object_count">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.get_object_count">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_object_count</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the number of objects stored in the RData file.</span>
 
-        <span class="k">if</span> <span class="n">idx_col</span> <span class="o">==</span> <span class="s2">&quot;altExps&quot;</span><span class="p">:</span>
-            <span class="n">alt_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_dispatcher</span><span class="p">(</span><span class="n">idx_value</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;listData&quot;</span><span class="p">][</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;names&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-            <span class="n">robj_alt_exps</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">altn</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">alt_names</span><span class="p">):</span>
-                <span class="n">robj_alt_exps</span><span class="p">[</span><span class="n">altn</span><span class="p">]</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">idx_value</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;listData&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">][</span><span class="n">idx</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)[</span><span class="s2">&quot;se&quot;</span><span class="p">]</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Number of objects.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rda_object</span><span class="o">.</span><span class="n">get_object_count</span><span class="p">()</span></div>
 
-        <span class="c1"># ignore colpairs for now, does anyone even use this ?</span>
-        <span class="c1"># if col == &quot;colPairs&quot;:</span>
 
-    <span class="kn">from</span><span class="w"> </span><span class="nn">singlecellexperiment</span><span class="w"> </span><span class="kn">import</span> <span class="n">SingleCellExperiment</span>
+<div class="viewcode-block" id="PyRdaParser.parse">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.parse">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse all objects in the RData file.</span>
 
-    <span class="k">return</span> <span class="n">SingleCellExperiment</span><span class="p">(</span>
-        <span class="n">assays</span><span class="o">=</span><span class="n">_rse</span><span class="o">.</span><span class="n">assays</span><span class="p">,</span>
-        <span class="n">row_data</span><span class="o">=</span><span class="n">_rse</span><span class="o">.</span><span class="n">row_data</span><span class="p">,</span>
-        <span class="n">column_data</span><span class="o">=</span><span class="n">_rse</span><span class="o">.</span><span class="n">column_data</span><span class="p">,</span>
-        <span class="n">row_ranges</span><span class="o">=</span><span class="n">_rse</span><span class="o">.</span><span class="n">row_ranges</span><span class="p">,</span>
-        <span class="n">alternative_experiments</span><span class="o">=</span><span class="n">robj_alt_exps</span><span class="p">,</span>
-        <span class="n">reduced_dims</span><span class="o">=</span><span class="n">robj_reduced_dims</span><span class="p">,</span>
-    <span class="p">)</span></div>
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary mapping object names to their parsed representations.</span>
+<span class="sd">            Each value has the same structure as the output of</span>
+<span class="sd">            :py:meth:`~rds2py.PyRdsReader.PyRdsParser.parse`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">helper</span> <span class="o">=</span> <span class="n">_RdsProcessorHelper</span><span class="p">()</span>
 
+            <span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_object_names</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">names</span><span class="p">):</span>
+                <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rda_object</span><span class="o">.</span><span class="n">get_object_by_index</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                <span class="n">key</span> <span class="o">=</span> <span class="n">name</span> <span class="k">if</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&quot;__unnamed_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyRdaParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error parsing RData file: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PyRdaParser.parse_object">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.PyRdaReader.PyRdaParser.parse_object">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">parse_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a single named object from the RData file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name:</span>
+<span class="sd">                Name of the object to parse.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            A dictionary containing the parsed data for the requested object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">helper</span> <span class="o">=</span> <span class="n">_RdsProcessorHelper</span><span class="p">()</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rda_object</span><span class="o">.</span><span class="n">get_object_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">helper</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="n">reader</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">PyRdaParserError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error parsing object &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;: </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">_RdsProcessorHelper</span><span class="p">(</span><span class="n">PyRdsParser</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Helper that reuses PyRdsParser&#39;s object processing without requiring a file.&quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R_MIN</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2147483648</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_process_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">RdsReader</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_process_object</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>

@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="next" title="rds2py package" href="rds2py.html"><link rel="prev" title="Changelog" href="../changelog.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py - rds2py 0.8.1 documentation</title>
+        <title>rds2py - rds2py 0.9.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">rds2py 0.8.1 documentation</div></a>
+      <a href="../index.html"><div class="brand">rds2py 0.9.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.8.1 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.9.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -245,6 +245,18 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rds2py.html">rds2py package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="rds2py.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="rds2py.html#module-rds2py.PyRdaReader">rds2py.PyRdaReader module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParser"><code class="docutils literal notranslate"><span class="pre">PyRdaParser</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParser.rda_object"><code class="docutils literal notranslate"><span class="pre">PyRdaParser.rda_object</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParser.get_object_count"><code class="docutils literal notranslate"><span class="pre">PyRdaParser.get_object_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParser.get_object_names"><code class="docutils literal notranslate"><span class="pre">PyRdaParser.get_object_names()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParser.parse"><code class="docutils literal notranslate"><span class="pre">PyRdaParser.parse()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParser.parse_object"><code class="docutils literal notranslate"><span class="pre">PyRdaParser.parse_object()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.PyRdaReader.PyRdaParserError"><code class="docutils literal notranslate"><span class="pre">PyRdaParserError</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="rds2py.html#module-rds2py.PyRdsReader">rds2py.PyRdsReader module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.PyRdsReader.PyRdsParser"><code class="docutils literal notranslate"><span class="pre">PyRdsParser</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.PyRdsReader.PyRdsParser.R_MIN"><code class="docutils literal notranslate"><span class="pre">PyRdsParser.R_MIN</span></code></a></li>
@@ -260,11 +272,20 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rds2py.html#module-rds2py.generics">rds2py.generics module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.generics.read_rda"><code class="docutils literal notranslate"><span class="pre">read_rda()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.generics.read_rds"><code class="docutils literal notranslate"><span class="pre">read_rds()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rds2py.html#module-rds2py.lib_rds_parser">rds2py.lib_rds_parser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdaObject"><code class="docutils literal notranslate"><span class="pre">RdaObject</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_by_index"><code class="docutils literal notranslate"><span class="pre">RdaObject.get_object_by_index()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_by_name"><code class="docutils literal notranslate"><span class="pre">RdaObject.get_object_by_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_count"><code class="docutils literal notranslate"><span class="pre">RdaObject.get_object_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdaObject.get_object_names"><code class="docutils literal notranslate"><span class="pre">RdaObject.get_object_names()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdsObject"><code class="docutils literal notranslate"><span class="pre">RdsObject</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdsObject.__annotations__"><code class="docutils literal notranslate"><span class="pre">RdsObject.__annotations__</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="rds2py.html#rds2py.lib_rds_parser.RdsObject.get_robject"><code class="docutils literal notranslate"><span class="pre">RdsObject.get_robject()</span></code></a></li>
 </ul>
 </li>
@@ -287,6 +308,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="rds2py.html#module-rds2py.rdsutils">rds2py.rdsutils module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.rdsutils.get_class"><code class="docutils literal notranslate"><span class="pre">get_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.rdsutils.parse_rda"><code class="docutils literal notranslate"><span class="pre">parse_rda()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="rds2py.html#rds2py.rdsutils.parse_rds"><code class="docutils literal notranslate"><span class="pre">parse_rds()</span></code></a></li>
 </ul>
 </li>
@@ -416,7 +438,7 @@
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=ec16d22d"></script>
+</div><script src="../_static/documentation_options.js?v=39bb1c6d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>
