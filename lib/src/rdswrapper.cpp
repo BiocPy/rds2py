@@ -192,6 +192,31 @@ public:
         }
         return names;
     }
+
+    int get_object_count() const {
+        if (!parsed) throw std::runtime_error("Null parsed in 'get_object_count'");
+        return static_cast<int>(parsed->contents.data.size());
+    }
+
+    RdsReader* get_object_by_index(int index) const {
+        if (!parsed) throw std::runtime_error("Null parsed in 'get_object_by_index'");
+        const auto& data = parsed->contents.data;
+        if (index < 0 || static_cast<size_t>(index) >= data.size()) {
+            throw std::out_of_range("Object index out of range");
+        }
+        return new RdsReader(data[index].get());
+    }
+
+    RdsReader* get_object_by_name(const std::string& name) const {
+        if (!parsed) throw std::runtime_error("Null parsed in 'get_object_by_name'");
+        const auto& pairlist = parsed->contents;
+        for (size_t i = 0; i < pairlist.tag_names.size(); ++i) {
+            if (pairlist.has_tag[i] && pairlist.tag_names[i] == name) {
+                return new RdsReader(pairlist.data[i].get());
+            }
+        }
+        throw std::runtime_error("Object not found: " + name);
+    }
 };
 
 PYBIND11_MODULE(lib_rds_parser, m) {
@@ -203,7 +228,10 @@ PYBIND11_MODULE(lib_rds_parser, m) {
 
     py::class_<RdaObject>(m, "RdaObject")
         .def(py::init<const std::string&>())
-        .def("get_object_names", &RdaObject::get_object_names);
+        .def("get_object_names", &RdaObject::get_object_names)
+        .def("get_object_count", &RdaObject::get_object_count)
+        .def("get_object_by_index", &RdaObject::get_object_by_index, py::return_value_policy::take_ownership, py::keep_alive<0, 1>())
+        .def("get_object_by_name", &RdaObject::get_object_by_name, py::return_value_policy::take_ownership, py::keep_alive<0, 1>());
 
     py::class_<RdsReader>(m, "RdsReader")
         .def(py::init<const rds2cpp::RObject*>())

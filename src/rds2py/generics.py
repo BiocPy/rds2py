@@ -16,9 +16,10 @@ Example:
 """
 
 from importlib import import_module
+from typing import List, Optional
 from warnings import warn
 
-from .rdsutils import get_class, parse_rds
+from .rdsutils import get_class, parse_rda, parse_rds
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -103,6 +104,34 @@ def read_rds(path: str, **kwargs):
     """
     _robj = parse_rds(path=path)
     return _dispatcher(_robj, **kwargs)
+
+
+def read_rda(path: str, objects: Optional[List[str]] = None, **kwargs) -> dict:
+    """Read an RData file and convert each object to an appropriate Python type.
+
+    This function parses all (or selected) objects and dispatches each one
+    through the same type registry used by :py:func:`~.read_rds`.
+
+    Args:
+        path:
+            Path to the RData (.RData/.rda) file to be read.
+
+        objects:
+            Optional list of object names to read. If ``None``,
+            all objects in the file are read.
+
+        **kwargs:
+            Additional arguments passed to specific parser functions.
+
+    Returns:
+        A dictionary mapping object names to their converted Python
+        representations.
+    """
+    parsed = parse_rda(path=path, objects=objects)
+    result = {}
+    for name, robj in parsed.items():
+        result[name] = _dispatcher(robj, **kwargs)
+    return result
 
 
 def _dispatcher(robject: dict, **kwargs):

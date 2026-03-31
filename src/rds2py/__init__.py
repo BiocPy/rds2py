@@ -15,5 +15,6 @@ except PackageNotFoundError:  # pragma: no cover
 finally:
     del version, PackageNotFoundError
 
-from .generics import read_rds
-from .rdsutils import parse_rds
+
+from .generics import read_rds, read_rda
+from .rdsutils import parse_rds, parse_rda
