@@ -7,13 +7,10 @@
 Parse and construct Python representations for datasets stored in **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
 
 ## Fixes
-Cloned from [rds2py](https://github.com/BiocPy/rds2py). The repo can't be installed on Windows. With a AI agent, a few fixes are made to make it installalbe on Windows. 
-
-rds2py now builds and works on Windows. Here's a summary of the four issues that waere fixed:
+Cloned from [rds2py](https://github.com/BiocPy/rds2py). The repo can't be installed on Windows. With a AI agent, a few fixes are made to make it installable on Windows. Here's a summary of the four issues that were fixed:
 
 1. lib/src/rdswrapper.cpp — Updated for new rds2cpp API
 The upstream rds2cpp library had breaking API changes:
-
 Attributes: Changed from a struct with .names/.values vectors to std::vector<Attribute> where each Attribute has a SymbolIndex name + unique_ptr<RObject> value. Attribute names now require a lookup into a global symbols table.
 StringVector::data: Changed from vector<string> to vector<String> where String has an optional<string> value (supports missing/NA strings).
 RdaFile: contents (a PairList-like struct with .tag_names, .has_tag, .data) was replaced by objects (a vector<RdaObject> with .name as SymbolIndex and .value).
