@@ -1,0 +1,23 @@
+[build-system]
+# AVOID CHANGING REQUIRES: IT WILL BE UPDATED BY PYSCAFFOLD!
+requires = ["setuptools>=46.1.0", "setuptools_scm[toml]>=5", "cmake", "pybind11", "numpy"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+# See configuration details in https://github.com/pypa/setuptools_scm
+version_scheme = "no-guess-dev"
+
+[tool.ruff]
+line-length = 120
+src = ["src"]
+# exclude = ["tests"]
+extend-ignore = ["F821"]
+
+[tool.ruff.pydocstyle]
+convention = "google"
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["E402", "F401"]
+
+[tool.black]
+force-exclude = "__init__.py"
