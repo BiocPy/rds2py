@@ -7,6 +7,7 @@ Learn more under: https://pyscaffold.org/
 
 from setuptools import setup, Extension
 from setuptools.command.build_ext import build_ext as build_ext_orig
+import glob
 import pathlib
 import os
 import shutil
@@ -33,23 +34,26 @@ class build_ext(build_ext_orig):
         outpath = os.path.join(build_lib.absolute(), ext.name)
 
         build_temp = os.path.join(build_temp, "build")
-        if not os.path.exists(build_temp):
-            cmd = [
-                "cmake",
-                "-S",
-                "lib",
-                "-B",
-                build_temp,
-                "-Dpybind11_DIR=" + os.path.join(os.path.dirname(pybind11.__file__), "share", "cmake", "pybind11"),
-                "-DPYTHON_EXECUTABLE=" + sys.executable,
-            ]
-            if os.name != "nt":
-                cmd.append("-DCMAKE_BUILD_TYPE=Release")
-                cmd.append("-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + outpath)
+        # Remove stale build dir to avoid FetchContent conflicts with
+        # leftover _deps from a previous pip build environment.
+        if os.path.exists(build_temp):
+            shutil.rmtree(build_temp, ignore_errors=True)
+        cmd = [
+            "cmake",
+            "-S",
+            "lib",
+            "-B",
+            build_temp,
+            "-Dpybind11_DIR=" + os.path.join(os.path.dirname(pybind11.__file__), "share", "cmake", "pybind11"),
+            "-DPYTHON_EXECUTABLE=" + sys.executable,
+        ]
+        if os.name != "nt":
+            cmd.append("-DCMAKE_BUILD_TYPE=Release")
+            cmd.append("-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + outpath)
 
-            if "MORE_CMAKE_OPTIONS" in os.environ:
-                cmd += os.environ["MORE_CMAKE_OPTIONS"].split()
-            self.spawn(cmd)
+        if "MORE_CMAKE_OPTIONS" in os.environ:
+            cmd += os.environ["MORE_CMAKE_OPTIONS"].split()
+        self.spawn(cmd)
 
         if not self.dry_run:
             cmd = ["cmake", "--build", build_temp]
@@ -59,10 +63,20 @@ class build_ext(build_ext_orig):
             if os.name == "nt":
                 # Gave up trying to get MSVC to respect the output directory.
                 # Delvewheel also needs it to have a 'pyd' suffix... whatever.
-                shutil.copyfile(
-                    os.path.join(build_temp, "Release", "_core.dll"),
-                    os.path.join(outpath, "_core.pyd"),
-                )
+                # The CMake target name is lib_rds_parser; MSVC puts it under Release/.
+                # pybind11 may add an ABI tag (e.g. lib_rds_parser.cp312-win_amd64.pyd).
+                release_dir = os.path.join(build_temp, "Release")
+                candidates = glob.glob(os.path.join(release_dir, "lib_rds_parser*"))
+                if not candidates:
+                    raise RuntimeError(
+                        f"Cannot find compiled library in {release_dir}. "
+                        f"Contents: {os.listdir(release_dir) if os.path.isdir(release_dir) else 'dir not found'}"
+                    )
+                # Prefer .pyd files over .lib/.exp
+                pyd_files = [c for c in candidates if c.endswith(".pyd")]
+                src_name = pyd_files[0] if pyd_files else candidates[0]
+                os.makedirs(outpath, exist_ok=True)
+                shutil.copyfile(src_name, os.path.join(outpath, "lib_rds_parser.pyd"))
 
 
 if __name__ == "__main__":
