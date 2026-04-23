@@ -3,6 +3,7 @@
 #include <pybind11/numpy.h>
 #include <rds2cpp/rds2cpp.hpp>
 #include <stdexcept>
+#include <algorithm>
 #include <pybind11/iostream.h>
 
 namespace py = pybind11;
@@ -10,15 +11,16 @@ namespace py = pybind11;
 class RdsReader {
 private:
     const rds2cpp::RObject* ptr;
+    const std::vector<rds2cpp::Symbol>* symbols;
 
 public:
-    RdsReader(const rds2cpp::RObject* p) : ptr(p) {
+    RdsReader(const rds2cpp::RObject* p, const std::vector<rds2cpp::Symbol>* syms) : ptr(p), symbols(syms) {
         if (!p) throw std::runtime_error("Null pointer passed to 'RdsReader'.");
+        if (!syms) throw std::runtime_error("Null symbols pointer passed to 'RdsReader'.");
     }
 
     std::string get_rtype() const {
         if (!ptr) throw std::runtime_error("Null pointer in 'get_rtype'.");
-        // py::print("arg::", static_cast<int>(ptr->type()));
         switch (ptr->type()) {
             case rds2cpp::SEXPType::S4: return "S4";
             case rds2cpp::SEXPType::INT: return "integer";
@@ -69,23 +71,36 @@ public:
             throw std::runtime_error("Invalid type for 'string_arr'");
         }
         const auto& data = static_cast<const rds2cpp::StringVector*>(ptr)->data;
-        return py::cast(data);
+        py::list result;
+        for (const auto& s : data) {
+            if (s.value.has_value()) {
+                result.append(py::str(s.value.value()));
+            } else {
+                result.append(py::none());
+            }
+        }
+        return result;
     }
 
     py::list get_attribute_names() const {
         if (!ptr) throw std::runtime_error("Null pointer in 'get_attribute_names'");
-        return py::cast(get_attributes().names);
+        const auto& attrs = get_attributes();
+        py::list names;
+        for (const auto& attr : attrs) {
+            names.append((*symbols)[attr.name.index].name);
+        }
+        return names;
     }
 
     py::object load_attribute_by_name(const std::string& name) const {
         if (!ptr) throw std::runtime_error("Null pointer in 'load_attribute_by_name'");
-        const auto& attributes = get_attributes();
-        auto it = std::find(attributes.names.begin(), attributes.names.end(), name);
-        if (it == attributes.names.end()) {
-            throw std::runtime_error("Attribute not found: " + name);
+        const auto& attrs = get_attributes();
+        for (const auto& attr : attrs) {
+            if ((*symbols)[attr.name.index].name == name) {
+                return py::cast(new RdsReader(attr.value.get(), symbols));
+            }
         }
-        size_t index = std::distance(attributes.names.begin(), it);
-        return py::cast(new RdsReader(attributes.values[index].get()));
+        throw std::runtime_error("Attribute not found: " + name);
     }
 
     py::object load_vec_element(int index) const {
@@ -97,7 +112,7 @@ public:
         if (index < 0 || static_cast<size_t>(index) >= data.size()) {
             throw std::out_of_range("Vector index out of range");
         }
-        return py::cast(new RdsReader(data[index].get()));
+        return py::cast(new RdsReader(data[index].get(), symbols));
     }
 
     std::string get_package_name() const {
@@ -126,7 +141,7 @@ public:
     }
 
 private:
-    const rds2cpp::Attributes& get_attributes() const {
+    const std::vector<rds2cpp::Attribute>& get_attributes() const {
         if (!ptr) throw std::runtime_error("Null pointer in get_attributes");
         switch (ptr->type()) {
             case rds2cpp::SEXPType::INT: return static_cast<const rds2cpp::IntegerVector*>(ptr)->attributes;
@@ -142,18 +157,18 @@ private:
 
 class RdsObject {
 private:
-    std::unique_ptr<rds2cpp::Parsed> parsed;
+    std::unique_ptr<rds2cpp::RdsFile> parsed;
     std::unique_ptr<RdsReader> reader;
 
 public:
     RdsObject(const std::string& file) {
         try {
             rds2cpp::ParseRdsOptions options;
-            parsed = std::make_unique<rds2cpp::Parsed>(rds2cpp::parse_rds(file, options));
+            parsed = std::make_unique<rds2cpp::RdsFile>(rds2cpp::parse_rds(file, options));
             if (!parsed || !parsed->object) {
                 throw std::runtime_error("Failed to parse RDS file");
             }
-            reader = std::make_unique<RdsReader>(parsed->object.get());
+            reader = std::make_unique<RdsReader>(parsed->object.get(), &parsed->symbols);
         } catch (const std::exception& e) {
             throw std::runtime_error(std::string("Error in 'RdsObject' constructor: ") + e.what());
         }
@@ -181,38 +196,31 @@ public:
 
     py::list get_object_names() const {
         if (!parsed) throw std::runtime_error("Null parsed in 'get_object_names'");
-        const auto& pairlist = parsed->contents;
         py::list names;
-        for (size_t i = 0; i < pairlist.tag_names.size(); ++i) {
-            if (pairlist.has_tag[i]) {
-                names.append(pairlist.tag_names[i]);
-            } else {
-                names.append(py::none());
-            }
+        for (const auto& obj : parsed->objects) {
+            names.append(parsed->symbols[obj.name.index].name);
         }
         return names;
     }
 
     int get_object_count() const {
         if (!parsed) throw std::runtime_error("Null parsed in 'get_object_count'");
-        return static_cast<int>(parsed->contents.data.size());
+        return static_cast<int>(parsed->objects.size());
     }
 
     RdsReader* get_object_by_index(int index) const {
         if (!parsed) throw std::runtime_error("Null parsed in 'get_object_by_index'");
-        const auto& data = parsed->contents.data;
-        if (index < 0 || static_cast<size_t>(index) >= data.size()) {
+        if (index < 0 || static_cast<size_t>(index) >= parsed->objects.size()) {
             throw std::out_of_range("Object index out of range");
         }
-        return new RdsReader(data[index].get());
+        return new RdsReader(parsed->objects[index].value.get(), &parsed->symbols);
     }
 
     RdsReader* get_object_by_name(const std::string& name) const {
         if (!parsed) throw std::runtime_error("Null parsed in 'get_object_by_name'");
-        const auto& pairlist = parsed->contents;
-        for (size_t i = 0; i < pairlist.tag_names.size(); ++i) {
-            if (pairlist.has_tag[i] && pairlist.tag_names[i] == name) {
-                return new RdsReader(pairlist.data[i].get());
+        for (const auto& obj : parsed->objects) {
+            if (parsed->symbols[obj.name.index].name == name) {
+                return new RdsReader(obj.value.get(), &parsed->symbols);
             }
         }
         throw std::runtime_error("Object not found: " + name);
@@ -234,7 +242,6 @@ PYBIND11_MODULE(lib_rds_parser, m) {
         .def("get_object_by_name", &RdaObject::get_object_by_name, py::return_value_policy::take_ownership, py::keep_alive<0, 1>());
 
     py::class_<RdsReader>(m, "RdsReader")
-        .def(py::init<const rds2cpp::RObject*>())
         .def("get_rtype", &RdsReader::get_rtype)
         .def("get_rsize", &RdsReader::get_rsize)
         .def("get_numeric_data", &RdsReader::get_numeric_data)
