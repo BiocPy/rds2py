@@ -11,19 +11,19 @@ include(FetchContent)
 FetchContent_Declare(
   rds2cpp
   GIT_REPOSITORY https://github.com/LTLA/rds2cpp
-  GIT_TAG master
+  GIT_TAG v1.3.1
 )
 
 FetchContent_Declare(
   byteme
   GIT_REPOSITORY https://github.com/LTLA/byteme
-  GIT_TAG master
+  GIT_TAG v2.1.3
 )
 
 FetchContent_Declare(
   sanisizer
   GIT_REPOSITORY https://github.com/LTLA/sanisizer
-  GIT_TAG master
+  GIT_TAG v0.2.2
 )
 
 FetchContent_MakeAvailable(byteme)
