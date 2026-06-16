@@ -20,7 +20,6 @@ public:
 
     std::string get_rtype() const {
         if (!ptr) throw std::runtime_error("Null pointer in 'get_rtype'.");
-        // py::print("arg::", static_cast<int>(ptr->type()));
         switch (ptr->type()) {
             case rds2cpp::SEXPType::S4: return "S4";
             case rds2cpp::SEXPType::INT: return "integer";
@@ -233,35 +232,226 @@ public:
             if (obj.name.index < parsed->symbols.size() &&
                 parsed->symbols[obj.name.index].name == name) {
                 return new RdsReader(obj.value.get(), &parsed->symbols);
-            }
+                }
         }
         throw std::runtime_error("Object not found: " + name);
     }
 };
 
+// ---- writers ----
+
+std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vector<rds2cpp::Symbol>& symbols);
+
+void add_names_attribute(
+    std::vector<rds2cpp::Attribute>& attributes,
+    const py::list& names,
+    std::vector<rds2cpp::Symbol>& symbols)
+{
+    auto svec = std::make_unique<rds2cpp::StringVector>();
+    for (size_t i = 0; i < py::len(names); ++i) {
+        auto item = names[i];
+        if (item.is_none()) {
+            svec->data.emplace_back();
+        } else {
+            svec->data.emplace_back(item.cast<std::string>(), rds2cpp::StringEncoding::UTF8);
+        }
+    }
+    attributes.emplace_back(
+        rds2cpp::register_symbol("names", rds2cpp::StringEncoding::UTF8, symbols),
+                            std::move(svec)
+    );
+}
+
+std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vector<rds2cpp::Symbol>& symbols) {
+    // None -> Null
+    if (obj.is_none()) {
+        return std::make_unique<rds2cpp::Null>();
+    }
+
+    // numpy array
+    if (py::isinstance<py::array>(obj)) {
+        auto arr = obj.cast<py::array>();
+        auto dtype = arr.dtype();
+
+        // bool arrays
+        if (dtype.is(py::dtype::of<bool>())) {
+            auto buf = arr.cast<py::array_t<bool, py::array::c_style | py::array::forcecast>>();
+            auto r = buf.unchecked<1>();
+            auto vec = std::make_unique<rds2cpp::LogicalVector>();
+            
+            vec->data.reserve(r.shape(0));
+            for (ssize_t i = 0; i < r.shape(0); ++i) {
+                vec->data.push_back(r(i) ? 1 : 0);
+            }
+
+            return vec;
+        }
+
+        // integer arrays
+        if (py::isinstance<py::array_t<int32_t>>(arr) ||
+            py::isinstance<py::array_t<int64_t>>(arr) ||
+            py::isinstance<py::array_t<int16_t>>(arr) ||
+            py::isinstance<py::array_t<int8_t>>(arr)) {
+            auto buf = arr.cast<py::array_t<int32_t, py::array::c_style | py::array::forcecast>>();
+            auto r = buf.unchecked<1>();
+            auto vec = std::make_unique<rds2cpp::IntegerVector>();
+            
+            vec->data.reserve(r.shape(0));
+            for (ssize_t i = 0; i < r.shape(0); ++i) {
+                vec->data.push_back(r(i));
+            }
+
+            return vec;
+        }
+
+        // float arrays
+        if (py::isinstance<py::array_t<double>>(arr) ||
+            py::isinstance<py::array_t<float>>(arr)) {
+            auto buf = arr.cast<py::array_t<double, py::array::c_style | py::array::forcecast>>();
+            auto r = buf.unchecked<1>();
+            auto vec = std::make_unique<rds2cpp::DoubleVector>();
+            
+            vec->data.reserve(r.shape(0));
+            for (ssize_t i = 0; i < r.shape(0); ++i) {
+                vec->data.push_back(r(i));
+            }
+            return vec;
+        }
+
+        throw std::runtime_error("Unsupported numpy dtype for RDS writing");
+    }
+
+    // dict -> GenericVector with names attribute
+    if (py::isinstance<py::dict>(obj)) {
+        auto d = obj.cast<py::dict>();
+        auto gvec = std::make_unique<rds2cpp::GenericVector>();
+        
+        py::list keys;
+        for (auto& item : d) {
+            keys.append(item.first);
+            gvec->data.push_back(py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols));
+        }
+        add_names_attribute(gvec->attributes, keys, symbols);
+
+        return gvec;
+    }
+
+    //  list
+    if (py::isinstance<py::list>(obj)) {
+        auto lst = obj.cast<py::list>();
+        if (py::len(lst) == 0) {
+            return std::make_unique<rds2cpp::GenericVector>();
+        }
+
+        // Check if all elements are strings (or None) -> StringVector
+        bool all_strings = true;
+        for (size_t i = 0; i < py::len(lst); ++i) {
+            auto item = lst[i];
+            if (!item.is_none() && !py::isinstance<py::str>(item)) {
+                all_strings = false;
+                break;
+            }
+        }
+
+        if (all_strings) {
+            auto svec = std::make_unique<rds2cpp::StringVector>();
+            for (size_t i = 0; i < py::len(lst); ++i) {
+                auto item = lst[i];
+                if (item.is_none()) {
+                    svec->data.emplace_back();
+                } else {
+                    svec->data.emplace_back(item.cast<std::string>(), rds2cpp::StringEncoding::UTF8);
+                }
+            }
+
+            return svec;
+        }
+
+        // Otherwise -> GenericVector
+        auto gvec = std::make_unique<rds2cpp::GenericVector>();
+        for (size_t i = 0; i < py::len(lst); ++i) {
+            gvec->data.push_back(py_to_robject(lst[i].cast<py::object>(), symbols));
+        }
+
+        return gvec;
+    }
+
+    // bool check before int, since bool is a subclass of int
+    if (py::isinstance<py::bool_>(obj)) {
+        auto vec = std::make_unique<rds2cpp::LogicalVector>();
+        vec->data.push_back(obj.cast<bool>() ? 1 : 0);
+        return vec;
+    }
+
+    if (py::isinstance<py::int_>(obj)) {
+        auto vec = std::make_unique<rds2cpp::IntegerVector>();
+        vec->data.push_back(obj.cast<int32_t>());
+        return vec;
+    }
+
+    if (py::isinstance<py::float_>(obj)) {
+        auto vec = std::make_unique<rds2cpp::DoubleVector>();
+        vec->data.push_back(obj.cast<double>());
+        return vec;
+    }
+
+    if (py::isinstance<py::str>(obj)) {
+        auto svec = std::make_unique<rds2cpp::StringVector>();
+        svec->data.emplace_back(obj.cast<std::string>(), rds2cpp::StringEncoding::UTF8);
+        return svec;
+    }
+
+    throw std::runtime_error("Unsupported Python type for RDS writing: " + std::string(py::str(obj.get_type())));
+}
+
+void write_rds_file(const py::object& obj, const std::string& path) {
+    rds2cpp::RdsFile file_info;
+    file_info.object = py_to_robject(obj, file_info.symbols);
+    rds2cpp::WriteRdsOptions options;
+    rds2cpp::write_rds(file_info, path, options);
+}
+
+void write_rda_file(const py::dict& objects, const std::string& path) {
+    rds2cpp::RdaFile file_info;
+    for (auto& item : objects) {
+        auto name = item.first.cast<std::string>();
+        auto sym = rds2cpp::register_symbol(name, rds2cpp::StringEncoding::UTF8, file_info.symbols);
+        auto value = py_to_robject(py::reinterpret_borrow<py::object>(item.second), file_info.symbols);
+        file_info.objects.emplace_back(std::move(sym), std::move(value));
+    }
+    rds2cpp::WriteRdaOptions options;
+    rds2cpp::write_rda(file_info, path, options);
+}
+
 PYBIND11_MODULE(lib_rds_parser, m) {
     py::register_exception<std::runtime_error>(m, "RdsParserError");
 
     py::class_<RdsObject>(m, "RdsObject")
-        .def(py::init<const std::string&>())
-        .def("get_robject", &RdsObject::get_robject, py::return_value_policy::reference_internal);
+    .def(py::init<const std::string&>())
+    .def("get_robject", &RdsObject::get_robject, py::return_value_policy::reference_internal);
 
     py::class_<RdaObject>(m, "RdaObject")
-        .def(py::init<const std::string&>())
-        .def("get_object_names", &RdaObject::get_object_names)
-        .def("get_object_count", &RdaObject::get_object_count)
-        .def("get_object_by_index", &RdaObject::get_object_by_index, py::return_value_policy::take_ownership, py::keep_alive<0, 1>())
-        .def("get_object_by_name", &RdaObject::get_object_by_name, py::return_value_policy::take_ownership, py::keep_alive<0, 1>());
+    .def(py::init<const std::string&>())
+    .def("get_object_names", &RdaObject::get_object_names)
+    .def("get_object_count", &RdaObject::get_object_count)
+    .def("get_object_by_index", &RdaObject::get_object_by_index, py::return_value_policy::take_ownership, py::keep_alive<0, 1>())
+    .def("get_object_by_name", &RdaObject::get_object_by_name, py::return_value_policy::take_ownership, py::keep_alive<0, 1>());
 
     py::class_<RdsReader>(m, "RdsReader")
-        .def("get_rtype", &RdsReader::get_rtype)
-        .def("get_rsize", &RdsReader::get_rsize)
-        .def("get_numeric_data", &RdsReader::get_numeric_data)
-        .def("get_string_arr", &RdsReader::get_string_arr)
-        .def("get_attribute_names", &RdsReader::get_attribute_names)
-        .def("load_attribute_by_name", &RdsReader::load_attribute_by_name)
-        .def("load_vec_element", &RdsReader::load_vec_element)
-        .def("get_package_name", &RdsReader::get_package_name)
-        .def("get_class_name", &RdsReader::get_class_name)
-        .def("get_dimensions", &RdsReader::get_dimensions);
+    .def("get_rtype", &RdsReader::get_rtype)
+    .def("get_rsize", &RdsReader::get_rsize)
+    .def("get_numeric_data", &RdsReader::get_numeric_data)
+    .def("get_string_arr", &RdsReader::get_string_arr)
+    .def("get_attribute_names", &RdsReader::get_attribute_names)
+    .def("load_attribute_by_name", &RdsReader::load_attribute_by_name)
+    .def("load_vec_element", &RdsReader::load_vec_element)
+    .def("get_package_name", &RdsReader::get_package_name)
+    .def("get_class_name", &RdsReader::get_class_name)
+    .def("get_dimensions", &RdsReader::get_dimensions);
+
+    m.def("write_rds", &write_rds_file, "Write a Python object to an RDS file",
+        py::arg("obj"), py::arg("path"));
+    
+    m.def("write_rda", &write_rda_file, "Write named Python objects to an RData file",
+        py::arg("objects"), py::arg("path"));
 }

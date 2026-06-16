@@ -15,8 +15,9 @@ Example:
         print(type(data))
 """
 
+from functools import singledispatch
 from importlib import import_module
-from typing import List, Optional
+from typing import Any, List, Optional
 from warnings import warn
 
 from .rdsutils import get_class, parse_rda, parse_rds
@@ -70,22 +71,6 @@ REGISTRY = {
     "CompressedSplitDataFrameList": "rds2py.read_compressed_list.read_compressed_frame_list",
     "CompressedSplitDFrameList": "rds2py.read_compressed_list.read_compressed_frame_list",
 }
-
-
-# @singledispatch
-# def save_rds(x, path: str):
-#     """Save a Python object as RDS file.
-
-#     Args:
-#         x:
-#             Object to save.
-
-#         path:
-#             Path to save the object.
-#     """
-#     raise NotImplementedError(
-#         f"No `save_rds` method implemented for '{type(x).__name__}' objects."
-#     )
 
 
 def read_rds(path: str, **kwargs):
@@ -177,3 +162,34 @@ def _dispatcher(robject: dict, **kwargs):
         )
 
     return robject
+
+
+@singledispatch
+def save_rds(x: Any, path: Optional[str] = None):
+    """Save a Python object as RDS file.
+
+    Args:
+        x:
+            Object to save.
+
+        path:
+            Path to save the object. If ``None``, returns the converted representation.
+    """
+    raise NotImplementedError(f"No `save_rds` method implemented for '{type(x).__name__}' objects.")
+
+
+# Import all modules with save_rds registrations to ensure they are loaded
+from . import (
+    save_atomic,
+    save_compressed_list,
+    save_delayed_matrix,
+    save_dict,
+    # save_factor,
+    # save_frame,
+    # save_granges,
+    # save_mae,
+    # save_matrix,
+    # save_rle,
+    # save_sce,
+    # save_se,
+)

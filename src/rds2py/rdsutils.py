@@ -4,8 +4,10 @@ This module provides helper functions for parsing RDS and RData files and inferr
 information from parsed objects.
 """
 
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
+from .lib_rds_parser import write_rda as _write_rda_native
+from .lib_rds_parser import write_rds as _write_rds_native
 from .PyRdaReader import PyRdaParser
 from .PyRdsReader import PyRdsParser
 
@@ -55,6 +57,39 @@ def parse_rda(path: str, objects: Optional[List[str]] = None) -> Dict[str, dict]
     for name in objects:
         result[name] = parser.parse_object(name)
     return result
+
+
+def write_rds(obj: Any, path: str) -> None:
+    """Write a Python object to RDS file.
+
+    Args:
+        obj:
+            The Python object to write.
+
+        path:
+            Output file path.
+    """
+    from .generics import save_rds
+
+    save_rds(obj, path)
+
+
+def write_rda(objects: Dict[str, Any], path: str) -> None:
+    """Write multiple named Python objects to a gzip-compressed RData file.
+
+    Each value is converted using :py:func:`~.write_rds`.
+
+    Args:
+        objects:
+            Dictionary mapping variable names to Python objects.
+
+        path:
+            Output file path.
+    """
+    from .generics import save_rds
+
+    converted = {str(k): save_rds(v) for k, v in objects.items()}
+    _write_rda_native(converted, path)
 
 
 def get_class(robj: dict) -> str:
