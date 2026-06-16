@@ -184,12 +184,12 @@ from . import (  # noqa: E402
     save_compressed_list,  # noqa: F401
     save_delayed_matrix,  # noqa: F401
     save_dict,  # noqa: F401
-    # save_factor,
-    # save_frame,
-    # save_granges,
-    # save_mae,
+    save_factor,  # noqa: F401
+    save_frame,  # noqa: F401
+    save_granges,  # noqa: F401
+    save_mae,  # noqa: F401
     save_matrix,  # noqa: F401
-    # save_rle,
-    # save_sce,
-    # save_se,
+    save_rle,  # noqa: F401
+    save_sce,  # noqa: F401
+    save_se,  # noqa: F401
 )
