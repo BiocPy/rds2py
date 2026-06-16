@@ -179,3 +179,17 @@ def save_rds(x: Any, path: Optional[str] = None):
 
 
 # Import all modules with save_rds registrations to ensure they are loaded
+from . import (  # noqa: E402
+    save_atomic,  # noqa: F401
+    save_compressed_list,  # noqa: F401
+    save_delayed_matrix,  # noqa: F401
+    save_dict,  # noqa: F401
+    # save_factor,
+    # save_frame,
+    # save_granges,
+    # save_mae,
+    save_matrix,  # noqa: F401
+    # save_rle,
+    # save_sce,
+    # save_se,
+)
