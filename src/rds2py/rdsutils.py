@@ -7,7 +7,6 @@ information from parsed objects.
 from typing import Any, Dict, List, Optional
 
 from .lib_rds_parser import write_rda as _write_rda_native
-from .lib_rds_parser import write_rds as _write_rds_native
 from .PyRdaReader import PyRdaParser
 from .PyRdsReader import PyRdsParser
 

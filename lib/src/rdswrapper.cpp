@@ -278,7 +278,7 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
             auto buf = arr.cast<py::array_t<bool, py::array::c_style | py::array::forcecast>>();
             auto r = buf.unchecked<1>();
             auto vec = std::make_unique<rds2cpp::LogicalVector>();
-            
+
             vec->data.reserve(r.shape(0));
             for (ssize_t i = 0; i < r.shape(0); ++i) {
                 vec->data.push_back(r(i) ? 1 : 0);
@@ -295,7 +295,7 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
             auto buf = arr.cast<py::array_t<int32_t, py::array::c_style | py::array::forcecast>>();
             auto r = buf.unchecked<1>();
             auto vec = std::make_unique<rds2cpp::IntegerVector>();
-            
+
             vec->data.reserve(r.shape(0));
             for (ssize_t i = 0; i < r.shape(0); ++i) {
                 vec->data.push_back(r(i));
@@ -310,7 +310,7 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
             auto buf = arr.cast<py::array_t<double, py::array::c_style | py::array::forcecast>>();
             auto r = buf.unchecked<1>();
             auto vec = std::make_unique<rds2cpp::DoubleVector>();
-            
+
             vec->data.reserve(r.shape(0));
             for (ssize_t i = 0; i < r.shape(0); ++i) {
                 vec->data.push_back(r(i));
@@ -325,7 +325,7 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
     if (py::isinstance<py::dict>(obj)) {
         auto d = obj.cast<py::dict>();
         auto gvec = std::make_unique<rds2cpp::GenericVector>();
-        
+
         py::list keys;
         for (auto& item : d) {
             keys.append(item.first);
@@ -451,7 +451,7 @@ PYBIND11_MODULE(lib_rds_parser, m) {
 
     m.def("write_rds", &write_rds_file, "Write a Python object to an RDS file",
         py::arg("obj"), py::arg("path"));
-    
+
     m.def("write_rda", &write_rda_file, "Write named Python objects to an RData file",
         py::arg("objects"), py::arg("path"));
 }

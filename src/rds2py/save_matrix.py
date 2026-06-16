@@ -15,5 +15,5 @@ def _save_rds_ndarray(x: ndarray, path: Optional[str] = None):
 
     if path is not None:
         _write_rds_native(x, path)
-    
+
     return x
