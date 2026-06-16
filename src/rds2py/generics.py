@@ -188,7 +188,7 @@ from . import (
     # save_frame,
     # save_granges,
     # save_mae,
-    # save_matrix,
+    save_matrix,
     # save_rle,
     # save_sce,
     # save_se,
