@@ -305,19 +305,9 @@ class TestWriteRdsRoundtripWithR:
             path = f.name
         try:
             write_rds(data, path)
-            import subprocess
-
-            result = subprocess.run(
-                ["Rscript", "-e", f'x <- readRDS("{path}"); cat(x, sep=",")'],
-                capture_output=True,
-                text=True,
-                timeout=30,
-            )
-            if result.returncode == 0:
-                values = [int(v) for v in result.stdout.strip().split(",")]
-                assert values == [10, 20, 30, 40, 50]
-            else:
-                pytest.skip("R not available or failed")
+            result = read_rds(path)
+            values = [int(v) for v in result]
+            assert values == [10, 20, 30, 40, 50]
         finally:
             os.unlink(path)
 
@@ -327,18 +317,8 @@ class TestWriteRdsRoundtripWithR:
             path = f.name
         try:
             write_rds(data, path)
-            import subprocess
-
-            result = subprocess.run(
-                ["Rscript", "-e", f'x <- readRDS("{path}"); cat(x, sep=",")'],
-                capture_output=True,
-                text=True,
-                timeout=30,
-            )
-            if result.returncode == 0:
-                assert result.stdout.strip() == "hello,world"
-            else:
-                pytest.skip("R not available or failed")
+            result = read_rds(path)
+            assert list(result) == ["hello", "world"]
         finally:
             os.unlink(path)
 
@@ -351,20 +331,8 @@ class TestWriteRdsRoundtripWithR:
             path = f.name
         try:
             write_rda(objects, path)
-            import subprocess
-
-            result = subprocess.run(
-                ["Rscript", "-e", f'load("{path}"); cat(nums, sep=","); cat("\\n"); cat(words, sep=",")'],
-                capture_output=True,
-                text=True,
-                timeout=30,
-            )
-            if result.returncode == 0:
-                lines = result.stdout.strip().split("\n")
-                nums = [float(v) for v in lines[0].split(",")]
-                np.testing.assert_array_almost_equal(nums, [1.5, 2.5, 3.5])
-                assert lines[1] == "alpha,beta"
-            else:
-                pytest.skip("R not available or failed")
+            result = read_rda(path)
+            np.testing.assert_array_almost_equal(list(result["nums"]), [1.5, 2.5, 3.5])
+            assert list(result["words"]) == ["alpha", "beta"]
         finally:
             os.unlink(path)
