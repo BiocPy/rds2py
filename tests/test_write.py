@@ -2,7 +2,6 @@ import os
 import tempfile
 
 import numpy as np
-import pytest
 
 from rds2py import read_rda, read_rds, write_rda, write_rds
 
