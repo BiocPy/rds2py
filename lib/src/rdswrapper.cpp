@@ -232,7 +232,7 @@ public:
             if (obj.name.index < parsed->symbols.size() &&
                 parsed->symbols[obj.name.index].name == name) {
                 return new RdsReader(obj.value.get(), &parsed->symbols);
-                }
+            }
         }
         throw std::runtime_error("Object not found: " + name);
     }
