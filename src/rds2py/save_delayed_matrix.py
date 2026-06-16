@@ -10,10 +10,10 @@ __license__ = "MIT"
 
 
 if is_package_installed("delayedarray", verbose=True):
-    from delayedarray import DelayedMatrix
+    from delayedarray import DelayedArray
 
-    @save_rds.register(DelayedMatrix)
-    def _save_rds_delayedmatrix(x: DelayedMatrix, path: Optional[str] = None):
+    @save_rds.register(DelayedArray)
+    def _save_rds_delayedarray(x: DelayedArray, path: Optional[str] = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
