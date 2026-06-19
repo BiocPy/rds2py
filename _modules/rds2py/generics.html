@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py.generics - rds2py 0.9.1 documentation</title>
+        <title>rds2py.generics - rds2py 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.9.1 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.10.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -181,7 +181,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.9.1 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -250,8 +250,9 @@
 <span class="sd">        print(type(data))</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">functools</span><span class="w"> </span><span class="kn">import</span> <span class="n">singledispatch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">importlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">import_module</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">warnings</span><span class="w"> </span><span class="kn">import</span> <span class="n">warn</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.rdsutils</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_class</span><span class="p">,</span> <span class="n">parse_rda</span><span class="p">,</span> <span class="n">parse_rds</span>
@@ -305,22 +306,6 @@
     <span class="s2">&quot;CompressedSplitDataFrameList&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_compressed_list.read_compressed_frame_list&quot;</span><span class="p">,</span>
     <span class="s2">&quot;CompressedSplitDFrameList&quot;</span><span class="p">:</span> <span class="s2">&quot;rds2py.read_compressed_list.read_compressed_frame_list&quot;</span><span class="p">,</span>
 <span class="p">}</span>
-
-
-<span class="c1"># @singledispatch</span>
-<span class="c1"># def save_rds(x, path: str):</span>
-<span class="c1">#     &quot;&quot;&quot;Save a Python object as RDS file.</span>
-
-<span class="c1">#     Args:</span>
-<span class="c1">#         x:</span>
-<span class="c1">#             Object to save.</span>
-
-<span class="c1">#         path:</span>
-<span class="c1">#             Path to save the object.</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     raise NotImplementedError(</span>
-<span class="c1">#         f&quot;No `save_rds` method implemented for &#39;{type(x).__name__}&#39; objects.&quot;</span>
-<span class="c1">#     )</span>
 
 
 <div class="viewcode-block" id="read_rds">
@@ -418,6 +403,40 @@
         <span class="p">)</span>
 
     <span class="k">return</span> <span class="n">robject</span>
+
+
+<div class="viewcode-block" id="save_rds">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.generics.save_rds">[docs]</a>
+<span class="nd">@singledispatch</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">save_rds</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Save a Python object as RDS file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x:</span>
+<span class="sd">            Object to save.</span>
+
+<span class="sd">        path:</span>
+<span class="sd">            Path to save the object. If ``None``, returns the converted representation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;No `save_rds` method implemented for &#39;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&#39; objects.&quot;</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># Import all modules with save_rds registrations to ensure they are loaded</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>  <span class="c1"># noqa: E402</span>
+    <span class="n">save_atomic</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_compressed_list</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_delayed_matrix</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_dict</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_factor</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_frame</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_granges</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_mae</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_matrix</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_rle</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_sce</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+    <span class="n">save_se</span><span class="p">,</span>  <span class="c1"># noqa: F401</span>
+<span class="p">)</span>
 </pre></div>
         </article>
       </div>
@@ -450,7 +469,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=9dc39874"></script>
+</div><script src="../../_static/documentation_options.js?v=82662543"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

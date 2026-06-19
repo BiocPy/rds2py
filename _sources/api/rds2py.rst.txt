@@ -140,6 +140,102 @@ rds2py.read\_se module
    :show-inheritance:
    :undoc-members:
 
+rds2py.save\_atomic module
+--------------------------
+
+.. automodule:: rds2py.save_atomic
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_compressed\_list module
+------------------------------------
+
+.. automodule:: rds2py.save_compressed_list
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_delayed\_matrix module
+-----------------------------------
+
+.. automodule:: rds2py.save_delayed_matrix
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_dict module
+------------------------
+
+.. automodule:: rds2py.save_dict
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_factor module
+--------------------------
+
+.. automodule:: rds2py.save_factor
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_frame module
+-------------------------
+
+.. automodule:: rds2py.save_frame
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_granges module
+---------------------------
+
+.. automodule:: rds2py.save_granges
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_mae module
+-----------------------
+
+.. automodule:: rds2py.save_mae
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_matrix module
+--------------------------
+
+.. automodule:: rds2py.save_matrix
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_rle module
+-----------------------
+
+.. automodule:: rds2py.save_rle
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_sce module
+-----------------------
+
+.. automodule:: rds2py.save_sce
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+rds2py.save\_se module
+----------------------
+
+.. automodule:: rds2py.save_se
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
 Module contents
 ---------------
 

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py.rdsutils - rds2py 0.9.1 documentation</title>
+        <title>rds2py.rdsutils - rds2py 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.9.1 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.10.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -181,7 +181,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.9.1 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -239,8 +239,9 @@
 <span class="sd">information from parsed objects.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">.lib_rds_parser</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_rda</span> <span class="k">as</span> <span class="n">_write_rda_native</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.PyRdaReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyRdaParser</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.PyRdsReader</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyRdsParser</span>
 
@@ -295,6 +296,45 @@
     <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">objects</span><span class="p">:</span>
         <span class="n">result</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_object</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">result</span></div>
+
+
+
+<div class="viewcode-block" id="write_rds">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.rdsutils.write_rds">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_rds</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write a Python object to RDS file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj:</span>
+<span class="sd">            The Python object to write.</span>
+
+<span class="sd">        path:</span>
+<span class="sd">            Output file path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.generics</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_rds</span>
+
+    <span class="n">save_rds</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="write_rda">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.rdsutils.write_rda">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">write_rda</span><span class="p">(</span><span class="n">objects</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Write multiple named Python objects to a gzip-compressed RData file.</span>
+
+<span class="sd">    Each value is converted using :py:func:`~.write_rds`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        objects:</span>
+<span class="sd">            Dictionary mapping variable names to Python objects.</span>
+
+<span class="sd">        path:</span>
+<span class="sd">            Output file path.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.generics</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_rds</span>
+
+    <span class="n">converted</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">save_rds</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">objects</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="n">_write_rda_native</span><span class="p">(</span><span class="n">converted</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
 
 
 
@@ -370,7 +410,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=9dc39874"></script>
+</div><script src="../../_static/documentation_options.js?v=82662543"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

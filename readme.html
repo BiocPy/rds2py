@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Tutorial" href="tutorial.html"><link rel="prev" title="rds2py" href="index.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py - rds2py 0.9.1 documentation</title>
+        <title>rds2py - rds2py 0.10.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.9.1 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.10.0 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.9.1 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.0 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -244,7 +244,7 @@
 <img alt="Unit tests" src="https://github.com/BiocPy/rds2py/actions/workflows/run-tests.yml/badge.svg" /></p>
 <section class="tex2jax_ignore mathjax_ignore" id="rds2py">
 <h1>rds2py<a class="headerlink" href="#rds2py" title="Link to this heading">¶</a></h1>
-<p>Parse and construct Python representations for datasets stored in <strong>RDS or RData</strong> files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports various base classes from R, and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <strong><em>For more details, check out <a class="reference external" href="https://github.com/LTLA/rds2cpp">rds2cpp library</a>.</em></strong></p>
+<p>Parse and save Python objects as <strong>RDS or RData</strong> files. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports various base classes from R, and Bioconductor’s <code class="docutils literal notranslate"><span class="pre">SummarizedExperiment</span></code> and <code class="docutils literal notranslate"><span class="pre">SingleCellExperiment</span></code> S4 classes. <strong><em>For more details, check out <a class="reference external" href="https://github.com/LTLA/rds2cpp">rds2cpp library</a>.</em></strong></p>
 <section id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">¶</a></h2>
 <p>Package is published to <a class="reference external" href="https://pypi.org/project/rds2py/">PyPI</a></p>
@@ -267,6 +267,28 @@ pip<span class="w"> </span>install<span class="w"> </span>rds2py<span class="o">
 </pre></div>
 </div>
 <p>The returned <code class="docutils literal notranslate"><span class="pre">r_obj</span></code> either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.</p>
+<section id="save-rds-rdata-files">
+<h3>Save RDS/RData files<a class="headerlink" href="#save-rds-rdata-files" title="Link to this heading">¶</a></h3>
+<p>You can also construct RDS or RData files from Python objects. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> supports writing atomic types, generic dictionaries/lists, and <strong>BiocPy objects</strong>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_rds</span><span class="p">,</span> <span class="n">write_rda</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Write atomic types</span>
+<span class="n">write_rds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">),</span> <span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
+
+<span class="c1"># Write complex objects</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">genomicranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomicRanges</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">iranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">IRanges</span>
+
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GenomicRanges</span><span class="p">(</span>
+    <span class="n">seqnames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chr1&quot;</span><span class="p">,</span> <span class="s2">&quot;chr2&quot;</span><span class="p">],</span>
+    <span class="n">ranges</span><span class="o">=</span><span class="n">IRanges</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]),</span>
+    <span class="n">strand</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">write_rds</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="s2">&quot;path/to/granges.rds&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 <section id="write-your-own-reader">
 <h3>Write-your-own-reader<a class="headerlink" href="#write-your-own-reader" title="Link to this heading">¶</a></h3>
 <p>Reading RDS or RData files as dictionary representations allows users to write their own custom readers into appropriate Python representations.</p>
@@ -404,6 +426,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
 <li><a class="reference internal" href="#">rds2py</a><ul>
 <li><a class="reference internal" href="#installation">Installation</a></li>
 <li><a class="reference internal" href="#usage">Usage</a><ul>
+<li><a class="reference internal" href="#save-rds-rdata-files">Save RDS/RData files</a></li>
 <li><a class="reference internal" href="#write-your-own-reader">Write-your-own-reader</a></li>
 </ul>
 </li>
@@ -421,7 +444,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=9dc39874"></script>
+</div><script src="_static/documentation_options.js?v=82662543"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
