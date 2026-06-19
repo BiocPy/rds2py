@@ -55,3 +55,30 @@ def test_compressed_lists_dframe():
 
     assert isinstance(obj, clist.CompressedSplitBiocFrameList)
     assert obj.unlist().shape == (153, 6)
+
+
+def test_save_compressed_lists():
+    import os
+    import tempfile
+
+    from rds2py import save_rds, write_rds
+
+    obj = read_rds("tests/data/compressedlist_int.rds")
+
+    res = save_rds(obj)
+    assert isinstance(res, dict)
+    assert "unlist_data" in res
+    assert "partitioning" in res
+    assert "ends" in res["partitioning"]
+
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as tmp:
+        rds_path = tmp.name
+    try:
+        write_rds(obj, rds_path)
+        from rds2py.rdsutils import parse_rds
+
+        parsed = parse_rds(rds_path)
+        assert parsed["type"] == "vector"
+    finally:
+        if os.path.exists(rds_path):
+            os.unlink(rds_path)
