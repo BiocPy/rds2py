@@ -4,7 +4,7 @@
 
 # rds2py
 
-Parse and construct Python representations for datasets stored in **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
+Parse and save Python objects as **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
 
 ## Installation
 
@@ -31,6 +31,29 @@ r_obj = read_rds("path/to/file.rds") # or read_rda("path/to/file.rda")
 ```
 
 The returned `r_obj` either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.
+
+### Save RDS/RData files
+
+You can also construct RDS or RData files from Python objects. `rds2py` supports writing atomic types, generic dictionaries/lists, and **BiocPy objects**.
+
+```python
+from rds2py import write_rds, write_rda
+import numpy as np
+
+# Write atomic types
+write_rds(np.array([1, 2, 3], dtype=np.int32), "path/to/file.rds")
+
+# Write complex objects
+from genomicranges import GenomicRanges
+from iranges import IRanges
+
+gr = GenomicRanges(
+    seqnames=["chr1", "chr2"],
+    ranges=IRanges(start=[1, 2], width=[10, 20]),
+    strand=["+", "-"]
+)
+write_rds(gr, "path/to/granges.rds")
+```
 
 ### Write-your-own-reader
 
