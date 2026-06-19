@@ -5,6 +5,8 @@ import numpy as np
 from biocframe import BiocFrame
 from genomicranges import GenomicRanges
 from iranges import IRanges
+from singlecellexperiment import SingleCellExperiment
+from summarizedexperiment import RangedSummarizedExperiment, SummarizedExperiment
 
 from rds2py import read_rds, save_rds, write_rds
 
@@ -29,9 +31,6 @@ def test_save_rds_genomicranges():
     assert "mcols" in res
 
 
-from summarizedexperiment import SummarizedExperiment
-
-
 def test_save_rds_summarizedexperiment():
     se = SummarizedExperiment(
         assays={"counts": np.array([[1, 2], [3, 4]])},
@@ -44,9 +43,6 @@ def test_save_rds_summarizedexperiment():
     assert "assays" in res
     assert "row_data" in res
     assert "column_data" in res
-
-
-from singlecellexperiment import SingleCellExperiment
 
 
 def test_save_rds_singlecellexperiment():
@@ -106,9 +102,6 @@ def test_roundtrip_summarizedexperiment():
         assert "column_data" in result
     finally:
         os.unlink(path)
-
-
-from summarizedexperiment import RangedSummarizedExperiment
 
 
 def test_save_rds_rangedsummarizedexperiment():
