@@ -4,7 +4,7 @@
 
 # rds2py
 
-Parse and construct Python representations for datasets stored in **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
+Parse and save Python objects as **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
 
 ## Installation
 

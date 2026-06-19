@@ -1,5 +1,10 @@
 # Changelog
 
+## Version 0.10.0
+
+- Added methods to write to RDS/RData files.
+- Supports atomic types, generic dictionaries/lists, and **BiocPy objects**.
+
 ## Version 0.9.0 - 0.9.1
 
 - Added support to parse .Rdata/.rda files.
