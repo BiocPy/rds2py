@@ -75,9 +75,9 @@ def test_granges_list_roundtrip_and_fallbacks():
     import os
     import tempfile
 
-    from genomicranges import CompressedGenomicRangesList, GenomicRanges, SeqInfo
+    from genomicranges import CompressedGenomicRangesList
 
-    from rds2py import read_rds, save_rds, write_rds
+    from rds2py import read_rds, write_rds
 
     gr_list = read_rds("tests/data/grangeslist.rds")
 
