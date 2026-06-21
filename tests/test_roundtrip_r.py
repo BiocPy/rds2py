@@ -9,7 +9,6 @@ from biocframe import BiocFrame
 from biocutils import Factor
 from genomicranges import GenomicRanges
 from iranges import IRanges
-from multiassayexperiment import MultiAssayExperiment
 from singlecellexperiment import SingleCellExperiment
 from summarizedexperiment import RangedSummarizedExperiment, SummarizedExperiment
 
