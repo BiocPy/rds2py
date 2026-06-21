@@ -46,3 +46,12 @@ def test_save_mae():
     finally:
         if os.path.exists(rds_path):
             os.unlink(rds_path)
+
+
+def test_mae_errors():
+    import pytest
+
+    from rds2py.read_mae import read_multi_assay_experiment
+
+    with pytest.raises(RuntimeError):
+        read_multi_assay_experiment({"type": "S4", "class_name": "BadClass"})

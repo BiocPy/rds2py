@@ -62,8 +62,12 @@ def read_single_cell_experiment(robject: dict, **kwargs):
         idx_col = col_attrs[idx]
         idx_value = robject["attributes"]["int_colData"]["attributes"]["listData"]["data"][idx]
 
-        if idx_col == "reducedDims" and idx_value.get("data", None) is not None:
-            robj_reduced_dims = _dispatcher(idx_value, **kwargs)
+        if idx_col == "reducedDims" and idx_value.get("type", None) != "null":
+            robj_reduced_dims_frame = _dispatcher(idx_value, **kwargs)
+            if hasattr(robj_reduced_dims_frame, "to_dict"):
+                robj_reduced_dims = robj_reduced_dims_frame.to_dict()
+            else:
+                robj_reduced_dims = robj_reduced_dims_frame
 
         if idx_col == "altExps":
             alt_names = list(_dispatcher(idx_value["attributes"]["listData"]["attributes"]["names"], **kwargs))

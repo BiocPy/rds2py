@@ -20,7 +20,12 @@ if is_package_installed("compressed_lists", verbose=True):
         def _get(obj, name):
             if hasattr(obj, f"get_{name}"):
                 return getattr(obj, f"get_{name}")()
-            return getattr(obj, name, None)
+            val = getattr(obj, name, None)
+            if val is None and name == "partitioning":
+                if hasattr(obj, "get_paritioning"):
+                    return obj.get_paritioning()
+                return getattr(obj, "paritioning", None)
+            return val
 
         class_name = type(x).__name__
         r_class_name = class_name

@@ -335,3 +335,92 @@ class TestWriteRdsRoundtripWithR:
             assert list(result["words"]) == ["alpha", "beta"]
         finally:
             os.unlink(path)
+
+
+def test_py_rds_parser_invalid_file():
+    import pytest
+
+    from rds2py.PyRdsReader import PyRdsParser, PyRdsParserError
+
+    with pytest.raises(PyRdsParserError):
+        PyRdsParser("non_existent_file.rds")
+
+
+def test_save_rds_not_implemented():
+    import pytest
+
+    from rds2py import save_rds
+
+    with pytest.raises(NotImplementedError):
+        save_rds(object())
+
+
+def test_py_rds_parser_edge_cases_and_mocks():
+    from unittest.mock import MagicMock, patch
+
+    import pytest
+
+    from rds2py.generics import _dispatcher
+    from rds2py.PyRdsReader import PyRdsParser, PyRdsParserError, RdsReader
+    from rds2py.rdsutils import get_class
+
+    with patch("rds2py.PyRdsReader.RdsObject") as mock_rds_obj_cls:
+        mock_instance = MagicMock()
+        mock_instance.get_robject.return_value = "not_an_RdsReader"
+        mock_rds_obj_cls.return_value = mock_instance
+        with pytest.raises(PyRdsParserError, match="Expected 'RdsReader' object"):
+            PyRdsParser("dummy.rds")
+
+    parser = object.__new__(PyRdsParser)
+
+    with pytest.raises(PyRdsParserError, match="Error parsing RDS object"):
+        parser.root_object = MagicMock(spec=RdsReader)
+        parser.root_object.get_rtype.side_effect = Exception("test parse error")
+        parser.parse()
+
+    mock_sym = MagicMock(spec=RdsReader)
+    mock_sym.get_rtype.return_value = "symbol"
+    mock_sym.get_symbol_name.return_value = "custom_symbol"
+    res_sym = parser._process_object(mock_sym)
+    assert res_sym["name"] == "custom_symbol"
+    assert res_sym["class_name"] == "symbol"
+
+    mock_unsup = MagicMock(spec=RdsReader)
+    mock_unsup.get_rtype.return_value = "unsupported_type"
+    with pytest.warns(RuntimeWarning, match="Unsupported R object type: unsupported_type"):
+        res_unsup = parser._process_object(mock_unsup)
+        assert res_unsup["data"] is None
+
+    with pytest.raises(PyRdsParserError, match="Error processing object"):
+        mock_err = MagicMock(spec=RdsReader)
+        mock_err.get_rtype.side_effect = Exception("process error")
+        parser._process_object(mock_err)
+
+    with pytest.raises(PyRdsParserError, match="Error handling R special cases"):
+        parser._handle_r_special_cases(None, "integer", 0)
+
+    with pytest.raises(PyRdsParserError, match="Error getting numeric data"):
+        mock_num_err = MagicMock(spec=RdsReader)
+        mock_num_err.get_numeric_data.side_effect = Exception("numeric error")
+        parser._get_numeric_data(mock_num_err, "integer")
+
+    with pytest.raises(PyRdsParserError, match="Error processing attributes"):
+        mock_attr_err = MagicMock(spec=RdsReader)
+        mock_attr_err.get_attribute_names.side_effect = Exception("attributes error")
+        parser._process_attributes(mock_attr_err)
+
+    mock_root = MagicMock(spec=RdsReader)
+    mock_root.get_dimensions.return_value = (10, 20)
+    parser.root_object = mock_root
+    assert parser.get_dimensions() == (10, 20)
+
+    mock_root.get_dimensions.side_effect = Exception("dimensions error")
+    with pytest.raises(PyRdsParserError, match="Error getting dimensions"):
+        parser.get_dimensions()
+
+    with pytest.warns(RuntimeWarning, match="Failed to coerce RDS object to class"):
+        res_coerce = _dispatcher({"type": "S4", "class_name": "dgCMatrix", "attributes": {}})
+        assert isinstance(res_coerce, dict)
+
+    assert get_class({"type": "integer_vector", "class_name": "integer"}) == "integer"
+    assert get_class({"type": "integer_vector", "class_name": "integer", "attributes": None}) == "integer"

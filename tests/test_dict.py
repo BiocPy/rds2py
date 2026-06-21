@@ -48,3 +48,12 @@ def test_read_atomic_lists_nested_deep_rownames():
 
     assert obj is not None
     assert len(obj) > 0
+
+
+def test_read_dict_errors():
+    import pytest
+
+    from rds2py.read_dict import read_dict
+
+    with pytest.raises(RuntimeError):
+        read_dict({"type": "vector", "class_name": "not_vector"})
