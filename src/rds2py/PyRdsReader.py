@@ -98,6 +98,13 @@ class PyRdsParser:
                 result["data"] = self._process_vector(obj)
                 result["attributes"] = self._process_attributes(obj)
                 result["class_name"] = "vector"
+            elif rtype == "symbol":
+                symbol_name = obj.get_symbol_name()
+                if symbol_name == "\001NULL\001":
+                    result = {"type": "null"}
+                else:
+                    result["name"] = symbol_name
+                    result["class_name"] = "symbol"
             elif rtype == "null":
                 pass
             else:

@@ -29,9 +29,7 @@ def test_roundtrip_factors():
     try:
         write_rds(factor, rds_path)
         result = read_rds(rds_path)
-        assert isinstance(result, dict)
-        assert list(result["levels"]) == ["A", "B"]
-        assert list(result["data"]) == [1, 2, 1]
+        assert result == ["A", "B", "A"]
     finally:
         if os.path.exists(rds_path):
             os.unlink(rds_path)

@@ -22,11 +22,17 @@ if is_package_installed("iranges", verbose=True):
             return getattr(obj, name, None)
 
         converted = {
-            "start": save_rds(_get(x, "start")),
-            "width": save_rds(_get(x, "width")),
-            "names": save_rds(_get(x, "names")),
-            "mcols": save_rds(_get(x, "mcols")),
-            "metadata": save_rds(_get(x, "metadata")),
+            "type": "S4",
+            "class_name": "IRanges",
+            "package_name": "IRanges",
+            "attributes": {
+                "start": save_rds(_get(x, "start")),
+                "width": save_rds(_get(x, "width")),
+                "NAMES": save_rds(_get(x, "names")),
+                "elementType": {"type": "string", "data": ["ANY"]},
+                "elementMetadata": save_rds(_get(x, "mcols")),
+                "metadata": save_rds(_get(x, "metadata")),
+            },
         }
 
         if path is not None:

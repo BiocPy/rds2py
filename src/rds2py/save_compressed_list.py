@@ -22,10 +22,34 @@ if is_package_installed("compressed_lists", verbose=True):
                 return getattr(obj, f"get_{name}")()
             return getattr(obj, name, None)
 
+        class_name = type(x).__name__
+        r_class_name = class_name
+        element_type = "ANY"
+        if class_name == "CompressedIntegerList":
+            element_type = "integer"
+        elif class_name == "CompressedCharacterList":
+            element_type = "character"
+        elif class_name == "CompressedBooleanList":
+            r_class_name = "CompressedLogicalList"
+            element_type = "logical"
+        elif class_name == "CompressedFloatList":
+            r_class_name = "CompressedNumericList"
+            element_type = "numeric"
+        elif class_name == "CompressedSplitBiocFrameList":
+            r_class_name = "CompressedSplitDFrameList"
+            element_type = "DFrame"
+
         converted = {
-            "unlist_data": save_rds(_get(x, "unlist_data")),
-            "partitioning": save_rds(_get(x, "partitioning")),
-            "metadata": save_rds(_get(x, "metadata")),
+            "type": "S4",
+            "class_name": r_class_name,
+            "package_name": "IRanges",
+            "attributes": {
+                "unlistData": save_rds(_get(x, "unlist_data")),
+                "partitioning": save_rds(_get(x, "partitioning")),
+                "elementType": {"type": "string", "data": [element_type]},
+                "elementMetadata": save_rds(_get(x, "element_metadata")),
+                "metadata": save_rds(_get(x, "metadata")),
+            },
         }
 
         if path is not None:
@@ -43,8 +67,13 @@ if is_package_installed("compressed_lists", verbose=True):
             return getattr(obj, name, None)
 
         converted = {
-            "ends": save_rds(_get(x, "ends")),
-            "names": save_rds(_get(x, "names")),
+            "type": "S4",
+            "class_name": "PartitioningByEnd",
+            "package_name": "IRanges",
+            "attributes": {
+                "end": save_rds(_get(x, "ends")),
+                "NAMES": save_rds(_get(x, "names")),
+            },
         }
 
         if path is not None:

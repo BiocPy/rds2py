@@ -21,11 +21,29 @@ if is_package_installed("multiassayexperiment", verbose=True):
                 return getattr(obj, f"get_{name}")()
             return getattr(obj, name, None)
 
+        expts = _get(x, "experiments")
+        expts_list_data = {
+            "type": "vector",
+            "data": [save_rds(v) for v in expts.values()],
+            "attributes": {"names": {"type": "string", "data": list(expts.keys())}},
+        }
+        expt_list_s4 = {
+            "type": "S4",
+            "class_name": "ExperimentList",
+            "package_name": "MultiAssayExperiment",
+            "attributes": {"listData": expts_list_data},
+        }
+
         converted = {
-            "experiments": save_rds(_get(x, "experiments")),
-            "col_data": save_rds(_get(x, "col_data")),
-            "sample_map": save_rds(_get(x, "sample_map")),
-            "metadata": save_rds(_get(x, "metadata")),
+            "type": "S4",
+            "class_name": "MultiAssayExperiment",
+            "package_name": "MultiAssayExperiment",
+            "attributes": {
+                "ExperimentList": expt_list_s4,
+                "colData": save_rds(_get(x, "column_data")),
+                "sampleMap": save_rds(_get(x, "sample_map")),
+                "metadata": save_rds(_get(x, "metadata")),
+            },
         }
 
         if path is not None:

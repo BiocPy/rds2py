@@ -4,6 +4,7 @@
 #include <rds2cpp/rds2cpp.hpp>
 #include <stdexcept>
 #include <pybind11/iostream.h>
+#include <limits>
 
 namespace py = pybind11;
 
@@ -28,6 +29,7 @@ public:
             case rds2cpp::SEXPType::LGL: return "boolean";
             case rds2cpp::SEXPType::VEC: return "vector";
             case rds2cpp::SEXPType::NIL: return "null";
+            case rds2cpp::SEXPType::SYM: return "symbol";
             default: return "other";
         }
     }
@@ -137,6 +139,17 @@ public:
             throw std::runtime_error("Invalid dimensions");
         }
         return {static_cast<size_t>(dims[0]), static_cast<size_t>(dims[1])};
+    }
+
+    std::string get_symbol_name() const {
+        if (!ptr || ptr->type() != rds2cpp::SEXPType::SYM) {
+            throw std::runtime_error("Not a symbol object");
+        }
+        const auto* sym = static_cast<const rds2cpp::SymbolIndex*>(ptr);
+        if (sym->index >= symbols_ptr->size()) {
+            throw std::runtime_error("Symbol index out of range");
+        }
+        return (*symbols_ptr)[sym->index].name;
     }
 
 private:
@@ -321,18 +334,210 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
         throw std::runtime_error("Unsupported numpy dtype for RDS writing");
     }
 
-    // dict -> GenericVector with names attribute
+    // dict
     if (py::isinstance<py::dict>(obj)) {
         auto d = obj.cast<py::dict>();
-        auto gvec = std::make_unique<rds2cpp::GenericVector>();
 
+        // If it's a structured R object dictionary:
+        if (d.contains("type")) {
+            std::string rtype = d["type"].cast<std::string>();
+
+            if (rtype == "S4") {
+                auto s4 = std::make_unique<rds2cpp::S4Object>();
+                s4->class_name = d["class_name"].cast<std::string>();
+                s4->package_name = d["package_name"].cast<std::string>();
+                if (d.contains("attributes") && !d["attributes"].is_none()) {
+                    auto attrs = d["attributes"].cast<py::dict>();
+                    for (auto& item : attrs) {
+                        auto name_str = item.first.cast<std::string>();
+                        auto name_sym = rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols);
+                        py::object val_py = py::reinterpret_borrow<py::object>(item.second);
+                        std::unique_ptr<rds2cpp::RObject> val_obj;
+                        if (val_py.is_none()) {
+                            val_obj = std::make_unique<rds2cpp::SymbolIndex>(
+                                rds2cpp::register_symbol("\001NULL\001", rds2cpp::StringEncoding::UTF8, symbols)
+                            );
+                        } else if (py::isinstance<py::dict>(val_py) && val_py.cast<py::dict>().contains("type") && py::isinstance<py::str>(val_py.cast<py::dict>()["type"]) && val_py.cast<py::dict>()["type"].cast<std::string>() == "null") {
+                            val_obj = std::make_unique<rds2cpp::SymbolIndex>(
+                                rds2cpp::register_symbol("\001NULL\001", rds2cpp::StringEncoding::UTF8, symbols)
+                            );
+                        } else {
+                            val_obj = py_to_robject(val_py, symbols);
+                        }
+                        s4->attributes.emplace_back(name_sym, std::move(val_obj));
+                    }
+                }
+                return s4;
+            }
+
+            if (rtype == "integer") {
+                auto vec = std::make_unique<rds2cpp::IntegerVector>();
+                if (d.contains("data") && !d["data"].is_none()) {
+                    auto data_obj = d["data"];
+                    if (py::isinstance<py::array>(data_obj)) {
+                        auto arr = data_obj.cast<py::array_t<int32_t, py::array::c_style | py::array::forcecast>>();
+                        auto r = arr.unchecked<1>();
+                        vec->data.reserve(r.shape(0));
+                        for (ssize_t i = 0; i < r.shape(0); ++i) vec->data.push_back(r(i));
+                    } else {
+                        auto seq = data_obj.cast<py::sequence>();
+                        vec->data.reserve(py::len(seq));
+                        for (size_t i = 0; i < py::len(seq); ++i) {
+                            if (seq[i].is_none()) {
+                                vec->data.push_back(-2147483648);
+                            } else {
+                                vec->data.push_back(seq[i].cast<int32_t>());
+                            }
+                        }
+                    }
+                }
+                if (d.contains("attributes") && !d["attributes"].is_none()) {
+                    auto attrs = d["attributes"].cast<py::dict>();
+                    for (auto& item : attrs) {
+                        auto name_str = item.first.cast<std::string>();
+                        auto name_sym = rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols);
+                        auto val_obj = py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols);
+                        vec->attributes.emplace_back(name_sym, std::move(val_obj));
+                    }
+                }
+                return vec;
+            }
+
+            if (rtype == "double" || rtype == "numeric") {
+                auto vec = std::make_unique<rds2cpp::DoubleVector>();
+                if (d.contains("data") && !d["data"].is_none()) {
+                    auto data_obj = d["data"];
+                    if (py::isinstance<py::array>(data_obj)) {
+                        auto arr = data_obj.cast<py::array_t<double, py::array::c_style | py::array::forcecast>>();
+                        auto r = arr.unchecked<1>();
+                        vec->data.reserve(r.shape(0));
+                        for (ssize_t i = 0; i < r.shape(0); ++i) vec->data.push_back(r(i));
+                    } else {
+                        auto seq = data_obj.cast<py::sequence>();
+                        vec->data.reserve(py::len(seq));
+                        for (size_t i = 0; i < py::len(seq); ++i) {
+                            if (seq[i].is_none()) {
+                                vec->data.push_back(std::numeric_limits<double>::quiet_NaN());
+                            } else {
+                                vec->data.push_back(seq[i].cast<double>());
+                            }
+                        }
+                    }
+                }
+                if (d.contains("attributes") && !d["attributes"].is_none()) {
+                    auto attrs = d["attributes"].cast<py::dict>();
+                    for (auto& item : attrs) {
+                        auto name_str = item.first.cast<std::string>();
+                        auto name_sym = rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols);
+                        auto val_obj = py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols);
+                        vec->attributes.emplace_back(name_sym, std::move(val_obj));
+                    }
+                }
+                return vec;
+            }
+
+            if (rtype == "boolean" || rtype == "logical") {
+                auto vec = std::make_unique<rds2cpp::LogicalVector>();
+                if (d.contains("data") && !d["data"].is_none()) {
+                    auto data_obj = d["data"];
+                    if (py::isinstance<py::array>(data_obj)) {
+                        auto arr = data_obj.cast<py::array_t<bool, py::array::c_style | py::array::forcecast>>();
+                        auto r = arr.unchecked<1>();
+                        vec->data.reserve(r.shape(0));
+                        for (ssize_t i = 0; i < r.shape(0); ++i) vec->data.push_back(r(i) ? 1 : 0);
+                    } else {
+                        auto seq = data_obj.cast<py::sequence>();
+                        vec->data.reserve(py::len(seq));
+                        for (size_t i = 0; i < py::len(seq); ++i) {
+                            if (seq[i].is_none()) {
+                                vec->data.push_back(-2147483648);
+                            } else {
+                                vec->data.push_back(seq[i].cast<bool>() ? 1 : 0);
+                            }
+                        }
+                    }
+                }
+                if (d.contains("attributes") && !d["attributes"].is_none()) {
+                    auto attrs = d["attributes"].cast<py::dict>();
+                    for (auto& item : attrs) {
+                        auto name_str = item.first.cast<std::string>();
+                        auto name_sym = rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols);
+                        auto val_obj = py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols);
+                        vec->attributes.emplace_back(name_sym, std::move(val_obj));
+                    }
+                }
+                return vec;
+            }
+
+            if (rtype == "string" || rtype == "character") {
+                auto vec = std::make_unique<rds2cpp::StringVector>();
+                if (d.contains("data") && !d["data"].is_none()) {
+                    auto lst = d["data"].cast<py::list>();
+                    vec->data.reserve(py::len(lst));
+                    for (size_t i = 0; i < py::len(lst); ++i) {
+                        auto item = lst[i];
+                        if (item.is_none()) {
+                            vec->data.emplace_back();
+                        } else {
+                            vec->data.emplace_back(item.cast<std::string>(), rds2cpp::StringEncoding::UTF8);
+                        }
+                    }
+                }
+                if (d.contains("attributes") && !d["attributes"].is_none()) {
+                    auto attrs = d["attributes"].cast<py::dict>();
+                    for (auto& item : attrs) {
+                        auto name_str = item.first.cast<std::string>();
+                        auto name_sym = rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols);
+                        auto val_obj = py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols);
+                        vec->attributes.emplace_back(name_sym, std::move(val_obj));
+                    }
+                }
+                return vec;
+            }
+
+            if (rtype == "vector" || rtype == "list") {
+                auto vec = std::make_unique<rds2cpp::GenericVector>();
+                if (d.contains("data") && !d["data"].is_none()) {
+                    auto lst = d["data"].cast<py::list>();
+                    vec->data.reserve(py::len(lst));
+                    for (size_t i = 0; i < py::len(lst); ++i) {
+                        vec->data.push_back(py_to_robject(lst[i].cast<py::object>(), symbols));
+                    }
+                }
+                if (d.contains("attributes") && !d["attributes"].is_none()) {
+                    auto attrs = d["attributes"].cast<py::dict>();
+                    for (auto& item : attrs) {
+                        auto name_str = item.first.cast<std::string>();
+                        auto name_sym = rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols);
+                        auto val_obj = py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols);
+                        vec->attributes.emplace_back(name_sym, std::move(val_obj));
+                    }
+                }
+                return vec;
+            }
+
+            if (rtype == "symbol") {
+                std::string name_str = d["name"].cast<std::string>();
+                return std::make_unique<rds2cpp::SymbolIndex>(
+                    rds2cpp::register_symbol(name_str, rds2cpp::StringEncoding::UTF8, symbols)
+                );
+            }
+
+            if (rtype == "null") {
+                return std::make_unique<rds2cpp::Null>();
+            }
+
+            throw std::runtime_error("Unsupported type for structured RDS writing: " + rtype);
+        }
+
+        // Default dictionary -> GenericVector with names attribute
+        auto gvec = std::make_unique<rds2cpp::GenericVector>();
         py::list keys;
         for (auto& item : d) {
             keys.append(item.first);
             gvec->data.push_back(py_to_robject(py::reinterpret_borrow<py::object>(item.second), symbols));
         }
         add_names_attribute(gvec->attributes, keys, symbols);
-
         return gvec;
     }
 
@@ -447,7 +652,8 @@ PYBIND11_MODULE(lib_rds_parser, m) {
     .def("load_vec_element", &RdsReader::load_vec_element)
     .def("get_package_name", &RdsReader::get_package_name)
     .def("get_class_name", &RdsReader::get_class_name)
-    .def("get_dimensions", &RdsReader::get_dimensions);
+    .def("get_dimensions", &RdsReader::get_dimensions)
+    .def("get_symbol_name", &RdsReader::get_symbol_name);
 
     m.def("write_rds", &write_rds_file, "Write a Python object to an RDS file",
         py::arg("obj"), py::arg("path"));

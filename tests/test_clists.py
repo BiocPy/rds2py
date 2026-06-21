@@ -67,9 +67,10 @@ def test_save_compressed_lists():
 
     res = save_rds(obj)
     assert isinstance(res, dict)
-    assert "unlist_data" in res
-    assert "partitioning" in res
-    assert "ends" in res["partitioning"]
+    assert res["type"] == "S4"
+    assert res["class_name"] == "CompressedIntegerList"
+    assert "unlistData" in res["attributes"]
+    assert "partitioning" in res["attributes"]
 
     with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as tmp:
         rds_path = tmp.name
@@ -78,7 +79,12 @@ def test_save_compressed_lists():
         from rds2py.rdsutils import parse_rds
 
         parsed = parse_rds(rds_path)
-        assert parsed["type"] == "vector"
+        assert parsed["type"] == "S4"
+        assert parsed["class_name"] == "CompressedIntegerList"
+
+        recreated = read_rds(rds_path)
+        assert isinstance(recreated, type(obj))
+        assert recreated.to_list() == obj.to_list()
     finally:
         if os.path.exists(rds_path):
             os.unlink(rds_path)

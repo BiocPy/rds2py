@@ -59,15 +59,9 @@ def test_roundtrip_h5sparse():
         result = read_rds(rds_path)
 
         assert result is not None
-        assert isinstance(result, dict)
-        assert list(result["class_name"]) == ["H5SparseMatrix"]
-        assert list(result["package_name"]) == ["HDF5Array"]
-        assert "attributes" in result
-
-        seed = result["attributes"]["seed"]
-        assert list(seed["class_name"]) == ["CSC_H5SparseMatrixSeed"]
-        assert list(seed["package_name"]) == ["HDF5Array"]
-        assert list(seed["attributes"]["group"]) == ["obsp/connectivities"]
+        assert isinstance(result, Hdf5CompressedSparseMatrix)
+        assert result.shape == (3, 3)
+        assert result.group_name == "obsp/connectivities"
 
     finally:
         if os.path.exists(h5_path):

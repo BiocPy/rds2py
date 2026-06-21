@@ -14,9 +14,14 @@ def _save_rds_factor(x: Factor, path: Optional[str] = None):
     from .lib_rds_parser import write_rds as _write_rds_native
 
     converted = {
-        "levels": save_rds(x.get_levels()),
-        "data": save_rds(x.get_codes() + 1),
+        "type": "integer",
+        "data": list(x.get_codes() + 1),
+        "attributes": {
+            "class": {"type": "string", "data": ["factor"]},
+            "levels": {"type": "string", "data": list(x.get_levels())},
+        },
     }
+
     if path is not None:
         _write_rds_native(converted, path)
 

@@ -25,10 +25,12 @@ def test_save_rds_genomicranges():
 
     res = save_rds(gr)
     assert isinstance(res, dict)
-    assert "seqnames" in res
-    assert "ranges" in res
-    assert "strand" in res
-    assert "mcols" in res
+    assert res["type"] == "S4"
+    assert res["class_name"] == "GRanges"
+    assert "seqnames" in res["attributes"]
+    assert "ranges" in res["attributes"]
+    assert "strand" in res["attributes"]
+    assert "elementMetadata" in res["attributes"]
 
 
 def test_save_rds_summarizedexperiment():
@@ -40,9 +42,11 @@ def test_save_rds_summarizedexperiment():
 
     res = save_rds(se)
     assert isinstance(res, dict)
-    assert "assays" in res
-    assert "row_data" in res
-    assert "column_data" in res
+    assert res["type"] == "S4"
+    assert res["class_name"] == "SummarizedExperiment"
+    assert "assays" in res["attributes"]
+    assert "elementMetadata" in res["attributes"]
+    assert "colData" in res["attributes"]
 
 
 def test_save_rds_singlecellexperiment():
@@ -52,8 +56,10 @@ def test_save_rds_singlecellexperiment():
 
     res = save_rds(sce)
     assert isinstance(res, dict)
-    assert "reduced_dims" in res
-    assert "assays" in res
+    assert res["type"] == "S4"
+    assert res["class_name"] == "SingleCellExperiment"
+    assert "assays" in res["attributes"]
+    assert "int_colData" in res["attributes"]
 
 
 def test_roundtrip_genomicranges():
@@ -71,13 +77,9 @@ def test_roundtrip_genomicranges():
         write_rds(gr, path)
         result = read_rds(path)
 
-        # Complex objects are saved as GenericVectors with names,
-        # so they should be read back as dictionaries.
-        assert isinstance(result, dict)
-        assert "seqnames" in result
-        assert "ranges" in result
-        assert "strand" in result
-        assert "mcols" in result
+        assert isinstance(result, GenomicRanges)
+        assert list(result.seqnames) == ["chr1", "chr2"]
+        assert list(result.get_strand()) == [1, -1]
     finally:
         os.unlink(path)
 
@@ -96,10 +98,9 @@ def test_roundtrip_summarizedexperiment():
         write_rds(se, path)
         result = read_rds(path)
 
-        assert isinstance(result, dict)
-        assert "assays" in result
-        assert "row_data" in result
-        assert "column_data" in result
+        assert isinstance(result, SummarizedExperiment)
+        assert "counts" in result.assays
+        assert result.shape == (2, 2)
     finally:
         os.unlink(path)
 
@@ -117,9 +118,11 @@ def test_save_rds_rangedsummarizedexperiment():
 
     res = save_rds(rse)
     assert isinstance(res, dict)
-    assert "assays" in res
-    assert "row_ranges" in res
-    assert "column_data" in res
+    assert res["type"] == "S4"
+    assert res["class_name"] == "RangedSummarizedExperiment"
+    assert "assays" in res["attributes"]
+    assert "rowRanges" in res["attributes"]
+    assert "colData" in res["attributes"]
 
 
 def test_write_rds_complex():
@@ -148,8 +151,8 @@ def test_write_rds_complex():
 
         from rds2py.rdsutils import parse_rds
 
-        assert parse_rds(rse_path)["type"] == "vector"
-        assert parse_rds(sce_path)["type"] == "vector"
+        assert parse_rds(rse_path)["type"] == "S4"
+        assert parse_rds(sce_path)["type"] == "S4"
     finally:
         if os.path.exists(rse_path):
             os.unlink(rse_path)
