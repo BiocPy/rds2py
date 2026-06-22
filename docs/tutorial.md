@@ -59,7 +59,7 @@ write_rda(workspace_objects, "workspace.rda")
 
 ## 3. Raw Dictionary Parsing (Custom Readers)
 
-Sometimes you want to inspect the structure of an RDS file without automatically converting it to Python classes, or you might want to write a custom reader for an unsupported S4 class. 
+Sometimes you want to inspect the structure of an RDS file without automatically converting it to Python classes, or you might want to write a custom reader for an unsupported S4 class.
 
 For these scenarios, use `parse_rds` or `parse_rda`. They return the raw RDS tree structure as nested Python dictionaries:
 
@@ -71,7 +71,7 @@ from rds2py.read_granges import read_genomic_ranges
 raw_representation = parse_rds("path/to/file.rds")
 print(raw_representation)
 
-# If you know the underlying S4 class is a GRanges object, 
+# If you know the underlying S4 class is a GRanges object,
 # you can use a parser directly:
 if raw_representation.get("class_name") == "GRanges":
     gr = read_genomic_ranges(raw_representation)
