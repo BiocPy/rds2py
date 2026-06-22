@@ -75,12 +75,12 @@ def read_dframe(robject: dict, **kwargs):
         data[colname] = _dispatcher(robject["attributes"]["listData"]["data"][idx], **kwargs)
 
     index = None
-    if robject["attributes"]["rownames"]["data"]:
+    if "data" in robject["attributes"]["rownames"] and robject["attributes"]["rownames"]["data"]:
         index = _dispatcher(robject["attributes"]["rownames"], **kwargs)
 
     nrows = None
-    if robject["attributes"]["nrows"]["data"]:
-        nrows = list(_dispatcher(robject["attributes"]["nrows"]), **kwargs)[0]
+    if "data" in robject["attributes"]["nrows"] and robject["attributes"]["nrows"]["data"]:
+        nrows = list(_dispatcher(robject["attributes"]["nrows"], **kwargs))[0]
 
     df = BiocFrame(
         data,

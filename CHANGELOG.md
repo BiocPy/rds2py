@@ -1,9 +1,11 @@
 # Changelog
 
-## Version 0.10.0
+## Version 0.10.0 - 0.10.1
 
 - Added methods to write to RDS/RData files.
 - Supports atomic types, generic dictionaries/lists, and **BiocPy objects**.
+- Read `symbols` registered in RDS objects.
+- Fixed an issue with S4 classes not properly saved as RDS files.
 
 ## Version 0.9.0 - 0.9.1
 

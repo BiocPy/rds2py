@@ -1,6 +1,6 @@
-from rds2py import read_rds
-
 from biocutils import BooleanList, FloatList, IntegerList, StringList
+
+from rds2py import read_rds
 
 __author__ = "jkanche"
 __copyright__ = "jkanche"
@@ -99,3 +99,23 @@ def test_read_scalar_float():
     assert isinstance(obj, FloatList)
     assert len(obj) == 1
     assert obj[0] == 10.0
+
+
+def test_save_names_directly():
+    import os
+    import tempfile
+
+    from biocutils import Names
+
+    from rds2py import write_rds
+
+    names_obj = Names(["a", "b", "c"])
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as tmp:
+        path = tmp.name
+
+    try:
+        write_rds(names_obj, path)
+        assert os.path.exists(path)
+    finally:
+        if os.path.exists(path):
+            os.unlink(path)

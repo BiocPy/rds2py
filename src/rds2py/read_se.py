@@ -52,21 +52,24 @@ def read_summarized_experiment(robject: dict, **kwargs):
 
     if _cls not in ["SummarizedExperiment"]:
         raise RuntimeError(f"`robject` does not contain a 'SummarizedExperiment' object, contains `{_cls}`.")
+
     # parse assays  names
     robj_asys = {}
-    assay_dims = None
-    asy_names = list(
-        _dispatcher(
-            robject["attributes"]["assays"]["attributes"]["data"]["attributes"]["listData"]["attributes"]["names"],
-            **kwargs,
+    assay_dims = (0, 0)
+    assays_node = robject["attributes"].get("assays", None)
+    if assays_node is not None and assays_node.get("type", None) != "null":
+        asy_names = list(
+            _dispatcher(
+                assays_node["attributes"]["data"]["attributes"]["listData"]["attributes"]["names"],
+                **kwargs,
+            )
         )
-    )
-    for idx, asyname in enumerate(asy_names):
-        idx_asy = robject["attributes"]["assays"]["attributes"]["data"]["attributes"]["listData"]["data"][idx]
+        for idx, asyname in enumerate(asy_names):
+            idx_asy = assays_node["attributes"]["data"]["attributes"]["listData"]["data"][idx]
 
-        robj_asys[asyname] = _dispatcher(idx_asy, **kwargs)
-        if assay_dims is None:
-            assay_dims = robj_asys[asyname].shape
+            robj_asys[asyname] = _dispatcher(idx_asy, **kwargs)
+            if assay_dims == (0, 0) and hasattr(robj_asys[asyname], "shape"):
+                assay_dims = robj_asys[asyname].shape
 
     # parse coldata
     robj_coldata = _sanitize_empty_frame(_dispatcher(robject["attributes"]["colData"], **kwargs), assay_dims[1])

@@ -4,7 +4,7 @@
 
 # rds2py
 
-Parse and save Python objects as **RDS or RData** files. `rds2py` supports various base classes from R, and Bioconductor's `SummarizedExperiment` and `SingleCellExperiment` S4 classes. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
+`rds2py` allows you to read and write R's native **RDS** and **RData** files directly in Python. Beyond standard R types, it provides integration with the [BiocPy](https://github.com/biocpy) ecosystem, allowing you to easily roundtrip complex S4 data structures like `SummarizedExperiment`, `SingleCellExperiment`, and `GenomicRanges`. **_For more details, check out [rds2cpp library](https://github.com/LTLA/rds2cpp)._**
 
 ## Installation
 
@@ -12,93 +12,133 @@ Package is published to [PyPI](https://pypi.org/project/rds2py/)
 
 ```shell
 pip install rds2py
+```
 
-# or install optional dependencies
+To enable automatic conversion to Bioconductor/BiocPy classes, make sure to install the optional dependencies:
+
+```shell
 pip install rds2py[optional]
 ```
 
-By default, the package does not install packages to convert python representations to BiocPy classes. Please consider installing all optional dependencies.
 
-## Usage
+## Quickstart
 
-> [!NOTE]
->
-> If you do not have an RDS object handy, feel free to download one from [single-cell-test-files](https://github.com/jkanche/random-test-files/releases).
+### 1. Reading RDS and RData files
+
+Reading an RDS or RData file is as simple as a single function call. `rds2py` automatically detects and maps known R/Bioconductor classes to their Python equivalents:
 
 ```python
 from rds2py import read_rds, read_rda
-r_obj = read_rds("path/to/file.rds") # or read_rda("path/to/file.rda")
+
+# Read an RDS file (returns a Python/BiocPy object or dict)
+data = read_rds("path/to/file.rds")
+
+# Read objects from an RData workspace file (returns a dictionary of objects)
+workspace = read_rda("path/to/workspace.rda")
 ```
 
-The returned `r_obj` either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.
+If `rds2py` encounters an S4 class or complex R structure it doesn't have a parser registered for, it falls back to returning a dictionary so you don't lose any data.
 
-### Save RDS/RData files
+### 2. Saving to RDS and RData files
 
-You can also construct RDS or RData files from Python objects. `rds2py` supports writing atomic types, generic dictionaries/lists, and **BiocPy objects**.
+You can serialize Python objects back to RDS or RData formats. This includes NumPy arrays, SciPy sparse matrices, standard dictionaries/lists, and BiocPy objects:
 
 ```python
-from rds2py import write_rds, write_rda
 import numpy as np
-
-# Write atomic types
-write_rds(np.array([1, 2, 3], dtype=np.int32), "path/to/file.rds")
-
-# Write complex objects
+from rds2py import write_rds, write_rda
 from genomicranges import GenomicRanges
 from iranges import IRanges
 
-gr = GenomicRanges(
-    seqnames=["chr1", "chr2"],
-    ranges=IRanges(start=[1, 2], width=[10, 20]),
-    strand=["+", "-"]
-)
-write_rds(gr, "path/to/granges.rds")
+# 1. Write an atomic NumPy array
+write_rds(np.array([10, 20, 30], dtype=np.int32), "array.rds")
+
+# 2. Write a complex Bioconductor GenomicRanges object
+gr = GenomicRanges(seqnames=["chr1", "chr2"], ranges=IRanges(start=[1, 100], width=[10, 50]), strand=["+", "-"])
+write_rds(gr, "genomic_ranges.rds")
+
+# 3. Write multiple Python objects into a single RData workspace
+objects = {"my_array": np.array([1.1, 2.2, 3.3]), "my_granges": gr}
+write_rda(objects, "workspace.rda")
 ```
 
-### Write-your-own-reader
+### 3. Custom Extensions
 
-Reading RDS or RData files as dictionary representations allows users to write their own custom readers into appropriate Python representations.
-
-```python
-from rds2py import parse_rds, parse_rda
-
-robject = parse_rds("path/to/file.rds") # or use parse_rda for rdata files
-print(robject)
-```
-
-If you know this RDS file contains an `GenomicRanges` object, you can use the built-in reader or write your own reader to convert this dictionary.
+If you have custom S4 representations or class mapping needs, you can parse the raw RDS structure into Python dictionary representations using `parse_rds`/`parse_rda` and apply your custom deserializers:
 
 ```python
+from rds2py import parse_rds
 from rds2py.read_granges import read_genomic_ranges
 
-gr = read_genomic_ranges(robject)
-print(gr)
+# 1. Parse into a raw dictionary representation of the RDS tree
+raw_dict = parse_rds("path/to/file.rds")
+print(raw_dict.keys())  # ['type', 'class_name', 'attributes', 'data', ...]
+
+# 2. Build or invoke custom parser logic
+if raw_dict.get("class_name") == "GRanges":
+    gr = read_genomic_ranges(raw_dict)
+    print(gr)
 ```
+
+For writing custom objects, you can register your classes to `rds2py`'s serialization registry using the `save_rds` singledispatch generic:
+
+```python
+from rds2py.generics import save_rds
+
+
+class MyCustomClass:
+    def __init__(self, value):
+        self.value = value
+
+
+@save_rds.register(MyCustomClass)
+def _serialize_custom(x: MyCustomClass, path=None):
+    # Construct the raw RDS dictionary representation expected by rds2cpp
+    converted = {
+        "type": "integer",
+        "data": [x.value],
+        "attributes": {"class": {"type": "string", "data": ["MyCustomRClass"]}},
+    }
+
+    # Optionally save if path is provided, otherwise return representation
+    if path is not None:
+        from rds2py.lib_rds_parser import write_rds as write_rds_native
+
+        write_rds_native(converted, path)
+    return converted
+```
+
 
 ## Type Conversion Reference
 
-| R Type     | Python/NumPy Type                    |
-| ---------- | ------------------------------------ |
-| numeric    | numpy.ndarray (float64)              |
-| integer    | numpy.ndarray (int32)                |
-| character  | list of str                          |
-| logical    | numpy.ndarray (bool)                 |
-| factor     | list                                 |
-| data.frame | BiocFrame                            |
-| matrix     | numpy.ndarray or scipy.sparse matrix |
-| dgCMatrix  | scipy.sparse.csc_matrix              |
-| dgRMatrix  | scipy.sparse.csr_matrix              |
+The table below describes how core R types are mapped to Python/NumPy/SciPy counterparts:
 
-and integration with BiocPy ecosystem for Bioconductor classes
-  - SummarizedExperiment
-  - RangedSummarizedExperiment
-  - SingleCellExperiment
-  - GenomicRanges
-  - MultiAssayExperiment
+| R Type / Class | Python / NumPy / SciPy Counterpart |
+| :--- | :--- |
+| **numeric** | `numpy.ndarray` (`float64`) |
+| **integer** | `numpy.ndarray` (`int32`) |
+| **logical** | `numpy.ndarray` (`bool`) |
+| **character** | `list` of `str` |
+| **factor** | `list` / representation levels |
+| **matrix (dense)** | `numpy.ndarray` |
+| **dgCMatrix** (Column-sparse) | `scipy.sparse.csc_matrix` |
+| **dgRMatrix** (Row-sparse) | `scipy.sparse.csr_matrix` |
+| **data.frame** / **DFrame** | `biocframe.BiocFrame` |
+
+### Supported Bioconductor Classes
+When `rds2py[optional]` is installed, the package fully translates R/S4 classes to their BiocPy equivalents:
+- **GenomicRanges** / **GRanges** <-> `genomicranges.GenomicRanges`
+- **GenomicRangesList** / **GRangesList** <-> `genomicranges.CompressedGenomicRangesList`
+- **SummarizedExperiment** <-> `summarizedexperiment.SummarizedExperiment`
+- **RangedSummarizedExperiment** <-> `summarizedexperiment.RangedSummarizedExperiment`
+- **SingleCellExperiment** <-> `singlecellexperiment.SingleCellExperiment`
+- **MultiAssayExperiment** <-> `multiassayexperiment.MultiAssayExperiment`
+
+---
 
 ## Developer Notes
 
-This project uses pybind11 to provide bindings to the rds2cpp library. Please make sure necessary C++ compiler is installed on your system.
+- `rds2py` uses `pybind11` to bind the core C++ `rds2cpp` library. Compiling from source requires a compatible C++ compiler.
+- Tests can be run via `tox` or directly using `pytest`.
 
 <!-- pyscaffold-notes -->
 

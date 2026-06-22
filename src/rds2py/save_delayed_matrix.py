@@ -49,9 +49,9 @@ if is_package_installed("hdf5array", verbose=True):
             "class_name": "CSC_H5SparseMatrixSeed" if x.by_column else "CSR_H5SparseMatrixSeed",
             "package_name": "HDF5Array",
             "attributes": {
-                "dim": save_rds(list(x.shape)),
-                "filepath": save_rds([x.path]),
-                "group": save_rds([x.group_name]),
+                "dim": {"type": "integer", "data": list(x.shape)},
+                "filepath": {"type": "string", "data": [x.path]},
+                "group": {"type": "string", "data": [x.group_name]},
             },
         }
 
