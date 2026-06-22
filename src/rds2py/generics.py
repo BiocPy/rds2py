@@ -47,6 +47,7 @@ REGISTRY = {
     "data.frame": "rds2py.read_frame.read_data_frame",
     "DFrame": "rds2py.read_frame.read_dframe",
     # genomic ranges
+    "IRanges": "rds2py.read_granges.read_iranges",
     "GRanges": "rds2py.read_granges.read_genomic_ranges",
     "GenomicRanges": "rds2py.read_granges.read_genomic_ranges",
     "CompressedGRangesList": "rds2py.read_granges.read_granges_list",

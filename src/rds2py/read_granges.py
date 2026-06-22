@@ -120,3 +120,50 @@ def read_granges_list(robject: dict, **kwargs):
     return CompressedGenomicRangesList(
         unlist_data=_gre, partitioning=_part_obj, element_metadata=element_metadata, metadata=metadata
     )
+
+
+def read_iranges(robject: dict, **kwargs):
+    """Convert an R `IRanges` object to a Python `IRanges` object.
+
+    Args:
+        robject:
+            Dictionary containing parsed IRanges data.
+
+        **kwargs:
+            Additional arguments.
+
+    Returns:
+        A Python IRanges object.
+    """
+    from iranges import IRanges
+
+    _cls = get_class(robject)
+
+    if _cls not in ["IRanges"]:
+        raise TypeError(f"obj is not 'IRanges', but is `{_cls}`.")
+
+    _start = _dispatcher(robject["attributes"]["start"], **kwargs)
+    _width = _dispatcher(robject["attributes"]["width"], **kwargs)
+
+    _names = None
+    if "NAMES" in robject["attributes"]:
+        _tmp_names = robject["attributes"]["NAMES"]
+        _names = _dispatcher(_tmp_names, **kwargs)
+        if _names is not None:
+            _names = list(_names)
+
+    _mcols = None
+    if "elementMetadata" in robject["attributes"]:
+        _mcols = _dispatcher(robject["attributes"]["elementMetadata"], **kwargs)
+
+    _metadata = None
+    if "metadata" in robject["attributes"]:
+        _metadata = _metadata = _dispatcher(robject["attributes"]["metadata"], **kwargs)
+
+    return IRanges(
+        start=_start,
+        width=_width,
+        names=_names,
+        mcols=_mcols,
+        metadata=_metadata,
+    )

@@ -109,3 +109,32 @@ def test_granges_list_roundtrip_and_fallbacks():
                 os.unlink(path)
     finally:
         CompressedList.get_names = orig_get_names
+
+
+def test_iranges_roundtrip():
+    import os
+    import tempfile
+
+    import pytest
+    from iranges import IRanges
+
+    from rds2py import read_rds, write_rds
+    from rds2py.read_granges import read_iranges
+
+    ir = IRanges(start=[1, 5, 10], width=[3, 4, 5], names=["a", "b", "c"])
+
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as tmp:
+        path = tmp.name
+    try:
+        write_rds(ir, path)
+        recreated = read_rds(path)
+        assert isinstance(recreated, IRanges)
+        assert list(recreated.get_start()) == [1, 5, 10]
+        assert list(recreated.get_width()) == [3, 4, 5]
+        assert list(recreated.get_names()) == ["a", "b", "c"]
+    finally:
+        if os.path.exists(path):
+            os.unlink(path)
+
+    with pytest.raises(TypeError):
+        read_iranges({"type": "S4", "class_name": "BadClass"})
