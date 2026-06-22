@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="../genindex.html"><link rel="search" title="Search" href="../search.html"><link rel="prev" title="rds2py" href="modules.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py package - rds2py 0.10.0 documentation</title>
+        <title>rds2py package - rds2py 0.10.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../index.html"><div class="brand">rds2py 0.10.0 documentation</div></a>
+      <a href="../index.html"><div class="brand">rds2py 0.10.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.10.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -193,6 +193,7 @@
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../readme.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../custom_serialization.html">Custom Serialization Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributions &amp; Help</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
@@ -506,9 +507,13 @@ depends on the contents of the RDS file and the available parsers.</p>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">save_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">save_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">save_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#tuple" title="(in Python v3.12)"><span class="pre">tuple</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">save_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.12/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">save_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">rds2py.generics.</span></span><span class="sig-name descname"><span class="pre">save_rds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dt class="sig sig-object py">
@@ -642,6 +647,11 @@ depends on the contents of the RDS file and the available parsers.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_string_arr">
 <span class="sig-name descname"><span class="pre">get_string_arr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#list" title="(in Python v3.12)"><span class="pre">list</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_string_arr" title="Link to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="rds2py.lib_rds_parser.RdsReader.get_symbol_name">
+<span class="sig-name descname"><span class="pre">get_symbol_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader" title="rds2py.lib_rds_parser.RdsReader"><span class="pre">rds2py.lib_rds_parser.RdsReader</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#rds2py.lib_rds_parser.RdsReader.get_symbol_name" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -1153,6 +1163,23 @@ with associated annotations.</p>
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="rds2py.read_granges.read_iranges">
+<span class="sig-prename descclassname"><span class="pre">rds2py.read_granges.</span></span><span class="sig-name descname"><span class="pre">read_iranges</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">robject</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/rds2py/read_granges.html#read_iranges"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#rds2py.read_granges.read_iranges" title="Link to this definition">¶</a></dt>
+<dd><p>Convert an R <cite>IRanges</cite> object to a Python <cite>IRanges</cite> object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>robject</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3.12/library/stdtypes.html#dict" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span>) – Dictionary containing parsed IRanges data.</p></li>
+<li><p><strong>**kwargs</strong> – Additional arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A Python IRanges object.</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 <section id="module-rds2py.read_mae">
 <span id="rds2py-read-mae-module"></span><h2>rds2py.read_mae module<a class="headerlink" href="#module-rds2py.read_mae" title="Link to this heading">¶</a></h2>
@@ -1536,6 +1563,7 @@ objects into their Python equivalents.</p>
 <li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_rsize"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_rsize()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_rtype"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_rtype()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_string_arr"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_string_arr()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.get_symbol_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.get_symbol_name()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.load_attribute_by_name"><code class="docutils literal notranslate"><span class="pre">RdsReader.load_attribute_by_name()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.lib_rds_parser.RdsReader.load_vec_element"><code class="docutils literal notranslate"><span class="pre">RdsReader.load_vec_element()</span></code></a></li>
 </ul>
@@ -1589,6 +1617,7 @@ objects into their Python equivalents.</p>
 <li><a class="reference internal" href="#module-rds2py.read_granges">rds2py.read_granges module</a><ul>
 <li><a class="reference internal" href="#rds2py.read_granges.read_genomic_ranges"><code class="docutils literal notranslate"><span class="pre">read_genomic_ranges()</span></code></a></li>
 <li><a class="reference internal" href="#rds2py.read_granges.read_granges_list"><code class="docutils literal notranslate"><span class="pre">read_granges_list()</span></code></a></li>
+<li><a class="reference internal" href="#rds2py.read_granges.read_iranges"><code class="docutils literal notranslate"><span class="pre">read_iranges()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#module-rds2py.read_mae">rds2py.read_mae module</a><ul>
@@ -1646,7 +1675,7 @@ objects into their Python equivalents.</p>
       
     </aside>
   </div>
-</div><script src="../_static/documentation_options.js?v=82662543"></script>
+</div><script src="../_static/documentation_options.js?v=261ea15a"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/scripts/furo.js?v=46bd48cc"></script>

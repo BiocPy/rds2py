@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Contributing" href="contributing.html"><link rel="prev" title="rds2py" href="readme.html">
+<link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Custom Serialization and Deserialization Guide" href="custom_serialization.html"><link rel="prev" title="rds2py" href="readme.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>Tutorial - rds2py 0.10.0 documentation</title>
+        <title>Tutorial: Getting Started with rds2py - rds2py 0.10.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.10.0 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.10.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.10.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -193,6 +193,7 @@
   <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="readme.html">Overview</a></li>
 <li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom_serialization.html">Custom Serialization Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributions &amp; Help</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="authors.html">Authors</a></li>
@@ -239,70 +240,131 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section class="tex2jax_ignore mathjax_ignore" id="tutorial">
-<h1>Tutorial<a class="headerlink" href="#tutorial" title="Link to this heading">¶</a></h1>
-<p>If you do not have an RDS object handy, feel free to download one from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</p>
-<section id="basic-usage">
-<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_rds</span>
-<span class="n">r_obj</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
+          <section class="tex2jax_ignore mathjax_ignore" id="tutorial-getting-started-with-rds2py">
+<h1>Tutorial: Getting Started with rds2py<a class="headerlink" href="#tutorial-getting-started-with-rds2py" title="Link to this heading">¶</a></h1>
+<p>Welcome to the <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> tutorial! In this guide, we’ll walk through how to read and write RDS and RData files in Python, parse objects into raw representations, and work with Python/BiocPy data structures.</p>
+<hr class="docutils" />
+<section id="basic-reading">
+<h2>1. Basic Reading<a class="headerlink" href="#basic-reading" title="Link to this heading">¶</a></h2>
+<p>Reading an RDS file is designed to be a one-line operation. Under the hood, <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> reads the data format and instantiates corresponding Python or Bioconductor classes (from the <code class="docutils literal notranslate"><span class="pre">BiocPy</span></code> ecosystem) where possible.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_rds</span><span class="p">,</span> <span class="n">read_rda</span>
+
+<span class="c1"># 1. Read a single R object from an RDS file</span>
+<span class="n">my_object</span> <span class="o">=</span> <span class="n">read_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Read all objects from an RData workspace file</span>
+<span class="c1"># This returns a dictionary mapping variable names to their Python counterparts</span>
+<span class="n">workspace</span> <span class="o">=</span> <span class="n">read_rda</span><span class="p">(</span><span class="s2">&quot;path/to/file.rda&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">workspace</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Loaded object: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The returned <code class="docutils literal notranslate"><span class="pre">r_obj</span></code> either returns an appropriate Python class if a parser is already implemented or returns the dictionary containing the data from the RDS file.</p>
+<p><em>Note: If you need an RDS file to experiment with, you can download some pre-made test files from <a class="reference external" href="https://github.com/jkanche/random-test-files/releases">single-cell-test-files</a>.</em></p>
 </section>
-<section id="write-your-own-reader">
-<h2>Write-your-own-reader<a class="headerlink" href="#write-your-own-reader" title="Link to this heading">¶</a></h2>
-<p>In addition, the package provides the dictionary representation of the RDS file, allowing users to write their own custom readers into appropriate Python representations.</p>
+<hr class="docutils" />
+<section id="basic-writing-saving">
+<h2>2. Basic Writing (Saving)<a class="headerlink" href="#basic-writing-saving" title="Link to this heading">¶</a></h2>
+<p>You can write Python data structures back to R’s native formats. <code class="docutils literal notranslate"><span class="pre">rds2py</span></code> automatically translates standard Python lists, NumPy arrays, SciPy sparse matrices, and BiocPy S4 objects into the correct representation formats.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_rds</span><span class="p">,</span> <span class="n">write_rda</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">genomicranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">GenomicRanges</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">iranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">IRanges</span>
+
+<span class="c1"># 1. Save a NumPy array as an RDS integer vector</span>
+<span class="n">data_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+<span class="n">write_rds</span><span class="p">(</span><span class="n">data_array</span><span class="p">,</span> <span class="s2">&quot;vector.rds&quot;</span><span class="p">)</span>
+
+<span class="c1"># 2. Save a Bioconductor GenomicRanges S4 object</span>
+<span class="n">gr</span> <span class="o">=</span> <span class="n">GenomicRanges</span><span class="p">(</span>
+    <span class="n">seqnames</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;chr1&quot;</span><span class="p">,</span> <span class="s2">&quot;chr2&quot;</span><span class="p">],</span>
+    <span class="n">ranges</span><span class="o">=</span><span class="n">IRanges</span><span class="p">(</span><span class="n">start</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">]),</span>
+    <span class="n">strand</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;-&quot;</span><span class="p">]</span>
+<span class="p">)</span>
+<span class="n">write_rds</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="s2">&quot;granges.rds&quot;</span><span class="p">)</span>
+
+<span class="c1"># 3. Save multiple objects to an RData workspace file</span>
+<span class="n">workspace_objects</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;my_data&quot;</span><span class="p">:</span> <span class="n">data_array</span><span class="p">,</span>
+    <span class="s2">&quot;my_ranges&quot;</span><span class="p">:</span> <span class="n">gr</span>
+<span class="p">}</span>
+<span class="n">write_rda</span><span class="p">(</span><span class="n">workspace_objects</span><span class="p">,</span> <span class="s2">&quot;workspace.rda&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<hr class="docutils" />
+<section id="raw-dictionary-parsing-custom-readers">
+<h2>3. Raw Dictionary Parsing (Custom Readers)<a class="headerlink" href="#raw-dictionary-parsing-custom-readers" title="Link to this heading">¶</a></h2>
+<p>Sometimes you want to inspect the structure of an RDS file without automatically converting it to Python classes, or you might want to write a custom reader for an unsupported S4 class.</p>
+<p>For these scenarios, use <code class="docutils literal notranslate"><span class="pre">parse_rds</span></code> or <code class="docutils literal notranslate"><span class="pre">parse_rda</span></code>. They return the raw RDS tree structure as nested Python dictionaries:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_rds</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rds2py.read_granges</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_genomic_ranges</span>
 
-<span class="n">data</span> <span class="o">=</span> <span class="n">parse_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="c1"># Parse the RDS file into a raw nested dictionary representation</span>
+<span class="n">raw_representation</span> <span class="o">=</span> <span class="n">parse_rds</span><span class="p">(</span><span class="s2">&quot;path/to/file.rds&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">raw_representation</span><span class="p">)</span>
 
-<span class="c1"># now write your own parser to convert this dictionary.</span>
+<span class="c1"># If you know the underlying S4 class is a GRanges object,</span>
+<span class="c1"># you can use a parser directly:</span>
+<span class="k">if</span> <span class="n">raw_representation</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;class_name&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;GRanges&quot;</span><span class="p">:</span>
+    <span class="n">gr</span> <span class="o">=</span> <span class="n">read_genomic_ranges</span><span class="p">(</span><span class="n">raw_representation</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">gr</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
+<hr class="docutils" />
 <section id="type-conversion-reference">
 <h2>Type Conversion Reference<a class="headerlink" href="#type-conversion-reference" title="Link to this heading">¶</a></h2>
+<p>The following table summarizes how basic R data structures map to Python, NumPy, and SciPy types:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>R Type</p></th>
-<th class="head"><p>Python/NumPy Type</p></th>
+<tr class="row-odd"><th class="head text-left"><p>R Type / Class</p></th>
+<th class="head text-left"><p>Python / NumPy / SciPy Counterpart</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>numeric</p></td>
-<td><p>numpy.ndarray (float64)</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>numeric</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> (<code class="docutils literal notranslate"><span class="pre">float64</span></code>)</p></td>
 </tr>
-<tr class="row-odd"><td><p>integer</p></td>
-<td><p>numpy.ndarray (int32)</p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>integer</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> (<code class="docutils literal notranslate"><span class="pre">int32</span></code>)</p></td>
 </tr>
-<tr class="row-even"><td><p>character</p></td>
-<td><p>list of str</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>logical</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> (<code class="docutils literal notranslate"><span class="pre">bool</span></code>)</p></td>
 </tr>
-<tr class="row-odd"><td><p>logical</p></td>
-<td><p>numpy.ndarray (bool)</p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>character</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">list</span></code> of <code class="docutils literal notranslate"><span class="pre">str</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>factor</p></td>
-<td><p>list</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>factor</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">list</span></code> / representation levels</p></td>
 </tr>
-<tr class="row-odd"><td><p>data.frame</p></td>
-<td><p>BiocFrame</p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>matrix (dense)</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>matrix</p></td>
-<td><p>numpy.ndarray or scipy.sparse matrix</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>dgCMatrix</strong> (Column-sparse)</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">scipy.sparse.csc_matrix</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p>dgCMatrix</p></td>
-<td><p>scipy.sparse.csc_matrix</p></td>
+<tr class="row-odd"><td class="text-left"><p><strong>dgRMatrix</strong> (Row-sparse)</p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p>dgRMatrix</p></td>
-<td><p>scipy.sparse.csr_matrix</p></td>
+<tr class="row-even"><td class="text-left"><p><strong>data.frame</strong> / <strong>DFrame</strong></p></td>
+<td class="text-left"><p><code class="docutils literal notranslate"><span class="pre">biocframe.BiocFrame</span></code></p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Check out the module reference for more information on these classes.</p>
+<section id="biocpy-ecosystem-support">
+<h3>BiocPy Ecosystem Support<a class="headerlink" href="#biocpy-ecosystem-support" title="Link to this heading">¶</a></h3>
+<p>If optional dependencies are installed (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">rds2py[optional]</span></code>), R S4 classes are automatically converted:</p>
+<ul class="simple">
+<li><p><strong>GenomicRanges</strong> / <strong>GRanges</strong> &lt;-&gt; <code class="docutils literal notranslate"><span class="pre">genomicranges.GenomicRanges</span></code></p></li>
+<li><p><strong>GenomicRangesList</strong> / <strong>GRangesList</strong> &lt;-&gt; <code class="docutils literal notranslate"><span class="pre">genomicranges.CompressedGenomicRangesList</span></code></p></li>
+<li><p><strong>SummarizedExperiment</strong> &lt;-&gt; <code class="docutils literal notranslate"><span class="pre">summarizedexperiment.SummarizedExperiment</span></code></p></li>
+<li><p><strong>RangedSummarizedExperiment</strong> &lt;-&gt; <code class="docutils literal notranslate"><span class="pre">summarizedexperiment.RangedSummarizedExperiment</span></code></p></li>
+<li><p><strong>SingleCellExperiment</strong> &lt;-&gt; <code class="docutils literal notranslate"><span class="pre">singlecellexperiment.SingleCellExperiment</span></code></p></li>
+<li><p><strong>MultiAssayExperiment</strong> &lt;-&gt; <code class="docutils literal notranslate"><span class="pre">multiassayexperiment.MultiAssayExperiment</span></code></p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -311,12 +373,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="contributing.html">
+          <a class="next-page" href="custom_serialization.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">Contributing</div>
+                <div class="title">Custom Serialization and Deserialization Guide</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -361,10 +423,14 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">Tutorial</a><ul>
-<li><a class="reference internal" href="#basic-usage">Basic Usage</a></li>
-<li><a class="reference internal" href="#write-your-own-reader">Write-your-own-reader</a></li>
-<li><a class="reference internal" href="#type-conversion-reference">Type Conversion Reference</a></li>
+<li><a class="reference internal" href="#">Tutorial: Getting Started with rds2py</a><ul>
+<li><a class="reference internal" href="#basic-reading">1. Basic Reading</a></li>
+<li><a class="reference internal" href="#basic-writing-saving">2. Basic Writing (Saving)</a></li>
+<li><a class="reference internal" href="#raw-dictionary-parsing-custom-readers">3. Raw Dictionary Parsing (Custom Readers)</a></li>
+<li><a class="reference internal" href="#type-conversion-reference">Type Conversion Reference</a><ul>
+<li><a class="reference internal" href="#biocpy-ecosystem-support">BiocPy Ecosystem Support</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -376,7 +442,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=82662543"></script>
+</div><script src="_static/documentation_options.js?v=261ea15a"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

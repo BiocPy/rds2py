@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py.read_granges - rds2py 0.10.0 documentation</title>
+        <title>rds2py.read_granges - rds2py 0.10.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -160,7 +160,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">rds2py 0.10.0 documentation</div></a>
+      <a href="../../index.html"><div class="brand">rds2py 0.10.1 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -181,7 +181,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.10.0 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.1 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -192,6 +192,7 @@
   <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../readme.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorial.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../custom_serialization.html">Custom Serialization Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contributing.html">Contributions &amp; Help</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../authors.html">Authors</a></li>
@@ -361,6 +362,56 @@
         <span class="n">unlist_data</span><span class="o">=</span><span class="n">_gre</span><span class="p">,</span> <span class="n">partitioning</span><span class="o">=</span><span class="n">_part_obj</span><span class="p">,</span> <span class="n">element_metadata</span><span class="o">=</span><span class="n">element_metadata</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span>
     <span class="p">)</span></div>
 
+
+
+<div class="viewcode-block" id="read_iranges">
+<a class="viewcode-back" href="../../api/rds2py.html#rds2py.read_granges.read_iranges">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_iranges</span><span class="p">(</span><span class="n">robject</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert an R `IRanges` object to a Python `IRanges` object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        robject:</span>
+<span class="sd">            Dictionary containing parsed IRanges data.</span>
+
+<span class="sd">        **kwargs:</span>
+<span class="sd">            Additional arguments.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        A Python IRanges object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">iranges</span><span class="w"> </span><span class="kn">import</span> <span class="n">IRanges</span>
+
+    <span class="n">_cls</span> <span class="o">=</span> <span class="n">get_class</span><span class="p">(</span><span class="n">robject</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">_cls</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;IRanges&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;obj is not &#39;IRanges&#39;, but is `</span><span class="si">{</span><span class="n">_cls</span><span class="si">}</span><span class="s2">`.&quot;</span><span class="p">)</span>
+
+    <span class="n">_start</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;start&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">_width</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;width&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">_names</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;NAMES&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">_tmp_names</span> <span class="o">=</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;NAMES&quot;</span><span class="p">]</span>
+        <span class="n">_names</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">_tmp_names</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">_names</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_names</span><span class="p">)</span>
+
+    <span class="n">_mcols</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;elementMetadata&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">_mcols</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;elementMetadata&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">_metadata</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="s2">&quot;metadata&quot;</span> <span class="ow">in</span> <span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">]:</span>
+        <span class="n">_metadata</span> <span class="o">=</span> <span class="n">_dispatcher</span><span class="p">(</span><span class="n">robject</span><span class="p">[</span><span class="s2">&quot;attributes&quot;</span><span class="p">][</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">IRanges</span><span class="p">(</span>
+        <span class="n">start</span><span class="o">=</span><span class="n">_start</span><span class="p">,</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">_width</span><span class="p">,</span>
+        <span class="n">names</span><span class="o">=</span><span class="n">_names</span><span class="p">,</span>
+        <span class="n">mcols</span><span class="o">=</span><span class="n">_mcols</span><span class="p">,</span>
+        <span class="n">metadata</span><span class="o">=</span><span class="n">_metadata</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
 </pre></div>
         </article>
       </div>
@@ -393,7 +444,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=82662543"></script>
+</div><script src="../../_static/documentation_options.js?v=261ea15a"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
