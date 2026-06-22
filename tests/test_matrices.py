@@ -141,3 +141,57 @@ def test_matrix_read_errors_and_dgrmatrix():
     }
     res_dense = _as_dense_matrix(dense_no_names)
     assert isinstance(res_dense, np.ndarray)
+
+    dense_null_names = {
+        "type": "ndarray",
+        "class_name": "ndarray",
+        "data": np.array([1, 2, 3, 4], dtype=np.int32),
+        "attributes": {
+            "dim": {"type": "integer", "class_name": "integer_vector", "data": np.array([2, 2])},
+            "dimnames": {"type": "null"},
+        },
+    }
+    res_null_names = _as_dense_matrix(dense_null_names)
+    assert isinstance(res_null_names, np.ndarray)
+
+    dgr_none_names = {
+        "type": "S4",
+        "class_name": "dgRMatrix",
+        "attributes": {
+            "x": {"type": "double", "class_name": "double_vector", "data": np.array([1.0, 2.0])},
+            "i": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1])},
+            "p": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1, 2])},
+            "Dim": {"type": "integer", "class_name": "integer_vector", "data": np.array([2, 2])},
+            "Dimnames": {
+                "type": "vector",
+                "class_name": "vector",
+                "data": [{"type": "null"}, {"type": "null"}],
+                "attributes": {},
+            },
+        },
+    }
+    res_dgr_none_names = _as_sparse_matrix(dgr_none_names)
+    assert isinstance(res_dgr_none_names, sp.spmatrix)
+    assert not isinstance(res_dgr_none_names, MatrixWrapper)
+
+    dgr_null_names = {
+        "type": "S4",
+        "class_name": "dgRMatrix",
+        "attributes": {
+            "x": {"type": "double", "class_name": "double_vector", "data": np.array([1.0, 2.0])},
+            "i": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1])},
+            "p": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1, 2])},
+            "Dim": {"type": "integer", "class_name": "integer_vector", "data": np.array([2, 2])},
+            "Dimnames": {"type": "null"},
+        },
+    }
+    res_dgr_null_names = _as_sparse_matrix(dgr_null_names)
+    assert isinstance(res_dgr_null_names, sp.spmatrix)
+    assert not isinstance(res_dgr_null_names, MatrixWrapper)
+
+    from rds2py import save_rds
+
+    wrapper_no_names = MatrixWrapper(np.array([[1, 2], [3, 4]]), dimnames=None)
+    res_no_names = save_rds(wrapper_no_names)
+    assert isinstance(res_no_names, dict)
+    assert "dimnames" not in res_no_names["attributes"]

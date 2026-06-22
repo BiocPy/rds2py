@@ -20,9 +20,13 @@ def test_roundtrip_factors():
 
     from biocutils import Factor
 
-    from rds2py import read_rds, write_rds
+    from rds2py import read_rds, save_rds, write_rds
 
     factor = Factor([0, 1, 0], levels=["A", "B"])
+    res = save_rds(factor)
+    assert isinstance(res, dict)
+    assert res["type"] == "integer"
+
     with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as tmp:
         rds_path = tmp.name
 
@@ -37,6 +41,7 @@ def test_roundtrip_factors():
 
 def test_read_factor_errors():
     import pytest
+
     from rds2py.read_factor import read_factor
 
     bad_obj = {"type": "S4", "class_name": "BadClass", "attributes": {}}
@@ -47,6 +52,7 @@ def test_read_factor_errors():
 
 def test_read_factor_lengths_and_no_levels():
     import pytest
+
     from rds2py.read_factor import read_factor
 
     mock_factor_lengths = {

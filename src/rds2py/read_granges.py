@@ -158,7 +158,7 @@ def read_iranges(robject: dict, **kwargs):
 
     _metadata = None
     if "metadata" in robject["attributes"]:
-        _metadata = _metadata = _dispatcher(robject["attributes"]["metadata"], **kwargs)
+        _metadata = _dispatcher(robject["attributes"]["metadata"], **kwargs)
 
     return IRanges(
         start=_start,
