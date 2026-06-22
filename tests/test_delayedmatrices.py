@@ -72,7 +72,6 @@ def test_roundtrip_h5sparse():
 
 def test_delayedarray_extra_branches_and_errors():
     import pytest
-    from delayedarray import DelayedArray
     from hdf5array import Hdf5CompressedSparseMatrix
 
     from rds2py import save_rds

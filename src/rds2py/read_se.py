@@ -52,7 +52,7 @@ def read_summarized_experiment(robject: dict, **kwargs):
 
     if _cls not in ["SummarizedExperiment"]:
         raise RuntimeError(f"`robject` does not contain a 'SummarizedExperiment' object, contains `{_cls}`.")
-    
+
     # parse assays  names
     robj_asys = {}
     assay_dims = (0, 0)
