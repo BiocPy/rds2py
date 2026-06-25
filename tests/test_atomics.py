@@ -148,4 +148,3 @@ def test_save_numpy_scalars():
     res_s = save_rds(s_scalar)
     assert isinstance(res_s, str)
     assert res_s == "hello"
-
