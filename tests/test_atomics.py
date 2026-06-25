@@ -119,3 +119,32 @@ def test_save_names_directly():
     finally:
         if os.path.exists(path):
             os.unlink(path)
+
+
+def test_save_numpy_scalars():
+    import numpy as np
+    from rds2py import save_rds
+
+    # Test integer scalar
+    i_scalar = np.int32(42)
+    res_i = save_rds(i_scalar)
+    assert isinstance(res_i, int)
+    assert res_i == 42
+
+    # Test float scalar
+    f_scalar = np.float64(3.14)
+    res_f = save_rds(f_scalar)
+    assert isinstance(res_f, float)
+    assert res_f == 3.14
+
+    # Test bool scalar
+    b_scalar = np.bool_(True)
+    res_b = save_rds(b_scalar)
+    assert isinstance(res_b, bool)
+    assert res_b is True
+
+    # Test string scalar
+    s_scalar = np.str_("hello")
+    res_s = save_rds(s_scalar)
+    assert isinstance(res_s, str)
+    assert res_s == "hello"

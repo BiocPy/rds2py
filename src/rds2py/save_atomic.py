@@ -26,6 +26,11 @@ def _save_rds_primitives(x, path: Optional[str] = None):
     return x
 
 
+@save_rds.register(np.generic)
+def _save_rds_numpy_scalars(x: np.generic, path: Optional[str] = None):
+    return save_rds(x.item(), path=path)
+
+
 @save_rds.register(BooleanList)
 def _save_rds_booleanlist(x: BooleanList, path: Optional[str] = None):
     from .lib_rds_parser import write_rds as _write_rds_native
