@@ -118,7 +118,7 @@ def test_matrix_read_errors_and_dgrmatrix():
         "class_name": "dgRMatrix",
         "attributes": {
             "x": {"type": "double", "data": np.array([1.0, 2.0])},
-            "i": {"type": "integer", "data": np.array([0, 1])},
+            "j": {"type": "integer", "data": np.array([0, 1])},
             "p": {"type": "integer", "data": np.array([0, 1, 2])},
             "Dim": {"type": "integer", "data": np.array([2, 2])},
         },
@@ -159,7 +159,7 @@ def test_matrix_read_errors_and_dgrmatrix():
         "class_name": "dgRMatrix",
         "attributes": {
             "x": {"type": "double", "class_name": "double_vector", "data": np.array([1.0, 2.0])},
-            "i": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1])},
+            "j": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1])},
             "p": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1, 2])},
             "Dim": {"type": "integer", "class_name": "integer_vector", "data": np.array([2, 2])},
             "Dimnames": {
@@ -179,7 +179,7 @@ def test_matrix_read_errors_and_dgrmatrix():
         "class_name": "dgRMatrix",
         "attributes": {
             "x": {"type": "double", "class_name": "double_vector", "data": np.array([1.0, 2.0])},
-            "i": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1])},
+            "j": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1])},
             "p": {"type": "integer", "class_name": "integer_vector", "data": np.array([0, 1, 2])},
             "Dim": {"type": "integer", "class_name": "integer_vector", "data": np.array([2, 2])},
             "Dimnames": {"type": "null"},
@@ -195,3 +195,49 @@ def test_matrix_read_errors_and_dgrmatrix():
     res_no_names = save_rds(wrapper_no_names)
     assert isinstance(res_no_names, dict)
     assert "dimnames" not in res_no_names["attributes"]
+
+
+def test_save_sparse_matrices():
+    import numpy as np
+    from scipy import sparse as sp
+
+    from rds2py import save_rds
+
+    # CSC
+    csc = sp.csc_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    res_csc = save_rds(csc)
+    assert res_csc["type"] == "S4"
+    assert res_csc["class_name"] == "dgCMatrix"
+    assert res_csc["package_name"] == "Matrix"
+    assert np.allclose(res_csc["attributes"]["x"], [1.0, 2.0])
+    assert np.allclose(res_csc["attributes"]["i"], [0, 1])
+    assert np.allclose(res_csc["attributes"]["p"], [0, 1, 2])
+
+    # CSR
+    csr = sp.csr_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    res_csr = save_rds(csr)
+    assert res_csr["type"] == "S4"
+    assert res_csr["class_name"] == "dgRMatrix"
+    assert res_csr["package_name"] == "Matrix"
+    assert np.allclose(res_csr["attributes"]["x"], [1.0, 2.0])
+    assert np.allclose(res_csr["attributes"]["j"], [0, 1])
+    assert np.allclose(res_csr["attributes"]["p"], [0, 1, 2])
+
+    # COO
+    coo = sp.coo_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    res_coo = save_rds(coo)
+    assert res_coo["type"] == "S4"
+    assert res_coo["class_name"] == "dgTMatrix"
+    assert res_coo["package_name"] == "Matrix"
+    assert np.allclose(res_coo["attributes"]["x"], [1.0, 2.0])
+    assert np.allclose(res_coo["attributes"]["i"], [0, 1])
+    assert np.allclose(res_coo["attributes"]["j"], [0, 1])
+
+    # MatrixWrapper with Sparse Matrix and Dimnames
+    wrapper = MatrixWrapper(csc, dimnames=[["r1", "r2"], ["c1", "c2"]])
+    res_wrap = save_rds(wrapper)
+    assert res_wrap["type"] == "S4"
+    assert res_wrap["class_name"] == "dgCMatrix"
+    assert "Dimnames" in res_wrap["attributes"]
+    assert res_wrap["attributes"]["Dimnames"]["data"][0] == ["r1", "r2"]
+    assert res_wrap["attributes"]["Dimnames"]["data"][1] == ["c1", "c2"]

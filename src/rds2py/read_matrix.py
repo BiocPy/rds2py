@@ -80,7 +80,7 @@ def _as_sparse_matrix(robject: dict, **kwargs):
         mat = csr_matrix(
             (
                 robject["attributes"]["x"]["data"],
-                robject["attributes"]["i"]["data"],
+                robject["attributes"]["j"]["data"],
                 robject["attributes"]["p"]["data"],
             ),
             shape=tuple(robject["attributes"]["Dim"]["data"].tolist()),

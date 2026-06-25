@@ -78,6 +78,9 @@ if is_package_installed("compressed_lists", verbose=True):
             "attributes": {
                 "end": save_rds(_get(x, "ends")),
                 "NAMES": save_rds(_get(x, "names")),
+                "elementType": {"type": "string", "data": ["ANY"]},
+                "elementMetadata": {"type": "null"},
+                "metadata": {"type": "vector", "data": []},
             },
         }
 
