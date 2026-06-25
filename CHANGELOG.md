@@ -7,6 +7,7 @@
 - Read `symbols` registered in RDS objects.
 - Fixed an issue with S4 classes not properly saved as RDS files.
 - Implement `save_rds` generic for sparse matrix formats (csc, csr and coo).
+- Implement `save_rds` for NumPy scalars.
 
 ## Version 0.9.0 - 0.9.1
 
