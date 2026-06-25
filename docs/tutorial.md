@@ -92,8 +92,9 @@ The following table summarizes how basic R data structures map to Python, NumPy,
 | **character** | `list` of `str` |
 | **factor** | `list` / representation levels |
 | **matrix (dense)** | `numpy.ndarray` |
-| **dgCMatrix** (Column-sparse) | `scipy.sparse.csc_matrix` |
-| **dgRMatrix** (Row-sparse) | `scipy.sparse.csr_matrix` |
+| **dgCMatrix** (Column-sparse) | `scipy.sparse.csc_matrix` / `csc_array` |
+| **dgRMatrix** (Row-sparse) | `scipy.sparse.csr_matrix` / `csr_array` |
+| **dgTMatrix** (Triplet-sparse) | `scipy.sparse.coo_matrix` / `coo_array` |
 | **data.frame** / **DFrame** | `biocframe.BiocFrame` |
 
 ### BiocPy Ecosystem Support

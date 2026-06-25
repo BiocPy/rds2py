@@ -231,3 +231,89 @@ def test_roundtrip_r_biocframe():
     finally:
         if os.path.exists(path):
             os.unlink(path)
+
+
+def test_roundtrip_r_sparse_matrices():
+    import scipy.sparse as sp
+
+    # CSC Matrix -> dgCMatrix
+    csc = sp.csc_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as f:
+        path = f.name
+    try:
+        write_rds(csc, path)
+        script = f"""
+        library(Matrix)
+        obj <- readRDS("{path}")
+        stopifnot(is(obj, "dgCMatrix"))
+        stopifnot(all(dim(obj) == c(2, 2)))
+        stopifnot(all(as.matrix(obj) == matrix(c(1, 0, 0, 2), nrow=2)))
+        """
+        run_r_script(script)
+    finally:
+        if os.path.exists(path):
+            os.unlink(path)
+
+    # CSR Matrix -> dgRMatrix
+    csr = sp.csr_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as f:
+        path = f.name
+    try:
+        write_rds(csr, path)
+        script = f"""
+        library(Matrix)
+        obj <- readRDS("{path}")
+        stopifnot(is(obj, "dgRMatrix"))
+        stopifnot(all(dim(obj) == c(2, 2)))
+        stopifnot(all(as.matrix(obj) == matrix(c(1, 0, 0, 2), nrow=2)))
+        """
+        run_r_script(script)
+    finally:
+        if os.path.exists(path):
+            os.unlink(path)
+
+    # COO Matrix -> dgTMatrix
+    coo = sp.coo_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as f:
+        path = f.name
+    try:
+        write_rds(coo, path)
+        script = f"""
+        library(Matrix)
+        obj <- readRDS("{path}")
+        stopifnot(is(obj, "dgTMatrix"))
+        stopifnot(all(dim(obj) == c(2, 2)))
+        stopifnot(all(as.matrix(obj) == matrix(c(1, 0, 0, 2), nrow=2)))
+        """
+        run_r_script(script)
+    finally:
+        if os.path.exists(path):
+            os.unlink(path)
+
+
+def test_roundtrip_r_singlecellexperiment_sparse_assay():
+    import scipy.sparse as sp
+
+    # SCE with a sparse matrix assay
+    csc = sp.csc_matrix([[1, 0], [0, 2]], dtype=np.float64)
+    sce = SingleCellExperiment(
+        assays={"counts": csc},
+    )
+
+    with tempfile.NamedTemporaryFile(suffix=".rds", delete=False) as f:
+        path = f.name
+
+    try:
+        write_rds(sce, path)
+        script = f"""
+        library(SingleCellExperiment)
+        obj <- readRDS("{path}")
+        stopifnot(is(obj, "SingleCellExperiment"))
+        stopifnot(all(dim(obj) == c(2, 2)))
+        stopifnot(is(assay(obj), "dgCMatrix"))
+        stopifnot(all(as.matrix(assay(obj)) == matrix(c(1, 0, 0, 2), nrow=2)))
+        """
+        run_r_script(script)
+    finally:
+        if os.path.exists(path):
+            os.unlink(path)
