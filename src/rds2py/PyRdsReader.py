@@ -122,9 +122,12 @@ class PyRdsParser:
         """Handle special R data representations."""
         try:
             # Special handling for R integer containing NA
-            if size != 2:
-                if any(data == self.R_MIN):
-                    return np.array([np.nan if x == self.R_MIN else x for x in data])
+            if rtype == "integer" and size != 2:
+                mask = data == self.R_MIN
+                if mask.any():
+                    float_data = data.astype(np.float64)
+                    float_data[mask] = np.nan
+                    return float_data
 
             # Special handling for R integer sequences
             if rtype == "integer" and size == 2 and data[0] == self.R_MIN and data[1] < 0:
@@ -140,7 +143,15 @@ class PyRdsParser:
         try:
             data = obj.get_numeric_data()
             if rtype == "boolean":
-                return data.astype(bool)
+                mask = data == self.R_MIN
+                if mask.any():
+                    res = data.astype(object)
+                    res[mask] = None
+                    non_na_mask = ~mask
+                    res[non_na_mask] = res[non_na_mask].astype(bool)
+                    return res
+                else:
+                    return data.astype(bool)
 
             return data
         except Exception as e:

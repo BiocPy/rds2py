@@ -34,6 +34,8 @@ def test_read_atomic_logical_na():
     assert arr is not None
     assert isinstance(arr, BooleanList)
     assert len(arr) > 0
+    assert None in arr
+    assert sum(1 for x in arr if x is None) == 10
 
 
 ## Doubles/Floats
@@ -123,6 +125,7 @@ def test_save_names_directly():
 
 def test_save_numpy_scalars():
     import numpy as np
+
     from rds2py import save_rds
 
     # Test integer scalar
