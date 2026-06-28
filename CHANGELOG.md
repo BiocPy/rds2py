@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.10.0 - 0.10.2
+## Version 0.10.0 - 0.10.3
 
 - Added methods to write to RDS/RData files.
 - Supports atomic types, generic dictionaries/lists, and **BiocPy objects**.

@@ -289,12 +289,12 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
         // bool arrays
         if (dtype.is(py::dtype::of<bool>())) {
             auto buf = arr.cast<py::array_t<bool, py::array::c_style | py::array::forcecast>>();
-            auto r = buf.unchecked<1>();
             auto vec = std::make_unique<rds2cpp::LogicalVector>();
 
-            vec->data.reserve(r.shape(0));
-            for (ssize_t i = 0; i < r.shape(0); ++i) {
-                vec->data.push_back(r(i) ? 1 : 0);
+            vec->data.reserve(buf.size());
+            const bool* ptr = buf.data();
+            for (size_t i = 0; i < buf.size(); ++i) {
+                vec->data.push_back(ptr[i] ? 1 : 0);
             }
 
             return vec;
@@ -306,14 +306,8 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
             py::isinstance<py::array_t<int16_t>>(arr) ||
             py::isinstance<py::array_t<int8_t>>(arr)) {
             auto buf = arr.cast<py::array_t<int32_t, py::array::c_style | py::array::forcecast>>();
-            auto r = buf.unchecked<1>();
             auto vec = std::make_unique<rds2cpp::IntegerVector>();
-
-            vec->data.reserve(r.shape(0));
-            for (ssize_t i = 0; i < r.shape(0); ++i) {
-                vec->data.push_back(r(i));
-            }
-
+            vec->data.assign(buf.data(), buf.data() + buf.size());
             return vec;
         }
 
@@ -321,13 +315,8 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
         if (py::isinstance<py::array_t<double>>(arr) ||
             py::isinstance<py::array_t<float>>(arr)) {
             auto buf = arr.cast<py::array_t<double, py::array::c_style | py::array::forcecast>>();
-            auto r = buf.unchecked<1>();
             auto vec = std::make_unique<rds2cpp::DoubleVector>();
-
-            vec->data.reserve(r.shape(0));
-            for (ssize_t i = 0; i < r.shape(0); ++i) {
-                vec->data.push_back(r(i));
-            }
+            vec->data.assign(buf.data(), buf.data() + buf.size());
             return vec;
         }
 
@@ -376,9 +365,7 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
                     auto data_obj = d["data"];
                     if (py::isinstance<py::array>(data_obj)) {
                         auto arr = data_obj.cast<py::array_t<int32_t, py::array::c_style | py::array::forcecast>>();
-                        auto r = arr.unchecked<1>();
-                        vec->data.reserve(r.shape(0));
-                        for (ssize_t i = 0; i < r.shape(0); ++i) vec->data.push_back(r(i));
+                        vec->data.assign(arr.data(), arr.data() + arr.size());
                     } else {
                         auto seq = data_obj.cast<py::sequence>();
                         vec->data.reserve(py::len(seq));
@@ -409,9 +396,7 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
                     auto data_obj = d["data"];
                     if (py::isinstance<py::array>(data_obj)) {
                         auto arr = data_obj.cast<py::array_t<double, py::array::c_style | py::array::forcecast>>();
-                        auto r = arr.unchecked<1>();
-                        vec->data.reserve(r.shape(0));
-                        for (ssize_t i = 0; i < r.shape(0); ++i) vec->data.push_back(r(i));
+                        vec->data.assign(arr.data(), arr.data() + arr.size());
                     } else {
                         auto seq = data_obj.cast<py::sequence>();
                         vec->data.reserve(py::len(seq));
@@ -442,9 +427,11 @@ std::unique_ptr<rds2cpp::RObject> py_to_robject(const py::object& obj, std::vect
                     auto data_obj = d["data"];
                     if (py::isinstance<py::array>(data_obj)) {
                         auto arr = data_obj.cast<py::array_t<bool, py::array::c_style | py::array::forcecast>>();
-                        auto r = arr.unchecked<1>();
-                        vec->data.reserve(r.shape(0));
-                        for (ssize_t i = 0; i < r.shape(0); ++i) vec->data.push_back(r(i) ? 1 : 0);
+                        vec->data.reserve(arr.size());
+                        const bool* ptr = arr.data();
+                        for (size_t i = 0; i < arr.size(); ++i) {
+                            vec->data.push_back(ptr[i] ? 1 : 0);
+                        }
                     } else {
                         auto seq = data_obj.cast<py::sequence>();
                         vec->data.reserve(py::len(seq));
