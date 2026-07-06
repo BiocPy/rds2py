@@ -27,6 +27,7 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64 # remove this later so we build for all linux archs
           CIBW_PROJECT_REQUIRES_PYTHON: ">=3.10"
           CIBW_SKIP: pp*
+          CIBW_MANYLINUX_X86_64_IMAGE: manylinux_2_28
 
       - uses: actions/upload-artifact@v4
         with:
