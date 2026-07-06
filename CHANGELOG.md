@@ -1,6 +1,6 @@
 # Changelog
 
-## Version 0.10.0 - 0.10.4
+## Version 0.10.0 - 0.10.5
 
 - Added methods to write to RDS/RData files.
 - Supports atomic types, generic dictionaries/lists, and **BiocPy objects**.
@@ -8,6 +8,7 @@
 - Fixed an issue with S4 classes not properly saved as RDS files.
 - Implement `save_rds` generic for sparse matrix formats (csc, csr and coo).
 - Implement `save_rds` for NumPy scalars.
+- Added `register_parser` decorator to dynamically register custom R-to-Python class parser functions.
 
 ## Version 0.9.0 - 0.9.1
 
