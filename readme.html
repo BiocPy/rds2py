@@ -6,7 +6,7 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Tutorial: Getting Started with rds2py" href="tutorial.html"><link rel="prev" title="rds2py: R Serialization Formats in Python" href="index.html">
 
     <!-- Generated with Sphinx 9.1.0 and Furo 2025.12.19 -->
-        <title>rds2py - rds2py 0.10.4 documentation</title>
+        <title>rds2py - rds2py 0.10.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=7bdb33bb" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">rds2py 0.10.4 documentation</div></a>
+      <a href="index.html"><div class="brand">rds2py 0.10.5 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +182,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
   
-  <span class="sidebar-brand-text">rds2py 0.10.4 documentation</span>
+  <span class="sidebar-brand-text">rds2py 0.10.5 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -296,7 +296,17 @@
 </section>
 <section id="custom-extensions">
 <h3>3. Custom Extensions<a class="headerlink" href="#custom-extensions" title="Link to this heading">¶</a></h3>
-<p>If you have custom S4 representations or class mapping needs, you can parse the raw RDS structure into Python dictionary representations using <code class="docutils literal notranslate"><span class="pre">parse_rds</span></code>/<code class="docutils literal notranslate"><span class="pre">parse_rda</span></code> and apply your custom deserializers:</p>
+<p>For custom R classes or S4 structures, you can register custom parser functions dynamically using the <code class="docutils literal notranslate"><span class="pre">register_parser</span></code> decorator:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">rds2py</span>
+
+<span class="nd">@rds2py</span><span class="o">.</span><span class="n">register_parser</span><span class="p">(</span><span class="s2">&quot;MyCustomRClass&quot;</span><span class="p">)</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">parse_my_custom_class</span><span class="p">(</span><span class="n">robject</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="c1"># Construct your custom Python representation from the raw RDS dictionary</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">robject</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;coerced&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="n">value</span><span class="p">}</span>
+</pre></div>
+</div>
+<p>You can also parse the raw RDS structure into Python dictionary representations using <code class="docutils literal notranslate"><span class="pre">parse_rds</span></code>/<code class="docutils literal notranslate"><span class="pre">parse_rda</span></code> and apply your custom deserializers:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rds2py</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_rds</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">rds2py.read_granges</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_genomic_ranges</span>
 
@@ -488,7 +498,7 @@ information on PyScaffold see <a class="reference external" href="https://pyscaf
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=7e173fe4"></script>
+</div><script src="_static/documentation_options.js?v=da6fbbfd"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
