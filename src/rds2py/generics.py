@@ -165,6 +165,22 @@ def _dispatcher(robject: dict, **kwargs):
     return robject
 
 
+def register_parser(class_name: str):
+    """Decorator to register a custom R-to-Python class parser.
+
+    Args:
+        class_name:
+            The R class name to register.
+    """
+
+    def decorator(func):
+        REGISTRY[class_name] = func
+
+        return func
+
+    return decorator
+
+
 @singledispatch
 def save_rds(x: Any, path: Optional[str] = None):
     """Save a Python object as RDS file.

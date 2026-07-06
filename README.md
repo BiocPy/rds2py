@@ -63,7 +63,19 @@ write_rda(objects, "workspace.rda")
 
 ### 3. Custom Extensions
 
-If you have custom S4 representations or class mapping needs, you can parse the raw RDS structure into Python dictionary representations using `parse_rds`/`parse_rda` and apply your custom deserializers:
+For custom R classes or S4 structures, you can register custom parser functions dynamically using the `register_parser` decorator:
+
+```python
+import rds2py
+
+@rds2py.register_parser("MyCustomRClass")
+def parse_my_custom_class(robject, **kwargs):
+    # Construct your custom Python representation from the raw RDS dictionary
+    value = robject.get("data", None)
+    return {"coerced": True, "value": value}
+```
+
+You can also parse the raw RDS structure into Python dictionary representations using `parse_rds`/`parse_rda` and apply your custom deserializers:
 
 ```python
 from rds2py import parse_rds
