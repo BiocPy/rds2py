@@ -16,5 +16,5 @@ finally:
     del version, PackageNotFoundError
 
 
-from .generics import read_rds, read_rda, save_rds, register_parser
-from .rdsutils import parse_rds, parse_rda, write_rds, write_rda
+from .generics import read_rda, read_rds, register_parser, save_rds
+from .rdsutils import parse_rda, parse_rds, write_rda, write_rds
