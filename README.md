@@ -68,6 +68,7 @@ For custom R classes or S4 structures, you can register custom parser functions 
 ```python
 import rds2py
 
+
 @rds2py.register_parser("MyCustomRClass")
 def parse_my_custom_class(robject, **kwargs):
     # Construct your custom Python representation from the raw RDS dictionary

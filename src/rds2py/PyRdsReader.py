@@ -4,7 +4,7 @@ This module provides the core functionality for parsing RDS files at a binary le
 dictionary representation that can be further processed by higher-level functions.
 """
 
-from typing import Any, Dict, List, Union
+from typing import Any
 from warnings import warn
 
 import numpy as np
@@ -14,8 +14,6 @@ from .lib_rds_parser import RdsObject, RdsReader
 
 class PyRdsParserError(Exception):
     """Exception raised for errors during RDS parsing."""
-
-    pass
 
 
 class PyRdsParser:
@@ -55,9 +53,9 @@ class PyRdsParser:
 
             self.root_object = robject
         except Exception as e:
-            raise PyRdsParserError(f"Error initializing 'PyRdsParser': {str(e)}")
+            raise PyRdsParserError(f"Error initializing 'PyRdsParser': {e!s}")
 
-    def parse(self) -> Dict[str, Any]:
+    def parse(self) -> dict[str, Any]:
         """Parse the entire RDS file into a dictionary structure.
 
         Returns:
@@ -74,12 +72,12 @@ class PyRdsParser:
         try:
             return self._process_object(self.root_object)
         except Exception as e:
-            raise PyRdsParserError(f"Error parsing RDS object: {str(e)}")
+            raise PyRdsParserError(f"Error parsing RDS object: {e!s}")
 
-    def _process_object(self, obj: RdsReader) -> Dict[str, Any]:
+    def _process_object(self, obj: RdsReader) -> dict[str, Any]:
         try:
             rtype = obj.get_rtype()
-            result: Dict[str, Any] = {"type": rtype}
+            result: dict[str, Any] = {"type": rtype}
 
             if rtype == "S4":
                 result["package_name"] = obj.get_package_name()
@@ -116,9 +114,9 @@ class PyRdsParser:
 
             return result
         except Exception as e:
-            raise PyRdsParserError(f"Error processing object: {str(e)}")
+            raise PyRdsParserError(f"Error processing object: {e!s}")
 
-    def _handle_r_special_cases(self, data: np.ndarray, rtype: str, size: int) -> Union[np.ndarray, range]:
+    def _handle_r_special_cases(self, data: np.ndarray, rtype: str, size: int) -> np.ndarray | range:
         """Handle special R data representations."""
         try:
             # Special handling for R integer containing NA
@@ -137,7 +135,7 @@ class PyRdsParser:
 
             return data
         except Exception as e:
-            raise PyRdsParserError(f"Error handling R special cases: {str(e)}")
+            raise PyRdsParserError(f"Error handling R special cases: {e!s}")
 
     def _get_numeric_data(self, obj: RdsReader, rtype: str) -> np.ndarray:
         try:
@@ -155,12 +153,12 @@ class PyRdsParser:
 
             return data
         except Exception as e:
-            raise PyRdsParserError(f"Error getting numeric data: {str(e)}")
+            raise PyRdsParserError(f"Error getting numeric data: {e!s}")
 
-    def _process_vector(self, obj: RdsReader) -> List[Dict[str, Any]]:
+    def _process_vector(self, obj: RdsReader) -> list[dict[str, Any]]:
         return [self._process_object(obj.load_vec_element(i)) for i in range(obj.get_rsize())]
 
-    def _process_attributes(self, obj: RdsReader) -> Dict[str, Dict[str, Any]]:
+    def _process_attributes(self, obj: RdsReader) -> dict[str, dict[str, Any]]:
         try:
             attributes = {}
             for name in obj.get_attribute_names():
@@ -169,10 +167,10 @@ class PyRdsParser:
 
             return attributes
         except Exception as e:
-            raise PyRdsParserError(f"Error processing attributes: {str(e)}")
+            raise PyRdsParserError(f"Error processing attributes: {e!s}")
 
-    def get_dimensions(self) -> Union[tuple, None]:
+    def get_dimensions(self) -> tuple | None:
         try:
             return self.root_object.get_dimensions()
         except Exception as e:
-            raise PyRdsParserError(f"Error getting dimensions: {str(e)}")
+            raise PyRdsParserError(f"Error getting dimensions: {e!s}")
