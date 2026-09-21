@@ -1,5 +1,3 @@
-from typing import Optional
-
 from biocutils import Factor
 
 from .generics import save_rds
@@ -10,7 +8,7 @@ __license__ = "MIT"
 
 
 @save_rds.register(Factor)
-def _save_rds_factor(x: Factor, path: Optional[str] = None):
+def _save_rds_factor(x: Factor, path: str | None = None):
     from .lib_rds_parser import write_rds as _write_rds_native
 
     converted = {
