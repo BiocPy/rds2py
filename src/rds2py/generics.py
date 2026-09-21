@@ -17,7 +17,7 @@ Example:
 
 from functools import singledispatch
 from importlib import import_module
-from typing import Any, List, Optional
+from typing import Any
 from warnings import warn
 
 from .rdsutils import get_class, parse_rda, parse_rds
@@ -92,7 +92,7 @@ def read_rds(path: str, **kwargs):
     return _dispatcher(_robj, **kwargs)
 
 
-def read_rda(path: str, objects: Optional[List[str]] = None, **kwargs) -> dict:
+def read_rda(path: str, objects: list[str] | None = None, **kwargs) -> dict:
     """Read an RData file and convert each object to an appropriate Python type.
 
     This function parses all (or selected) objects and dispatches each one
@@ -153,7 +153,7 @@ def _dispatcher(robject: dict, **kwargs):
             return command(robject, **kwargs)
         except Exception as e:
             warn(
-                f"Failed to coerce RDS object to class: '{_class_name}', returning the dictionary, {str(e)}",
+                f"Failed to coerce RDS object to class: '{_class_name}', returning the dictionary, {e!s}",
                 RuntimeWarning,
             )
     else:
@@ -182,7 +182,7 @@ def register_parser(class_name: str):
 
 
 @singledispatch
-def save_rds(x: Any, path: Optional[str] = None):
+def save_rds(x: Any, path: str | None = None):
     """Save a Python object as RDS file.
 
     Args:
@@ -196,7 +196,7 @@ def save_rds(x: Any, path: Optional[str] = None):
 
 
 # Import all modules with save_rds registrations to ensure they are loaded
-from . import (  # noqa: E402
+from . import (
     save_atomic,  # noqa: F401
     save_compressed_list,  # noqa: F401
     save_delayed_matrix,  # noqa: F401

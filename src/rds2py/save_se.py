@@ -1,5 +1,3 @@
-from typing import Optional
-
 from biocutils.package_utils import is_package_installed
 
 from .generics import save_rds
@@ -44,7 +42,7 @@ if is_package_installed("summarizedexperiment", verbose=True):
         }
 
     @save_rds.register(SummarizedExperiment)
-    def _save_rds_se(x: SummarizedExperiment, path: Optional[str] = None):
+    def _save_rds_se(x: SummarizedExperiment, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
@@ -71,7 +69,7 @@ if is_package_installed("summarizedexperiment", verbose=True):
         return converted
 
     @save_rds.register(RangedSummarizedExperiment)
-    def _save_rds_rse(x: RangedSummarizedExperiment, path: Optional[str] = None):
+    def _save_rds_rse(x: RangedSummarizedExperiment, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):

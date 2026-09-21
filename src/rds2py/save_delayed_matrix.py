@@ -1,5 +1,3 @@
-from typing import Optional
-
 from biocutils.package_utils import is_package_installed
 
 from .generics import save_rds
@@ -13,7 +11,7 @@ if is_package_installed("delayedarray", verbose=True):
     from delayedarray import DelayedArray
 
     @save_rds.register(DelayedArray)
-    def _save_rds_delayedarray(x: DelayedArray, path: Optional[str] = None):
+    def _save_rds_delayedarray(x: DelayedArray, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
@@ -41,7 +39,7 @@ if is_package_installed("hdf5array", verbose=True):
     from hdf5array import Hdf5CompressedSparseMatrixSeed
 
     @save_rds.register(Hdf5CompressedSparseMatrixSeed)
-    def _save_rds_h5sparse_seed(x: Hdf5CompressedSparseMatrixSeed, path: Optional[str] = None):
+    def _save_rds_h5sparse_seed(x: Hdf5CompressedSparseMatrixSeed, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         converted = {

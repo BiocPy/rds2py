@@ -1,5 +1,3 @@
-from typing import Optional
-
 from biocutils.package_utils import is_package_installed
 
 from .generics import save_rds
@@ -13,7 +11,7 @@ if is_package_installed("genomicranges", verbose=True):
     from genomicranges import CompressedGenomicRangesList, GenomicRanges, SeqInfo
 
     @save_rds.register(SeqInfo)
-    def _save_rds_seqinfo(x: SeqInfo, path: Optional[str] = None):
+    def _save_rds_seqinfo(x: SeqInfo, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
@@ -39,7 +37,7 @@ if is_package_installed("genomicranges", verbose=True):
         return converted
 
     @save_rds.register(GenomicRanges)
-    def _save_rds_genomicranges(x: GenomicRanges, path: Optional[str] = None):
+    def _save_rds_genomicranges(x: GenomicRanges, path: str | None = None):
         import numpy as np
 
         from .lib_rds_parser import write_rds as _write_rds_native
@@ -100,7 +98,7 @@ if is_package_installed("genomicranges", verbose=True):
         return converted
 
     @save_rds.register(CompressedGenomicRangesList)
-    def _save_rds_cgrl(x: CompressedGenomicRangesList, path: Optional[str] = None):
+    def _save_rds_cgrl(x: CompressedGenomicRangesList, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
