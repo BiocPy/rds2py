@@ -5,7 +5,7 @@ and converting them into dictionary representations that can be further processe
 by higher-level functions.
 """
 
-from typing import Any, Dict
+from typing import Any
 
 from .lib_rds_parser import RdaObject, RdsReader
 from .PyRdsReader import PyRdsParser
@@ -17,8 +17,6 @@ __license__ = "MIT"
 
 class PyRdaParserError(Exception):
     """Exception raised for errors during RData parsing."""
-
-    pass
 
 
 class PyRdaParser:
@@ -43,7 +41,7 @@ class PyRdaParser:
         try:
             self.rda_object = RdaObject(file_path)
         except Exception as e:
-            raise PyRdaParserError(f"Error initializing 'PyRdaParser': {str(e)}")
+            raise PyRdaParserError(f"Error initializing 'PyRdaParser': {e!s}")
 
     def get_object_names(self):
         """Get the names of all objects stored in the RData file.
@@ -61,7 +59,7 @@ class PyRdaParser:
         """
         return self.rda_object.get_object_count()
 
-    def parse(self) -> Dict[str, Dict[str, Any]]:
+    def parse(self) -> dict[str, dict[str, Any]]:
         """Parse all objects in the RData file.
 
         Returns:
@@ -81,9 +79,9 @@ class PyRdaParser:
 
             return result
         except Exception as e:
-            raise PyRdaParserError(f"Error parsing RData file: {str(e)}")
+            raise PyRdaParserError(f"Error parsing RData file: {e!s}")
 
-    def parse_object(self, name: str) -> Dict[str, Any]:
+    def parse_object(self, name: str) -> dict[str, Any]:
         """Parse a single named object from the RData file.
 
         Args:
@@ -98,7 +96,7 @@ class PyRdaParser:
             reader = self.rda_object.get_object_by_name(name)
             return helper._process_object(reader)
         except Exception as e:
-            raise PyRdaParserError(f"Error parsing object '{name}': {str(e)}")
+            raise PyRdaParserError(f"Error parsing object '{name}': {e!s}")
 
 
 class _RdsProcessorHelper(PyRdsParser):
@@ -107,5 +105,5 @@ class _RdsProcessorHelper(PyRdsParser):
     def __init__(self):
         self.R_MIN = -2147483648
 
-    def _process_object(self, obj: RdsReader) -> Dict[str, Any]:
+    def _process_object(self, obj: RdsReader) -> dict[str, Any]:
         return super()._process_object(obj)

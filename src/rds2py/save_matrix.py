@@ -1,5 +1,3 @@
-from typing import Optional
-
 import numpy as np
 from biocutils.package_utils import is_package_installed
 from numpy import ndarray
@@ -13,7 +11,7 @@ __license__ = "MIT"
 
 
 @save_rds.register(ndarray)
-def _save_rds_ndarray(x: ndarray, path: Optional[str] = None):
+def _save_rds_ndarray(x: ndarray, path: str | None = None):
     from .lib_rds_parser import write_rds as _write_rds_native
 
     x_flat = x.flatten(order="F") if x.ndim > 1 else x
@@ -54,7 +52,7 @@ if is_package_installed("scipy", verbose=True):
     except ImportError:
         pass
 
-    def _save_rds_csc(x, path: Optional[str] = None):
+    def _save_rds_csc(x, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         converted = {
@@ -79,7 +77,7 @@ if is_package_installed("scipy", verbose=True):
     for cls in csc_classes:
         save_rds.register(cls, _save_rds_csc)
 
-    def _save_rds_csr(x, path: Optional[str] = None):
+    def _save_rds_csr(x, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         converted = {
@@ -104,7 +102,7 @@ if is_package_installed("scipy", verbose=True):
     for cls in csr_classes:
         save_rds.register(cls, _save_rds_csr)
 
-    def _save_rds_coo(x, path: Optional[str] = None):
+    def _save_rds_coo(x, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         converted = {
@@ -131,7 +129,7 @@ if is_package_installed("scipy", verbose=True):
 
 
 @save_rds.register(MatrixWrapper)
-def _save_rds_matrixwrapper(x: MatrixWrapper, path: Optional[str] = None):
+def _save_rds_matrixwrapper(x: MatrixWrapper, path: str | None = None):
     from .lib_rds_parser import write_rds as _write_rds_native
 
     converted = save_rds(x.matrix)
