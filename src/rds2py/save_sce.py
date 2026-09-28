@@ -1,5 +1,3 @@
-from typing import Optional
-
 from biocutils.package_utils import is_package_installed
 
 from .generics import save_rds
@@ -44,7 +42,7 @@ if is_package_installed("singlecellexperiment", verbose=True):
         }
 
     @save_rds.register(SingleCellExperiment)
-    def _save_rds_sce(x: SingleCellExperiment, path: Optional[str] = None):
+    def _save_rds_sce(x: SingleCellExperiment, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
