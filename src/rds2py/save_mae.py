@@ -1,5 +1,3 @@
-from typing import Optional
-
 from biocutils.package_utils import is_package_installed
 
 from .generics import save_rds
@@ -13,7 +11,7 @@ if is_package_installed("multiassayexperiment", verbose=True):
     from multiassayexperiment import MultiAssayExperiment
 
     @save_rds.register(MultiAssayExperiment)
-    def _save_rds_mae(x: MultiAssayExperiment, path: Optional[str] = None):
+    def _save_rds_mae(x: MultiAssayExperiment, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
