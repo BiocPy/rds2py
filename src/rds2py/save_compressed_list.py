@@ -1,7 +1,5 @@
 """Functions and classes for parsing Compressed List data structures."""
 
-from typing import Optional
-
 from biocutils.package_utils import is_package_installed
 
 from .generics import save_rds
@@ -14,7 +12,7 @@ if is_package_installed("compressed_lists", verbose=True):
     from compressed_lists import CompressedList, Partitioning
 
     @save_rds.register(CompressedList)
-    def _save_rds_compressedlist(x: CompressedList, path: Optional[str] = None):
+    def _save_rds_compressedlist(x: CompressedList, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
@@ -63,7 +61,7 @@ if is_package_installed("compressed_lists", verbose=True):
         return converted
 
     @save_rds.register(Partitioning)
-    def _save_rds_partitioning(x: Partitioning, path: Optional[str] = None):
+    def _save_rds_partitioning(x: Partitioning, path: str | None = None):
         from .lib_rds_parser import write_rds as _write_rds_native
 
         def _get(obj, name):
