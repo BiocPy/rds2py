@@ -5,13 +5,14 @@ PyScaffold helps you to put up the scaffold of your new Python project.
 Learn more under: https://pyscaffold.org/
 """
 
-from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext as build_ext_orig
-import pathlib
 import os
+import pathlib
 import shutil
 import sys
+
 import pybind11
+from setuptools import Extension, setup
+from setuptools.command.build_ext import build_ext as build_ext_orig
 
 
 ###  Adapted from dolomite_base: https://github.com/ArtifactDB/dolomite-base/blob/master/setup.py
@@ -72,7 +73,7 @@ if __name__ == "__main__":
             ext_modules=[CMakeExtension("rds2py")],
             cmdclass={"build_ext": build_ext},
         )
-    except:  # noqa
+    except:
         print(
             "\n\nAn error occurred while building the project, "
             "please ensure you have the most updated version of setuptools, "
