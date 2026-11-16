@@ -40,18 +40,11 @@ data_array = np.array([1, 2, 3, 4], dtype=np.int32)
 write_rds(data_array, "vector.rds")
 
 # 2. Save a Bioconductor GenomicRanges S4 object
-gr = GenomicRanges(
-    seqnames=["chr1", "chr2"],
-    ranges=IRanges(start=[1, 100], width=[10, 50]),
-    strand=["+", "-"]
-)
+gr = GenomicRanges(seqnames=["chr1", "chr2"], ranges=IRanges(start=[1, 100], width=[10, 50]), strand=["+", "-"])
 write_rds(gr, "granges.rds")
 
 # 3. Save multiple objects to an RData workspace file
-workspace_objects = {
-    "my_data": data_array,
-    "my_ranges": gr
-}
+workspace_objects = {"my_data": data_array, "my_ranges": gr}
 write_rda(workspace_objects, "workspace.rda")
 ```
 
